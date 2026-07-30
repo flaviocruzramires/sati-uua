@@ -1,8 +1,10 @@
 import 'package:postgres/postgres.dart';
 
 import '../config/env.dart';
-import '../repositories/setor_repository.dart';
+import '../repositories/equipamento_repository.dart';
 import '../repositories/servico_repository.dart';
+import '../repositories/setor_repository.dart';
+import '../repositories/tipo_equipamento_repository.dart';
 import '../repositories/usuario_repository.dart';
 import '../services/auth_service.dart';
 
@@ -11,6 +13,8 @@ class AppContainer {
     usuarioRepository = UsuarioRepository(_db);
     setorRepository = SetorRepository(_db);
     servicoRepository = ServicoRepository(_db);
+    tipoEquipamentoRepository = TipoEquipamentoRepository(_db);
+    equipamentoRepository = EquipamentoRepository(_db);
     authService = AuthService(usuarioRepository, _env);
   }
 
@@ -20,6 +24,8 @@ class AppContainer {
   late final UsuarioRepository usuarioRepository;
   late final SetorRepository setorRepository;
   late final ServicoRepository servicoRepository;
+  late final TipoEquipamentoRepository tipoEquipamentoRepository;
+  late final EquipamentoRepository equipamentoRepository;
   late final AuthService authService;
 
   Connection get db => _db;

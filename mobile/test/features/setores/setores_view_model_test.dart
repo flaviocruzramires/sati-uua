@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import 'package:chamados/core/domain/paginated_result.dart';
-import 'package:chamados/features/setores/setor_dto.dart';
 import 'package:chamados/features/setores/setor_repository.dart';
 import 'package:chamados/features/setores/view_model/setores_view_model.dart';
 
@@ -35,12 +34,12 @@ void main() {
         )).thenAnswer((_) async => _emptyResult);
   });
 
-  ProviderContainer _make() => ProviderContainer(
+  ProviderContainer makeContainer() => ProviderContainer(
         overrides: [setorRepositoryProvider.overrideWithValue(repo)],
       );
 
   test('load popula listState com AsyncData', () async {
-    final c = _make();
+    final c = makeContainer();
     addTearDown(c.dispose);
     final vm = c.read(setoresViewModelProvider.notifier);
     await vm.load();
@@ -50,7 +49,7 @@ void main() {
   });
 
   test('create retorna true e recarrega lista', () async {
-    final c = _make();
+    final c = makeContainer();
     addTearDown(c.dispose);
     when(() => repo.create('TI'))
         .thenAnswer((_) async => const SetorDto(id: 1, nome: 'TI'));
@@ -68,7 +67,7 @@ void main() {
   });
 
   test('create retorna false em erro e guarda saveError', () async {
-    final c = _make();
+    final c = makeContainer();
     addTearDown(c.dispose);
     final vm = c.read(setoresViewModelProvider.notifier);
     await vm.load();
@@ -85,7 +84,7 @@ void main() {
   });
 
   test('delete retorna true e chama repo.delete', () async {
-    final c = _make();
+    final c = makeContainer();
     addTearDown(c.dispose);
     when(() => repo.delete(1)).thenAnswer((_) async {});
 
@@ -97,7 +96,7 @@ void main() {
   });
 
   test('setBusca reinicia página e recarrega', () async {
-    final c = _make();
+    final c = makeContainer();
     addTearDown(c.dispose);
     final vm = c.read(setoresViewModelProvider.notifier);
     await vm.load();

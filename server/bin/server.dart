@@ -12,9 +12,11 @@ import 'package:sati_uua_server/src/middlewares/error_handling_middleware.dart';
 import 'package:sati_uua_server/src/middlewares/logging_middleware.dart';
 import 'package:sati_uua_server/src/middlewares/request_id_middleware.dart';
 import 'package:sati_uua_server/src/routes/auth_route.dart';
+import 'package:sati_uua_server/src/routes/equipamentos_route.dart';
 import 'package:sati_uua_server/src/routes/health_route.dart';
 import 'package:sati_uua_server/src/routes/servicos_route.dart';
 import 'package:sati_uua_server/src/routes/setores_route.dart';
+import 'package:sati_uua_server/src/routes/tipos_equipamento_route.dart';
 
 final _log = Logger('server');
 
@@ -31,10 +33,10 @@ void main(List<String> arguments) async {
     ..mount('/', healthRouter(container).call)
     ..mount('/', authRouter(container).call)
     ..mount('/', setoresRouter(container).call)
-    ..mount('/', servicosRouter(container).call);
+    ..mount('/', servicosRouter(container).call)
+    ..mount('/', tiposEquipamentoRouter(container).call)
+    ..mount('/', equipamentosRouter(container).call);
 
-  // Pipeline: request id -> logging -> tratamento de erro -> CORS -> rotas.
-  // Ordem descrita em claude-config/skills/dart-shelf-server/SKILL.md.
   final handler = const Pipeline()
       .addMiddleware(requestIdMiddleware())
       .addMiddleware(loggingMiddleware())
@@ -45,7 +47,6 @@ void main(List<String> arguments) async {
   final server = await shelf_io.serve(handler, env.httpHost, env.httpPort);
   _log.info('Servidor rodando em http://${server.address.host}:${server.port}');
 
-  // Encerramento gracioso: fecha a conexão com o banco.
   ProcessSignal.sigint.watch().listen((_) async {
     _log.info('Encerrando servidor...');
     await container.close();

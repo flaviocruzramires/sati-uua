@@ -2,9 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/view/login_view.dart';
+import '../../features/equipamentos/view/equipamentos_view.dart';
 import '../../features/placeholder/placeholder_screen.dart';
 import '../../features/servicos/view/servicos_view.dart';
 import '../../features/setores/view/setores_view.dart';
+import '../../features/tipos_equipamento/view/tipos_equipamento_view.dart';
 import '../network/auth_storage.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -21,21 +23,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
+      GoRoute(path: '/login', builder: (_, __) => const LoginView()),
+      GoRoute(path: '/', builder: (_, __) => const PlaceholderScreen()),
+      GoRoute(path: '/setores', builder: (_, __) => const SetoresView()),
+      GoRoute(path: '/servicos', builder: (_, __) => const ServicosView()),
       GoRoute(
-        path: '/login',
-        builder: (_, __) => const LoginView(),
+        path: '/tipos-equipamento',
+        builder: (_, __) => const TiposEquipamentoView(),
       ),
       GoRoute(
-        path: '/',
-        builder: (_, __) => const PlaceholderScreen(),
-      ),
-      GoRoute(
-        path: '/setores',
-        builder: (_, __) => const SetoresView(),
-      ),
-      GoRoute(
-        path: '/servicos',
-        builder: (_, __) => const ServicosView(),
+        path: '/equipamentos',
+        builder: (_, __) => const EquipamentosView(),
       ),
     ],
   );
