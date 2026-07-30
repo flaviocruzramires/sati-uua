@@ -14,7 +14,9 @@ import 'package:sati_uua_server/src/config/env.dart';
 
 Future<void> main(List<String> arguments) async {
   final applySeed = arguments.contains('--seed');
-  final env = Env.load();
+
+  final packageDir = File(Platform.script.toFilePath()).parent.parent.path;
+  final env = Env.load(path: '$packageDir/.env');
 
   final db = await Connection.open(
     Endpoint(
@@ -34,15 +36,15 @@ Future<void> main(List<String> arguments) async {
     )
   ''');
 
-  await _applySqlFiles(db, Directory('migrations'), trackAsMigration: true);
+  final migrationsDir = Directory('$packageDir/migrations');
+  await _applySqlFiles(db, env, migrationsDir, trackAsMigration: true);
 
   if (applySeed) {
-    final seedDir = Directory('migrations/seed');
+    final seedDir = Directory('$packageDir/migrations/seed');
     if (seedDir.existsSync()) {
-      await _applySqlFiles(db, seedDir, trackAsMigration: false);
+      await _applySqlFiles(db, env, seedDir, trackAsMigration: false);
     } else {
-      stdout.writeln(
-          'Nenhum diretório migrations/seed encontrado — pulando seed.');
+      stdout.writeln('Nenhum diretório migrations/seed encontrado — pulando seed.');
     }
   }
 
@@ -52,6 +54,7 @@ Future<void> main(List<String> arguments) async {
 
 Future<void> _applySqlFiles(
   Connection db,
+  Env env,
   Directory directory, {
   required bool trackAsMigration,
 }) async {
@@ -64,13 +67,15 @@ Future<void> _applySqlFiles(
       .toList()
     ..sort((a, b) => a.path.compareTo(b.path));
 
+  // Localiza psql no PATH ou em locais comuns do Windows.
+  final psql = _findPsql();
+
   for (final file in files) {
     final version = file.uri.pathSegments.last;
 
     if (trackAsMigration) {
       final alreadyApplied = await db.execute(
-        Sql.named(
-            'SELECT version FROM schema_migrations WHERE version = @version'),
+        Sql.named('SELECT version FROM schema_migrations WHERE version = @version'),
         parameters: {'version': version},
       );
       if (alreadyApplied.isNotEmpty) {
@@ -80,8 +85,29 @@ Future<void> _applySqlFiles(
     }
 
     stdout.writeln('aplicando: ${file.path}');
-    final sql = await file.readAsString();
-    await db.execute(sql);
+
+    // Usa psql para executar o arquivo — suporta múltiplos statements,
+    // extensões e sintaxe especial do PostgreSQL sem precisar fazer parse manual.
+    final result = await Process.run(
+      psql,
+      [
+        '-h', env.dbHost,
+        '-p', env.dbPort.toString(),
+        '-U', env.dbUser,
+        '-d', env.dbName,
+        '-f', file.absolute.path,
+        '--no-password',
+      ],
+      environment: {...Platform.environment, 'PGPASSWORD': env.dbPassword},
+    );
+
+    if (result.exitCode != 0) {
+      stderr.writeln(result.stderr);
+      throw Exception('Falha ao aplicar ${file.path} (exit ${result.exitCode})');
+    }
+    if ((result.stdout as String).trim().isNotEmpty) {
+      stdout.writeln(result.stdout);
+    }
 
     if (trackAsMigration) {
       await db.execute(
@@ -90,4 +116,20 @@ Future<void> _applySqlFiles(
       );
     }
   }
+}
+
+String _findPsql() {
+  // Tenta psql no PATH primeiro.
+  final whichResult = Process.runSync('where', ['psql']);
+  if (whichResult.exitCode == 0) {
+    return (whichResult.stdout as String).trim().split('\n').first.trim();
+  }
+  // Locais comuns no Windows.
+  for (final version in ['17', '16', '15', '14']) {
+    final path = 'C:\\Program Files\\PostgreSQL\\$version\\bin\\psql.exe';
+    if (File(path).existsSync()) return path;
+  }
+  throw StateError(
+    'psql não encontrado. Adicione o diretório bin do PostgreSQL ao PATH.',
+  );
 }
