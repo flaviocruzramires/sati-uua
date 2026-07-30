@@ -10,6 +10,7 @@ import '../models/usuario.dart';
 Router chamadosRouter(AppContainer container) {
   final router = Router();
   final repo = container.chamadoRepository;
+  final historicoRepo = container.chamadoHistoricoRepository;
 
   router.get('/chamados', (Request req) async {
     final payload = requireAuth(req);
@@ -45,7 +46,11 @@ Router chamadosRouter(AppContainer container) {
     if (chamadoId == null) return _badRequest('ID inválido');
     final chamado = await repo.findById(chamadoId);
     if (chamado == null) return _notFound();
-    return _ok(chamado.toJson());
+    final historico = await historicoRepo.listByChamado(chamadoId);
+    return _ok({
+      ...chamado.toJson(),
+      'historico': historico.map((h) => h.toJson()).toList(),
+    });
   });
 
   router.post('/chamados', (Request req) async {
@@ -86,6 +91,39 @@ Router chamadosRouter(AppContainer container) {
     );
     if (chamado == null) return _notFound();
     return _ok(chamado.toJson());
+  });
+
+  router.post('/chamados/<id>/historico', (Request req, String id) async {
+    final payload = requireAuth(req);
+    requirePapel(payload, Papel.atendente);
+
+    final chamadoId = int.tryParse(id);
+    if (chamadoId == null) return _badRequest('ID inválido');
+
+    final body = jsonDecode(await req.readAsString()) as Map<String, dynamic>;
+    final descricao = (body['descricao'] as String?)?.trim() ?? '';
+    if (descricao.isEmpty) return _badRequest('Descrição é obrigatória');
+
+    final marcaEncerramento = body['marcaEncerramento'] as bool? ?? false;
+    final dataRetornoRaw = body['dataRetorno'] as String?;
+    final dataRetorno = dataRetornoRaw != null
+        ? DateTime.tryParse(dataRetornoRaw) ?? DateTime.now().toUtc()
+        : DateTime.now().toUtc();
+
+    try {
+      final detalhe = await historicoRepo.registrar(
+        chamadoId: chamadoId,
+        responsavelId: payload.userId,
+        dataRetorno: dataRetorno,
+        descricao: descricao,
+        marcaEncerramento: marcaEncerramento,
+      );
+      return Response(201,
+          body: jsonEncode(detalhe.toJson()),
+          headers: {'content-type': 'application/json'});
+    } on StateError catch (e) {
+      return _badRequest(e.message);
+    }
   });
 
   return router;

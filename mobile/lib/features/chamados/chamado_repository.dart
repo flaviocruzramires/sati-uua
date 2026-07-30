@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/domain/enums.dart';
 import '../../core/domain/paginated_result.dart';
 import '../../core/network/api_client.dart';
+import 'chamado_detalhe_dto.dart';
 import 'chamado_dto.dart';
 
+export 'chamado_detalhe_dto.dart';
 export 'chamado_dto.dart';
 
 String _situacaoToStr(SituacaoChamado s) => switch (s) {
@@ -24,6 +26,15 @@ abstract class ChamadoRepositoryBase {
   });
 
   Future<ChamadoDto> findById(int id);
+
+  Future<ChamadoDetalheDto> findDetalhe(int id);
+
+  Future<ChamadoDetalheDto> registrarHistorico({
+    required int chamadoId,
+    required String descricao,
+    required DateTime dataRetorno,
+    required bool marcaEncerramento,
+  });
 
   Future<ChamadoDto> create({
     required String descricao,
@@ -74,9 +85,32 @@ class ChamadoRepository implements ChamadoRepositoryBase {
 
   @override
   Future<ChamadoDto> findById(int id) async {
-    final res =
-        await _client.get<Map<String, dynamic>>('/chamados/$id');
+    final res = await _client.get<Map<String, dynamic>>('/chamados/$id');
     return ChamadoDto.fromJson(res.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<ChamadoDetalheDto> findDetalhe(int id) async {
+    final res = await _client.get<Map<String, dynamic>>('/chamados/$id');
+    return ChamadoDetalheDto.fromJson(res.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<ChamadoDetalheDto> registrarHistorico({
+    required int chamadoId,
+    required String descricao,
+    required DateTime dataRetorno,
+    required bool marcaEncerramento,
+  }) async {
+    final res = await _client.post<Map<String, dynamic>>(
+      '/chamados/$chamadoId/historico',
+      data: {
+        'descricao': descricao,
+        'dataRetorno': dataRetorno.toUtc().toIso8601String(),
+        'marcaEncerramento': marcaEncerramento,
+      },
+    );
+    return ChamadoDetalheDto.fromJson(res.data as Map<String, dynamic>);
   }
 
   @override
