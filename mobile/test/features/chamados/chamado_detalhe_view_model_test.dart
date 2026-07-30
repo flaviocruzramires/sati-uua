@@ -4,8 +4,6 @@ import 'package:mocktail/mocktail.dart';
 
 import 'package:chamados/core/domain/enums.dart';
 import 'package:chamados/core/domain/paginated_result.dart';
-import 'package:chamados/features/chamados/chamado_detalhe_dto.dart';
-import 'package:chamados/features/chamados/chamado_dto.dart';
 import 'package:chamados/features/chamados/chamado_repository.dart';
 import 'package:chamados/features/chamados/view_model/chamado_detalhe_view_model.dart';
 
