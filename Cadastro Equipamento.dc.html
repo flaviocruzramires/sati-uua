@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<![CDATA[<helmet>
+  <link rel="stylesheet" href="_ds/modernist-169c550c-fcdf-4ac7-9166-bcb50ab2dcc1/styles.css">
+  <script src="_ds/modernist-169c550c-fcdf-4ac7-9166-bcb50ab2dcc1/_ds_bundle.js"></script>
+  <meta name="design_doc_mode" content="canvas">
+  <style>
+    body { margin: 0; background: var(--color-neutral-200); }
+    .icn { display:block; flex: none; }
+    .sidenav-item { display:flex; align-items:center; gap:10px; padding:10px 12px; font-size:13.5px; color:var(--color-text); text-decoration:none; }
+    .sidenav-item.active { background:var(--color-accent); color:var(--color-bg); }
+    .sidenav-item:not(.active):hover { background:color-mix(in srgb, var(--color-text) 6%, transparent); }
+    .sidenav-group { font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-neutral-600); padding:16px 12px 6px; }
+    .pg-btn { min-width:30px; height:30px; padding:0; }
+  </style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;gap:56px;padding:48px;align-items:flex-start;font-family:var(--font-body);">
+
+  <div>
+    <h6 style="color:var(--color-neutral-700);margin:0 0 12px;">Web — Cadastro de Equipamentos (CRUD com combos)</h6>
+    <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" url="sati-uua.uems.br/equipamentos" width="{{ 1440 }}" height="{{ 940 }}" hint-size="1440px,940px">
+      <div style="display:flex;height:100%;width:100%;">
+        <div style="width:248px;flex:none;background:var(--color-surface);border-right:2px solid var(--color-divider);display:flex;flex-direction:column;">
+          <div style="display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:2px solid var(--color-divider);">
+            <img src="imagens/logo_sati_uua.jpg" style="width:34px;height:34px;object-fit:contain;background:#fff;padding:3px;">
+            <div><div style="font-family:var(--font-heading);font-weight:800;font-size:15px;line-height:1;">SATI-UUA</div><div style="font-size:9px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.7;margin-top:3px;">UEMS Aquidauana</div></div>
+          </div>
+          <div style="flex:1;overflow:auto;padding:12px;">
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4Z"/></svg>Chamados</a>
+            <div class="sidenav-group">Cadastros</div>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="9" height="18"/><rect x="7" y="6.5" width="3" height="3"/><rect x="7" y="12.5" width="3" height="3"/><path d="M13 21V10l7 3v8"/></svg>Setores</a>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,4 21,9 12,14 3,9"/><polyline points="3,14 12,19 21,14"/></svg>Tipos de Equipamento</a>
+            <a href="#" class="sidenav-item active"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/></svg>Equipamentos</a>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="9" cy="18" r="2"/></svg>Serviços</a>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14a5 5 0 0 1 5 6"/></svg>Usuários</a>
+            <div class="sidenav-group">Análise</div>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="20" x2="5" y2="12"/><line x1="12" y1="20" x2="12" y2="6"/><line x1="19" y1="20" x2="19" y2="14"/></svg>Relatórios</a>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><line x1="12" y1="3" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="21"/><line x1="3" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="21" y2="12"/></svg>Configurações</a>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:14px 20px;border-top:2px solid var(--color-divider);">
+            <div style="width:34px;height:34px;background:var(--color-accent-200);color:var(--color-accent-800);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:800;font-size:12px;flex:none;">AD</div>
+            <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:600;">Ana Duarte</div><span class="tag tag-accent" style="font-size:9px;padding:1px 6px;">ADMIN</span></div>
+          </div>
+        </div>
+
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+          <div style="height:64px;flex:none;display:flex;align-items:center;gap:16px;padding:0 28px;border-bottom:2px solid var(--color-divider);">
+            <h4 style="margin:0;">Equipamentos</h4>
+            <span class="text-muted" style="font-size:12px;">Equipamentos de TI vinculados aos chamados</span>
+            <button class="btn btn-primary" style="margin-left:auto;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Novo Equipamento</button>
+          </div>
+
+          <div style="flex:1;overflow:auto;padding:28px;display:flex;flex-direction:column;gap:24px;">
+            <div class="card elev-sm">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+                <div style="position:relative;width:260px;">
+                  <svg style="position:absolute;left:9px;top:9px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-neutral-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input class="input" style="padding-left:32px;" placeholder="Buscar equipamento...">
+                </div>
+                <select class="input" style="width:200px;"><option>Todos os tipos</option><option>Notebook</option><option>Desktop</option><option>Impressora</option><option>Projetor</option><option>Rede/Switch</option></select>
+                <span class="text-muted" style="font-size:12px;margin-left:auto;">57 equipamentos cadastrados</span>
+              </div>
+              <table class="table">
+                <thead><tr><th>Descrição</th><th>Tipo</th><th>Setor</th><th>Status</th><th style="width:120px;">Ações</th></tr></thead>
+                <tbody>
+                  <tr><td>Notebook Dell Latitude 5420 · Patr. 00234</td><td>Notebook</td><td>Secretaria Acadêmica</td><td><span class="tag tag-accent-2">Ativo</span></td><td><div style="display:flex;gap:6px;"><button class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div></td></tr>
+                  <tr><td>Impressora HP LaserJet M404 · Sala 12</td><td>Impressora</td><td>Biblioteca</td><td><span class="tag tag-accent-2">Ativo</span></td><td><div style="display:flex;gap:6px;"><button class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div></td></tr>
+                  <tr><td>Desktop Positivo Master · Lab. Inform. 2</td><td>Desktop</td><td>Coordenação de Curso</td><td><span class="tag tag-accent-2">Ativo</span></td><td><div style="display:flex;gap:6px;"><button class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div></td></tr>
+                  <tr><td>Projetor Epson PowerLite · Sala de Reuniões</td><td>Projetor</td><td>Direção</td><td><span class="tag tag-neutral">Inativo</span></td><td><div style="display:flex;gap:6px;"><button class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div></td></tr>
+                  <tr><td>Switch TP-Link 24 portas · Rack NTI</td><td>Rede/Switch</td><td>NTI</td><td><span class="tag tag-accent-2">Ativo</span></td><td><div style="display:flex;gap:6px;"><button class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div></td></tr>
+                  <tr><td>Roteador Wi-Fi Intelbras · Piso 2</td><td>Rede/Switch</td><td>Biblioteca</td><td><span class="tag tag-accent-2">Ativo</span></td><td><div style="display:flex;gap:6px;"><button class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div></td></tr>
+                </tbody>
+              </table>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;">
+                <span class="text-muted" style="font-size:12px;">Mostrando 1–6 de 57</span>
+                <div style="display:flex;align-items:center;gap:4px;">
+                  <button class="btn btn-secondary pg-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg></button>
+                  <button class="btn pg-btn" style="background:var(--color-accent);color:var(--color-bg);">1</button>
+                  <button class="btn btn-secondary pg-btn">2</button>
+                  <button class="btn btn-secondary pg-btn">3</button>
+                  <span style="padding:0 4px;color:var(--color-neutral-500);">…</span>
+                  <button class="btn btn-secondary pg-btn">8</button>
+                  <button class="btn btn-secondary pg-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,18 15,12 9,6"/></svg></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card elev-md" style="max-width:520px;">
+              <div class="dialog-title">Editar Equipamento</div>
+              <div class="field"><label>Descrição</label><input class="input" value="Notebook Dell Latitude 5420 · Patr. 00234"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="field"><label>Tipo de Equipamento</label><select class="input"><option>Notebook</option><option>Desktop</option><option>Impressora</option><option>Projetor</option><option>Rede/Switch</option></select></div>
+                <div class="field"><label>Setor (opcional)</label><select class="input"><option>Secretaria Acadêmica</option><option>Sem setor</option><option>Biblioteca</option></select></div>
+              </div>
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--color-neutral-700);"><input type="checkbox" checked>Equipamento ativo</label>
+              <div class="dialog-actions"><button class="btn btn-secondary">Cancelar</button><button class="btn btn-primary">Salvar</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+
+  <div>
+    <h6 style="color:var(--color-neutral-700);margin:0 0 12px;">Mobile — Cadastro de Equipamentos</h6>
+    <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 412 }}" height="{{ 892 }}" hint-size="412px,892px">
+      <div style="display:flex;flex-direction:column;height:100%;">
+        <div style="flex:none;display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:2px solid var(--color-divider);">
+          <h4 style="margin:0;">Equipamentos</h4>
+          <button class="btn btn-primary btn-icon" style="margin-left:auto;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        </div>
+        <div style="flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
+          <input class="input" placeholder="Buscar equipamento...">
+          <div class="card elev-sm">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;"><span class="card-title" style="font-size:14px;">Notebook Dell Latitude 5420</span><span class="tag tag-accent-2">Ativo</span></div>
+            <div class="card-meta">Notebook · Secretaria Acadêmica</div>
+          </div>
+          <div class="card elev-sm">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;"><span class="card-title" style="font-size:14px;">Impressora HP LaserJet M404</span><span class="tag tag-accent-2">Ativo</span></div>
+            <div class="card-meta">Impressora · Biblioteca</div>
+          </div>
+          <div class="card elev-sm">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;"><span class="card-title" style="font-size:14px;">Projetor Epson PowerLite</span><span class="tag tag-neutral">Inativo</span></div>
+            <div class="card-meta">Projetor · Direção</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;">
+            <button class="btn btn-secondary pg-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg></button>
+            <button class="btn pg-btn" style="background:var(--color-accent);color:var(--color-bg);">1</button>
+            <button class="btn btn-secondary pg-btn">2</button>
+            <button class="btn btn-secondary pg-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,18 15,12 9,6"/></svg></button>
+          </div>
+          <div class="hr" style="margin:8px 0;"></div>
+          <div class="card elev-md">
+            <div class="dialog-title" style="font-size:16px;">Editar Equipamento</div>
+            <div class="field"><label>Descrição</label><input class="input" value="Notebook Dell Latitude 5420"></div>
+            <div class="field"><label>Tipo de Equipamento</label><select class="input"><option>Notebook</option><option>Desktop</option></select></div>
+            <div class="field"><label>Setor (opcional)</label><select class="input"><option>Secretaria Acadêmica</option></select></div>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;"><input type="checkbox" checked>Ativo</label>
+            <div class="dialog-actions"><button class="btn btn-secondary">Cancelar</button><button class="btn btn-primary">Salvar</button></div>
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+
+</div>
+]]>
+</x-dc>
+</body>
+</html>

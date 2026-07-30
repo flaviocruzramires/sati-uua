@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<![CDATA[<helmet>
+  <link rel="stylesheet" href="_ds/modernist-169c550c-fcdf-4ac7-9166-bcb50ab2dcc1/styles.css">
+  <script src="_ds/modernist-169c550c-fcdf-4ac7-9166-bcb50ab2dcc1/_ds_bundle.js"></script>
+  <meta name="design_doc_mode" content="canvas">
+  <style>
+    body { margin: 0; background: var(--color-neutral-200); }
+  </style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;gap:56px;padding:48px;align-items:flex-start;font-family:var(--font-body);">
+
+  <div>
+    <h6 style="color:var(--color-neutral-700);margin:0 0 12px;">Web — Login</h6>
+    <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" url="sati-uua.uems.br/login" width="{{ 1280 }}" height="{{ 800 }}" hint-size="1280px,800px">
+      <div style="display:flex;height:100%;width:100%;">
+        <div style="width:42%;background:var(--color-accent);color:var(--color-bg);display:flex;flex-direction:column;justify-content:space-between;padding:48px;box-sizing:border-box;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <img src="imagens/logo_sati_uua.jpg" style="width:52px;height:52px;object-fit:contain;background:#fff;padding:5px;">
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:800;font-size:19px;line-height:1;">SATI-UUA</div>
+              <div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.75;margin-top:3px;">UEMS Aquidauana</div>
+            </div>
+          </div>
+          <div>
+            <h1 style="font-size:34px;line-height:1.16;margin:0 0 16px;color:var(--color-bg);">Sistema de Atendimento de Tecnologia da Informação</h1>
+            <p style="font-size:14px;opacity:0.78;max-width:380px;margin:0;">Abra, acompanhe e resolva chamados de TI da sua unidade em um só lugar.</p>
+          </div>
+          <div>
+            <div style="height:2px;background:color-mix(in srgb, #fff 22%, transparent);margin-bottom:14px;"></div>
+            <div style="font-size:12px;opacity:0.7;">UEMS · Unidade Universitária Aquidauana</div>
+          </div>
+        </div>
+        <div style="width:58%;display:flex;align-items:center;justify-content:center;padding:48px;box-sizing:border-box;">
+          <div style="width:100%;max-width:360px;">
+            <h2 style="margin:0 0 4px;">Entrar</h2>
+            <p class="text-muted" style="margin:0 0 28px;font-size:14px;">Acesse com seu usuário institucional.</p>
+            <div class="field" style="margin-bottom:16px;">
+              <label>Login</label>
+              <input class="input" placeholder="usuario.sobrenome">
+            </div>
+            <div class="field" style="margin-bottom:12px;">
+              <label>Senha</label>
+              <input class="input" type="password" placeholder="••••••••">
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--color-neutral-700);">
+                <input type="checkbox">
+                Lembrar-me
+              </label>
+              <a href="#" class="btn btn-ghost" style="font-size:13px;padding:0;">Esqueci minha senha</a>
+            </div>
+            <button class="btn btn-primary btn-block" style="justify-content:center;">Entrar</button>
+            <div class="hr"></div>
+            <p style="font-size:12px;text-align:center;color:var(--color-neutral-600);margin:0;">Precisa de acesso? Fale com o Administrador de TI do seu setor.</p>
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+
+  <div>
+    <h6 style="color:var(--color-neutral-700);margin:0 0 12px;">Mobile — Login</h6>
+    <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 412 }}" height="{{ 892 }}" hint-size="412px,892px">
+      <div style="display:flex;flex-direction:column;height:100%;">
+        <div style="height:250px;flex:none;background:var(--color-accent);color:var(--color-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:0 32px;text-align:center;">
+          <img src="imagens/logo_sati_uua.jpg" style="width:56px;height:56px;object-fit:contain;background:#fff;padding:5px;">
+          <div style="font-family:var(--font-heading);font-weight:800;font-size:18px;">SATI-UUA</div>
+          <div style="font-size:11px;opacity:0.8;line-height:1.4;">Sistema de Atendimento de Tecnologia da Informação</div>
+        </div>
+        <div style="flex:1;background:var(--color-bg);padding:28px 24px;box-sizing:border-box;">
+          <h3 style="margin:0 0 4px;">Entrar</h3>
+          <p class="text-muted" style="margin:0 0 22px;font-size:13px;">Acesse com seu usuário institucional.</p>
+          <div class="field" style="margin-bottom:14px;">
+            <label>Login</label>
+            <input class="input" placeholder="usuario.sobrenome">
+          </div>
+          <div class="field" style="margin-bottom:12px;">
+            <label>Senha</label>
+            <input class="input" type="password" placeholder="••••••••">
+          </div>
+          <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:18px;">
+            <a href="#" class="btn btn-ghost" style="font-size:12px;padding:0;">Esqueci minha senha</a>
+          </div>
+          <button class="btn btn-primary btn-block" style="justify-content:center;">Entrar</button>
+          <p style="font-size:11px;text-align:center;color:var(--color-neutral-600);margin:22px 0 0;">Precisa de acesso? Fale com o Administrador de TI.</p>
+        </div>
+      </div>
+    </x-import>
+  </div>
+
+</div>
+]]>
+</x-dc>
+</body>
+</html>
