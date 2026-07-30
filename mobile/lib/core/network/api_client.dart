@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'api_exception.dart';
 import 'auth_storage.dart';
 
-const _kBaseUrl = 'http://localhost:8080';
+const _kBaseUrl = 'http://localhost:8090';
 
 class ApiClient {
   ApiClient({required AuthStorage authStorage}) : _authStorage = authStorage {
