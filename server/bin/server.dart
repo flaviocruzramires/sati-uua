@@ -17,6 +17,7 @@ import 'package:sati_uua_server/src/routes/health_route.dart';
 import 'package:sati_uua_server/src/routes/servicos_route.dart';
 import 'package:sati_uua_server/src/routes/setores_route.dart';
 import 'package:sati_uua_server/src/routes/tipos_equipamento_route.dart';
+import 'package:sati_uua_server/src/routes/usuarios_route.dart';
 
 final _log = Logger('server');
 
@@ -35,7 +36,8 @@ void main(List<String> arguments) async {
     ..mount('/', setoresRouter(container).call)
     ..mount('/', servicosRouter(container).call)
     ..mount('/', tiposEquipamentoRouter(container).call)
-    ..mount('/', equipamentosRouter(container).call);
+    ..mount('/', equipamentosRouter(container).call)
+    ..mount('/', usuariosRouter(container).call);
 
   final handler = const Pipeline()
       .addMiddleware(requestIdMiddleware())
