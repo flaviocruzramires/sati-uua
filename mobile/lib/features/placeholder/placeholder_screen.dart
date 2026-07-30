@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/domain/enums.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
-import '../../core/theme/breakpoints.dart';
+import '../../core/widgets/shell/app_shell.dart';
 
-class PlaceholderScreen extends StatelessWidget {
-  const PlaceholderScreen({super.key});
+class PlaceholderScreen extends ConsumerWidget {
+  const PlaceholderScreen({super.key, this.route = '/'});
+
+  final String route;
 
   @override
-  Widget build(BuildContext context) {
-    final isDesktop = Breakpoints.isDesktop(context);
-    return Scaffold(
-      body: Center(
+  Widget build(BuildContext context, WidgetRef ref) {
+    return AppShell(
+      currentRoute: route,
+      nomeUsuario: 'Admin SATI',
+      papelUsuario: PapelUsuario.admin,
+      title: _titleFor(route),
+      onNavigate: (_) {},
+      onLogout: () {},
+      child: Center(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.s8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 8,
-                height: 48,
-                color: AppColors.navy,
-              ),
+              Container(width: 8, height: 48, color: AppColors.navy),
               const SizedBox(height: AppSpacing.s4),
               Text(
                 'SATI UUA',
@@ -30,25 +35,11 @@ class PlaceholderScreen extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.s2),
               Text(
-                'Sistema de Chamados de TI',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.muted,
-                    ),
-              ),
-              const SizedBox(height: AppSpacing.s8),
-              Divider(
-                thickness: 2,
-                color: AppColors.divider,
-              ),
-              const SizedBox(height: AppSpacing.s4),
-              Text(
-                isDesktop ? 'Modo: Desktop/Web' : 'Modo: Mobile',
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-              const SizedBox(height: AppSpacing.s4),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Entrar'),
+                'Tela em construção — $_titleFor',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: AppColors.muted),
               ),
             ],
           ),
@@ -56,4 +47,12 @@ class PlaceholderScreen extends StatelessWidget {
       ),
     );
   }
+
+  String _titleFor(String r) => switch (r) {
+        '/' => 'Dashboard',
+        '/chamados' => 'Chamados',
+        '/setores' => 'Setores',
+        '/usuarios' => 'Usuários',
+        _ => r,
+      };
 }
