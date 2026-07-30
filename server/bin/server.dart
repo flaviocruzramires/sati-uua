@@ -11,6 +11,7 @@ import 'package:sati_uua_server/src/middlewares/cors_middleware.dart';
 import 'package:sati_uua_server/src/middlewares/error_handling_middleware.dart';
 import 'package:sati_uua_server/src/middlewares/logging_middleware.dart';
 import 'package:sati_uua_server/src/middlewares/request_id_middleware.dart';
+import 'package:sati_uua_server/src/routes/auth_route.dart';
 import 'package:sati_uua_server/src/routes/health_route.dart';
 
 final _log = Logger('server');
@@ -25,7 +26,8 @@ void main(List<String> arguments) async {
   _log.info('Conectado ao Postgres em ${env.dbHost}:${env.dbPort}/${env.dbName}');
 
   final router = Router()
-    ..mount('/', healthRouter(container).call);
+    ..mount('/', healthRouter(container).call)
+    ..mount('/', authRouter(container).call);
 
   // Pipeline: request id -> logging -> tratamento de erro -> CORS -> rotas.
   // Ordem descrita em claude-config/skills/dart-shelf-server/SKILL.md.
