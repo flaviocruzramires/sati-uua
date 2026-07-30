@@ -1,0 +1,69 @@
+# Dependências do app Flutter — SATI-UUA (mobile)
+#
+# Cole/mescle no seu mobile/pubspec.yaml. Versões são referência (^) — rode
+# `flutter pub get` e ajuste ao SDK do projeto. Alinha com PLANO_IMPLEMENTACAO.md
+# (Riverpod + MVVM) e docs-design/ (tema Modernist, ícones Lucide, gráficos).
+
+name: sati_uua
+description: SATI-UUA — Sistema de Atendimento de Tecnologia da Informação (UEMS Aquidauana)
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # --- Estado / DI / navegação (exigência do plano: Riverpod + MVVM) ---
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+  go_router: ^14.2.0            # shell route p/ sidebar+topbar / bottom nav
+
+  # --- Tema / UI (docs-design) ---
+  google_fonts: ^6.2.1          # fonte Archivo (ou empacote os .ttf via assets)
+  lucide_icons: ^0.257.0        # ícones Lucide do design system
+  fl_chart: ^0.68.0             # barras do Dashboard (Item 6)
+
+  # --- Rede / auth (rotina 01 — JWT) ---
+  dio: ^5.5.0                   # cliente HTTP + interceptor de token/401
+  flutter_secure_storage: ^9.2.2 # token JWT em armazenamento seguro
+
+  # --- Modelos / serialização ---
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+
+  # --- Utilidades ---
+  intl: ^0.19.0                 # datas (data_abertura, data_retorno) pt_BR
+  logger: ^2.4.0                # logs de UI/rede (HARNESS.md)
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.11
+  riverpod_generator: ^2.4.0
+  freezed: ^2.5.7
+  json_serializable: ^6.8.0
+  mocktail: ^1.0.4              # ViewModels com repositórios fake (HARNESS.md)
+
+flutter:
+  uses-material-design: true
+
+  # Se empacotar a Archivo localmente em vez de google_fonts, descomente:
+  # fonts:
+  #   - family: Archivo
+  #     fonts:
+  #       - asset: assets/fonts/Archivo-Regular.ttf
+  #       - asset: assets/fonts/Archivo-SemiBold.ttf
+  #         weight: 600
+  #       - asset: assets/fonts/Archivo-Bold.ttf
+  #         weight: 800
+
+  assets:
+    - assets/images/   # logo_sati_uua.jpg (marca na sidebar / login)

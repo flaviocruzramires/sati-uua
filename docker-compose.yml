@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: sati_uua_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: chamados
+      POSTGRES_PASSWORD: chamados
+      POSTGRES_DB: chamados
+    ports:
+      - "5432:5432"
+    volumes:
+      - sati_uua_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chamados -d chamados"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  sati_uua_pgdata:

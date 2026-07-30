@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<![CDATA[<helmet>
+  <link rel="stylesheet" href="_ds/modernist-169c550c-fcdf-4ac7-9166-bcb50ab2dcc1/styles.css">
+  <script src="_ds/modernist-169c550c-fcdf-4ac7-9166-bcb50ab2dcc1/_ds_bundle.js"></script>
+  <meta name="design_doc_mode" content="canvas">
+  <style>
+    body { margin: 0; background: var(--color-neutral-200); }
+    .icn { display:block; flex: none; }
+    .sidenav-item { display:flex; align-items:center; gap:10px; padding:10px 12px; font-size:13.5px; color:var(--color-text); text-decoration:none; }
+    .sidenav-item.active { background:var(--color-accent); color:var(--color-bg); }
+    .sidenav-item:not(.active):hover { background:color-mix(in srgb, var(--color-text) 6%, transparent); }
+    .sidenav-group { font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-neutral-600); padding:16px 12px 6px; }
+    .bar-row { display:flex; align-items:center; gap:10px; }
+    .bar-track { flex:1; height:9px; background:var(--color-neutral-200); }
+    .bar-fill { height:9px; }
+  </style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;gap:56px;padding:48px;align-items:flex-start;font-family:var(--font-body);">
+
+  <div>
+    <h6 style="color:var(--color-neutral-700);margin:0 0 12px;">Web — Dashboard</h6>
+    <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" url="sati-uua.uems.br/dashboard" width="{{ 1440 }}" height="{{ 940 }}" hint-size="1440px,940px">
+      <div style="display:flex;height:100%;width:100%;">
+
+        <div style="width:248px;flex:none;background:var(--color-surface);border-right:2px solid var(--color-divider);display:flex;flex-direction:column;">
+          <div style="display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:2px solid var(--color-divider);">
+            <img src="imagens/logo_sati_uua.jpg" style="width:34px;height:34px;object-fit:contain;background:#fff;padding:3px;">
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:800;font-size:15px;line-height:1;">SATI-UUA</div>
+              <div style="font-size:9px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.7;margin-top:3px;">UEMS Aquidauana</div>
+            </div>
+          </div>
+          <div style="flex:1;overflow:auto;padding:12px;">
+            <a href="#" class="sidenav-item active"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</a>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4Z"/><line x1="13" y1="6" x2="13" y2="18" stroke-dasharray="2 3"/></svg>Chamados</a>
+            <div class="sidenav-group">Cadastros</div>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="9" height="18"/><rect x="7" y="6.5" width="3" height="3"/><rect x="7" y="12.5" width="3" height="3"/><path d="M13 21V10l7 3v8"/></svg>Setores</a>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,4 21,9 12,14 3,9"/><polyline points="3,14 12,19 21,14"/></svg>Tipos de Equipamento</a>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/></svg>Equipamentos</a>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="9" cy="18" r="2"/></svg>Serviços</a>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14a5 5 0 0 1 5 6"/></svg>Usuários</a>
+            <div class="sidenav-group">Análise</div>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="20" x2="5" y2="12"/><line x1="12" y1="20" x2="12" y2="6"/><line x1="19" y1="20" x2="19" y2="14"/></svg>Relatórios</a>
+            <a href="#" class="sidenav-item"><svg class="icn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><line x1="12" y1="3" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="21"/><line x1="3" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="21" y2="12"/></svg>Configurações</a>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:14px 20px;border-top:2px solid var(--color-divider);">
+            <div style="width:34px;height:34px;background:var(--color-accent-200);color:var(--color-accent-800);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:800;font-size:12px;flex:none;">AD</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Ana Duarte</div>
+              <span class="tag tag-accent" style="font-size:9px;padding:1px 6px;">ADMIN</span>
+            </div>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--color-neutral-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </div>
+        </div>
+
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+          <div style="height:64px;flex:none;display:flex;align-items:center;gap:16px;padding:0 28px;border-bottom:2px solid var(--color-divider);">
+            <h4 style="margin:0;">Dashboard</h4>
+            <span class="text-muted" style="font-size:12px;">Visão geral dos chamados de TI</span>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
+              <div class="seg">
+                <label class="seg-opt"><input type="radio" name="periodo"><span>7 dias</span></label>
+                <label class="seg-opt"><input type="radio" name="periodo" checked><span>30 dias</span></label>
+                <label class="seg-opt"><input type="radio" name="periodo"><span>90 dias</span></label>
+              </div>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--color-neutral-700)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+            </div>
+          </div>
+
+          <div style="flex:1;overflow:auto;padding:28px;display:flex;flex-direction:column;gap:24px;">
+
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:18px;">
+              <div class="card elev-sm"><div class="card-kicker">Abertos</div><div style="font-family:var(--font-heading);font-weight:800;font-size:36px;">18</div><div class="card-meta">+3 hoje</div></div>
+              <div class="card elev-sm"><div class="card-kicker">Em andamento</div><div style="font-family:var(--font-heading);font-weight:800;font-size:36px;">24</div><div class="card-meta">6 sem atendente</div></div>
+              <div class="card elev-sm"><div class="card-kicker">Aguardando solicitante</div><div style="font-family:var(--font-heading);font-weight:800;font-size:36px;">9</div><div class="card-meta">retorno pendente</div></div>
+              <div class="card elev-sm"><div class="card-kicker">Encerrados (mês)</div><div style="font-family:var(--font-heading);font-weight:800;font-size:36px;">142</div><div class="card-meta">94% dentro do SLA</div></div>
+              <div class="card elev-sm"><div class="card-kicker">Tempo médio de resolução</div><div style="font-family:var(--font-heading);font-weight:800;font-size:36px;">6h40</div><div class="card-meta">meta: 8h</div></div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:24px;">
+              <div class="card elev-sm">
+                <div class="card-title" style="margin-bottom:6px;">Chamados por Situação</div>
+                <div style="display:flex;flex-direction:column;gap:14px;margin-top:6px;">
+                  <div class="bar-row"><span class="tag tag-accent" style="width:150px;flex:none;">Aberto</span><div class="bar-track"><div class="bar-fill" style="width:9%;background:var(--color-accent);"></div></div><span style="width:32px;text-align:right;font-size:13px;">18</span></div>
+                  <div class="bar-row"><span class="tag tag-accent-2" style="width:150px;flex:none;">Em andamento</span><div class="bar-track"><div class="bar-fill" style="width:12%;background:var(--color-accent-2);"></div></div><span style="width:32px;text-align:right;font-size:13px;">24</span></div>
+                  <div class="bar-row"><span class="tag tag-outline" style="width:150px;flex:none;">Aguard. solicitante</span><div class="bar-track"><div class="bar-fill" style="width:5%;background:var(--color-neutral-500);"></div></div><span style="width:32px;text-align:right;font-size:13px;">9</span></div>
+                  <div class="bar-row"><span class="tag tag-neutral" style="width:150px;flex:none;">Encerrado</span><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--color-neutral-700);"></div></div><span style="width:32px;text-align:right;font-size:13px;">142</span></div>
+                </div>
+              </div>
+              <div class="card elev-sm">
+                <div class="card-title" style="margin-bottom:10px;">Abertos × Encerrados — últimos 6 meses</div>
+                <div style="display:flex;align-items:flex-end;gap:14px;height:120px;">
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;"><div style="display:flex;align-items:flex-end;gap:3px;height:90px;"><div style="width:9px;height:45%;background:var(--color-accent);"></div><div style="width:9px;height:80%;background:var(--color-accent-2);"></div></div><span style="font-size:10px;color:var(--color-neutral-600);">Fev</span></div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;"><div style="display:flex;align-items:flex-end;gap:3px;height:90px;"><div style="width:9px;height:55%;background:var(--color-accent);"></div><div style="width:9px;height:60%;background:var(--color-accent-2);"></div></div><span style="font-size:10px;color:var(--color-neutral-600);">Mar</span></div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;"><div style="display:flex;align-items:flex-end;gap:3px;height:90px;"><div style="width:9px;height:70%;background:var(--color-accent);"></div><div style="width:9px;height:65%;background:var(--color-accent-2);"></div></div><span style="font-size:10px;color:var(--color-neutral-600);">Abr</span></div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;"><div style="display:flex;align-items:flex-end;gap:3px;height:90px;"><div style="width:9px;height:62%;background:var(--color-accent);"></div><div style="width:9px;height:85%;background:var(--color-accent-2);"></div></div><span style="font-size:10px;color:var(--color-neutral-600);">Mai</span></div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;"><div style="display:flex;align-items:flex-end;gap:3px;height:90px;"><div style="width:9px;height:48%;background:var(--color-accent);"></div><div style="width:9px;height:90%;background:var(--color-accent-2);"></div></div><span style="font-size:10px;color:var(--color-neutral-600);">Jun</span></div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;"><div style="display:flex;align-items:flex-end;gap:3px;height:90px;"><div style="width:9px;height:38%;background:var(--color-accent);"></div><div style="width:9px;height:30%;background:var(--color-accent-2);"></div></div><span style="font-size:10px;color:var(--color-neutral-600);">Jul</span></div>
+                </div>
+                <div style="display:flex;gap:16px;margin-top:10px;font-size:11px;color:var(--color-neutral-600);"><span><span style="display:inline-block;width:8px;height:8px;background:var(--color-accent);margin-right:5px;"></span>Abertos</span><span><span style="display:inline-block;width:8px;height:8px;background:var(--color-accent-2);margin-right:5px;"></span>Encerrados</span></div>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+              <div class="card elev-sm">
+                <div class="card-title" style="margin-bottom:10px;">Por Setor Solicitante</div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <div class="bar-row"><span style="width:110px;flex:none;font-size:12.5px;">Secretaria Acad.</span><div class="bar-track"><div class="bar-fill" style="width:68%;background:var(--color-accent);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">34</span></div>
+                  <div class="bar-row"><span style="width:110px;flex:none;font-size:12.5px;">Coord. de Curso</span><div class="bar-track"><div class="bar-fill" style="width:56%;background:var(--color-accent);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">28</span></div>
+                  <div class="bar-row"><span style="width:110px;flex:none;font-size:12.5px;">Biblioteca</span><div class="bar-track"><div class="bar-fill" style="width:42%;background:var(--color-accent);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">21</span></div>
+                  <div class="bar-row"><span style="width:110px;flex:none;font-size:12.5px;">Financeiro</span><div class="bar-track"><div class="bar-fill" style="width:34%;background:var(--color-accent);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">17</span></div>
+                  <div class="bar-row"><span style="width:110px;flex:none;font-size:12.5px;">RH</span><div class="bar-track"><div class="bar-fill" style="width:28%;background:var(--color-accent);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">14</span></div>
+                  <div class="bar-row"><span style="width:110px;flex:none;font-size:12.5px;">Almoxarifado</span><div class="bar-track"><div class="bar-fill" style="width:24%;background:var(--color-accent);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">12</span></div>
+                </div>
+              </div>
+              <div class="card elev-sm">
+                <div class="card-title" style="margin-bottom:10px;">Por Tipo de Equipamento</div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <div class="bar-row"><span style="width:100px;flex:none;font-size:12.5px;">Notebook</span><div class="bar-track"><div class="bar-fill" style="width:92%;background:var(--color-accent-2);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">46</span></div>
+                  <div class="bar-row"><span style="width:100px;flex:none;font-size:12.5px;">Impressora</span><div class="bar-track"><div class="bar-fill" style="width:62%;background:var(--color-accent-2);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">31</span></div>
+                  <div class="bar-row"><span style="width:100px;flex:none;font-size:12.5px;">Desktop</span><div class="bar-track"><div class="bar-fill" style="width:54%;background:var(--color-accent-2);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">27</span></div>
+                  <div class="bar-row"><span style="width:100px;flex:none;font-size:12.5px;">Periférico</span><div class="bar-track"><div class="bar-fill" style="width:38%;background:var(--color-accent-2);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">19</span></div>
+                  <div class="bar-row"><span style="width:100px;flex:none;font-size:12.5px;">Projetor</span><div class="bar-track"><div class="bar-fill" style="width:16%;background:var(--color-accent-2);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">8</span></div>
+                  <div class="bar-row"><span style="width:100px;flex:none;font-size:12.5px;">Rede/Switch</span><div class="bar-track"><div class="bar-fill" style="width:12%;background:var(--color-accent-2);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">6</span></div>
+                </div>
+              </div>
+              <div class="card elev-sm">
+                <div class="card-title" style="margin-bottom:10px;">Por Serviço</div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <div class="bar-row"><span style="width:130px;flex:none;font-size:12.5px;">Suporte Sist. Acad.</span><div class="bar-track"><div class="bar-fill" style="width:78%;background:var(--color-neutral-700);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">39</span></div>
+                  <div class="bar-row"><span style="width:130px;flex:none;font-size:12.5px;">Rede e Internet</span><div class="bar-track"><div class="bar-fill" style="width:58%;background:var(--color-neutral-700);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">29</span></div>
+                  <div class="bar-row"><span style="width:130px;flex:none;font-size:12.5px;">Impressão</span><div class="bar-track"><div class="bar-fill" style="width:46%;background:var(--color-neutral-700);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">23</span></div>
+                  <div class="bar-row"><span style="width:130px;flex:none;font-size:12.5px;">E-mail institucional</span><div class="bar-track"><div class="bar-fill" style="width:34%;background:var(--color-neutral-700);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">17</span></div>
+                  <div class="bar-row"><span style="width:130px;flex:none;font-size:12.5px;">Instalação Software</span><div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--color-neutral-700);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">13</span></div>
+                  <div class="bar-row"><span style="width:130px;flex:none;font-size:12.5px;">Manut. Hardware</span><div class="bar-track"><div class="bar-fill" style="width:22%;background:var(--color-neutral-700);"></div></div><span style="width:24px;text-align:right;font-size:12.5px;">11</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card elev-sm">
+              <div class="card-title" style="margin-bottom:6px;">Por Atendente</div>
+              <table class="table">
+                <thead><tr><th>Atendente</th><th>Setor</th><th>Ativos</th><th>Encerrados (mês)</th><th>Tempo médio</th></tr></thead>
+                <tbody>
+                  <tr><td>Carlos Menezes</td><td>TI / NTI</td><td>7</td><td>38</td><td>5h20</td></tr>
+                  <tr><td>Fernanda Ribas</td><td>TI / NTI</td><td>5</td><td>34</td><td>6h05</td></tr>
+                  <tr><td>João Pedro Alves</td><td>TI / NTI</td><td>9</td><td>29</td><td>7h50</td></tr>
+                  <tr><td>Renata Souza</td><td>TI / NTI</td><td>3</td><td>41</td><td>4h55</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+
+  <div>
+    <h6 style="color:var(--color-neutral-700);margin:0 0 12px;">Mobile — Dashboard</h6>
+    <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 412 }}" height="{{ 892 }}" hint-size="412px,892px">
+      <div style="display:flex;flex-direction:column;height:100%;">
+        <div style="flex:none;display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:2px solid var(--color-divider);background:var(--color-bg);">
+          <h4 style="margin:0;">Dashboard</h4>
+          <svg style="margin-left:auto;" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--color-neutral-700)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+        </div>
+        <div style="flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:16px;">
+          <div class="seg" style="width:100%;">
+            <label class="seg-opt" style="flex:1;justify-content:center;"><input type="radio" name="periodom"><span>7d</span></label>
+            <label class="seg-opt" style="flex:1;justify-content:center;"><input type="radio" name="periodom" checked><span>30d</span></label>
+            <label class="seg-opt" style="flex:1;justify-content:center;"><input type="radio" name="periodom"><span>90d</span></label>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="card elev-sm"><div class="card-kicker">Abertos</div><div style="font-family:var(--font-heading);font-weight:800;font-size:26px;">18</div></div>
+            <div class="card elev-sm"><div class="card-kicker">Em andamento</div><div style="font-family:var(--font-heading);font-weight:800;font-size:26px;">24</div></div>
+            <div class="card elev-sm"><div class="card-kicker">Aguardando</div><div style="font-family:var(--font-heading);font-weight:800;font-size:26px;">9</div></div>
+            <div class="card elev-sm"><div class="card-kicker">Encerrados (mês)</div><div style="font-family:var(--font-heading);font-weight:800;font-size:26px;">142</div></div>
+          </div>
+          <div class="card elev-sm">
+            <div class="card-title" style="margin-bottom:8px;">Por Situação</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div class="bar-row"><span class="tag tag-accent" style="width:96px;flex:none;font-size:10px;">Aberto</span><div class="bar-track"><div class="bar-fill" style="width:9%;background:var(--color-accent);"></div></div><span style="font-size:12px;width:26px;text-align:right;">18</span></div>
+              <div class="bar-row"><span class="tag tag-accent-2" style="width:96px;flex:none;font-size:10px;">Em andam.</span><div class="bar-track"><div class="bar-fill" style="width:12%;background:var(--color-accent-2);"></div></div><span style="font-size:12px;width:26px;text-align:right;">24</span></div>
+              <div class="bar-row"><span class="tag tag-neutral" style="width:96px;flex:none;font-size:10px;">Encerrado</span><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--color-neutral-700);"></div></div><span style="font-size:12px;width:26px;text-align:right;">142</span></div>
+            </div>
+          </div>
+          <div class="card elev-sm">
+            <div class="card-title" style="margin-bottom:8px;">Por Tipo de Equipamento</div>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <div class="bar-row"><span style="width:80px;flex:none;font-size:11.5px;">Notebook</span><div class="bar-track"><div class="bar-fill" style="width:92%;background:var(--color-accent-2);"></div></div><span style="font-size:11.5px;width:22px;text-align:right;">46</span></div>
+              <div class="bar-row"><span style="width:80px;flex:none;font-size:11.5px;">Impressora</span><div class="bar-track"><div class="bar-fill" style="width:62%;background:var(--color-accent-2);"></div></div><span style="font-size:11.5px;width:22px;text-align:right;">31</span></div>
+              <div class="bar-row"><span style="width:80px;flex:none;font-size:11.5px;">Desktop</span><div class="bar-track"><div class="bar-fill" style="width:54%;background:var(--color-accent-2);"></div></div><span style="font-size:11.5px;width:22px;text-align:right;">27</span></div>
+            </div>
+          </div>
+          <div class="card elev-sm">
+            <div class="card-title" style="margin-bottom:8px;">Por Atendente</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;font-size:12.5px;"><span>Carlos Menezes</span><span style="color:var(--color-neutral-600);">7 ativos · 38 encerrados</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12.5px;"><span>Fernanda Ribas</span><span style="color:var(--color-neutral-600);">5 ativos · 34 encerrados</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12.5px;"><span>Renata Souza</span><span style="color:var(--color-neutral-600);">3 ativos · 41 encerrados</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;display:flex;border-top:2px solid var(--color-divider);background:var(--color-surface);">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;color:var(--color-accent);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span style="font-size:9.5px;">Dashboard</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;color:var(--color-neutral-600);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4Z"/></svg><span style="font-size:9.5px;">Chamados</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;color:var(--color-neutral-600);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/></svg><span style="font-size:9.5px;">Cadastros</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;color:var(--color-neutral-600);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg><span style="font-size:9.5px;">Mais</span></div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+
+</div>
+]]>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,23 @@
+name: sati_uua_server
+description: >
+  SATI-UUA — Servidor Dart (Shelf) do Sistema de Atendimento de Tecnologia da
+  Informação (UEMS Aquidauana). Ver claude-config/skills/dart-shelf-server e
+  claude-config/rotinas/00-fundacao-infra.md na raiz do projeto.
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  shelf: ^1.4.1
+  shelf_router: ^1.1.4
+  postgres: ^3.1.0
+  logging: ^1.2.0
+  bcrypt: ^1.1.3
+  dart_jsonwebtoken: ^2.13.0
+  uuid: ^4.4.0
+
+dev_dependencies:
+  test: ^1.25.7
+  lints: ^4.0.0
