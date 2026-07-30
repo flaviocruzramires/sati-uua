@@ -26,7 +26,9 @@ import 'package:sati_uua_server/src/routes/usuarios_route.dart';
 final _log = Logger('server');
 
 void main(List<String> arguments) async {
-  final env = Env.load();
+  // Resolve .env relativo ao diretório do pacote (server/), não ao cwd.
+  final packageDir = File(Platform.script.toFilePath()).parent.parent.path;
+  final env = Env.load(path: '$packageDir/.env');
   _configureLogging(env.logLevel);
 
   _log.info('Iniciando SATI-UUA server (env=${env.appEnv})...');
