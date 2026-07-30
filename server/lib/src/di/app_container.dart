@@ -4,6 +4,7 @@ import '../config/env.dart';
 import '../repositories/chamado_historico_repository.dart';
 import '../repositories/chamado_repository.dart';
 import '../repositories/dashboard_repository.dart';
+import '../repositories/relatorio_repository.dart';
 import '../repositories/equipamento_repository.dart';
 import '../repositories/servico_repository.dart';
 import '../repositories/setor_repository.dart';
@@ -21,6 +22,7 @@ class AppContainer {
     chamadoRepository = ChamadoRepository(_db);
     chamadoHistoricoRepository = ChamadoHistoricoRepository(_db);
     dashboardRepository = DashboardRepository(_db);
+    relatorioRepository = RelatorioRepository(_db);
     authService = AuthService(usuarioRepository, _env);
   }
 
@@ -35,6 +37,7 @@ class AppContainer {
   late final ChamadoRepository chamadoRepository;
   late final ChamadoHistoricoRepository chamadoHistoricoRepository;
   late final DashboardRepository dashboardRepository;
+  late final RelatorioRepository relatorioRepository;
   late final AuthService authService;
 
   Connection get db => _db;
