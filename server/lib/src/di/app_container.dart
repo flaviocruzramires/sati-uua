@@ -1,12 +1,16 @@
 import 'package:postgres/postgres.dart';
 
 import '../config/env.dart';
+import '../repositories/setor_repository.dart';
+import '../repositories/servico_repository.dart';
 import '../repositories/usuario_repository.dart';
 import '../services/auth_service.dart';
 
 class AppContainer {
   AppContainer._(this._db, this._env) {
     usuarioRepository = UsuarioRepository(_db);
+    setorRepository = SetorRepository(_db);
+    servicoRepository = ServicoRepository(_db);
     authService = AuthService(usuarioRepository, _env);
   }
 
@@ -14,6 +18,8 @@ class AppContainer {
   final Env _env;
 
   late final UsuarioRepository usuarioRepository;
+  late final SetorRepository setorRepository;
+  late final ServicoRepository servicoRepository;
   late final AuthService authService;
 
   Connection get db => _db;

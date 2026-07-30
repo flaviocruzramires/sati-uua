@@ -13,6 +13,8 @@ import 'package:sati_uua_server/src/middlewares/logging_middleware.dart';
 import 'package:sati_uua_server/src/middlewares/request_id_middleware.dart';
 import 'package:sati_uua_server/src/routes/auth_route.dart';
 import 'package:sati_uua_server/src/routes/health_route.dart';
+import 'package:sati_uua_server/src/routes/servicos_route.dart';
+import 'package:sati_uua_server/src/routes/setores_route.dart';
 
 final _log = Logger('server');
 
@@ -27,7 +29,9 @@ void main(List<String> arguments) async {
 
   final router = Router()
     ..mount('/', healthRouter(container).call)
-    ..mount('/', authRouter(container).call);
+    ..mount('/', authRouter(container).call)
+    ..mount('/', setoresRouter(container).call)
+    ..mount('/', servicosRouter(container).call);
 
   // Pipeline: request id -> logging -> tratamento de erro -> CORS -> rotas.
   // Ordem descrita em claude-config/skills/dart-shelf-server/SKILL.md.
