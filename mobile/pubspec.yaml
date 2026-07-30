@@ -1,0 +1,42 @@
+name: chamados
+description: Sistema de Chamados de TI — SATI UUA
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Estado e DI
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+  # Navegação
+  go_router: ^14.8.1
+
+  # HTTP
+  dio: ^5.7.0
+
+  # Armazenamento seguro (token JWT)
+  flutter_secure_storage: ^9.2.2
+
+  # Fonte
+  google_fonts: ^6.2.1
+
+  # Ícones Lucide
+  lucide_icons: ^0.257.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  riverpod_generator: ^2.6.1
+  build_runner: ^2.4.13
+  mocktail: ^1.0.4
+
+flutter:
+  uses-material-design: true
