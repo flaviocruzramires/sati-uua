@@ -35,7 +35,8 @@ class BarItem {
 }
 
 class MesItem {
-  const MesItem({required this.mes, required this.abertos, required this.encerrados});
+  const MesItem(
+      {required this.mes, required this.abertos, required this.encerrados});
   final String mes; // 'YYYY-MM'
   final int abertos;
   final int encerrados;
@@ -101,8 +102,7 @@ class DashboardRepository {
   final Connection _db;
 
   Future<DashboardResumo> resumo(int diasPeriodo) async {
-    final desde =
-        DateTime.now().toUtc().subtract(Duration(days: diasPeriodo));
+    final desde = DateTime.now().toUtc().subtract(Duration(days: diasPeriodo));
 
     final results = await Future.wait([
       _kpi(desde),

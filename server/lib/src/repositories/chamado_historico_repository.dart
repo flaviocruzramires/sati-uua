@@ -34,8 +34,7 @@ class ChamadoHistoricoRepository {
   }) async {
     // Verificar responsável antes de abrir transação
     final check = await _db.execute(
-      Sql.named(
-          'SELECT usuario_responsavel_id FROM chamados WHERE id = @id'),
+      Sql.named('SELECT usuario_responsavel_id FROM chamados WHERE id = @id'),
       parameters: {'id': chamadoId},
     );
     if (check.isEmpty) throw StateError('Chamado não encontrado');

@@ -10,11 +10,11 @@ export 'chamado_detalhe_dto.dart';
 export 'chamado_dto.dart';
 
 String _situacaoToStr(SituacaoChamado s) => switch (s) {
-      SituacaoChamado.aberto => 'ABERTO',
-      SituacaoChamado.emAndamento => 'EM_ANDAMENTO',
-      SituacaoChamado.aguardandoSolicitante => 'AGUARDANDO_SOLICITANTE',
-      SituacaoChamado.encerrado => 'ENCERRADO',
-    };
+  SituacaoChamado.aberto => 'ABERTO',
+  SituacaoChamado.emAndamento => 'EM_ANDAMENTO',
+  SituacaoChamado.aguardandoSolicitante => 'AGUARDANDO_SOLICITANTE',
+  SituacaoChamado.encerrado => 'ENCERRADO',
+};
 
 abstract class ChamadoRepositoryBase {
   Future<PaginatedResult<ChamadoDto>> list({

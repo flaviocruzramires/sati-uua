@@ -163,24 +163,26 @@ class _FormCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Descreva o problema',
-                style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              'Descreva o problema',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             const SizedBox(height: AppSpacing.s1),
             Text(
               'Forneça detalhes suficientes para o atendente entender o problema.',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: AppColors.muted),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.muted),
             ),
             const SizedBox(height: AppSpacing.s4),
             if (error != null) ...[
               Container(
                 padding: const EdgeInsets.all(AppSpacing.s3),
                 color: Colors.red.shade50,
-                child: Text(error!,
-                    style:
-                        const TextStyle(color: Colors.red, fontSize: 13)),
+                child: Text(
+                  error!,
+                  style: const TextStyle(color: Colors.red, fontSize: 13),
+                ),
               ),
               const SizedBox(height: AppSpacing.s3),
             ],
@@ -267,8 +269,10 @@ class _ComoFuncionaCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Como funciona',
-                style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              'Como funciona',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: AppSpacing.s4),
             _Step(
               numero: 1,
@@ -335,16 +339,18 @@ class _Step extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(titulo,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontWeight: FontWeight.w600)),
-              Text(descricao,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: AppColors.muted)),
+              Text(
+                titulo,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+              ),
+              Text(
+                descricao,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.muted),
+              ),
             ],
           ),
         ),

@@ -30,7 +30,8 @@ class ServicosView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(currentUserProvider);
     final user = userAsync.valueOrNull;
-    final canWrite = user?.papel == PapelUsuario.admin ||
+    final canWrite =
+        user?.papel == PapelUsuario.admin ||
         user?.papel == PapelUsuario.atendente;
 
     final vmState = ref.watch(servicosViewModelProvider);
@@ -77,14 +78,14 @@ class ServicosView extends ConsumerWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          vmState.saveError ?? 'Erro ao excluir serviço'),
+                        vmState.saveError ?? 'Erro ao excluir serviço',
+                      ),
                       backgroundColor: Colors.red,
                     ),
                   );
                 }
               },
-              child:
-                  const Text('Excluir', style: TextStyle(color: Colors.red)),
+              child: const Text('Excluir', style: TextStyle(color: Colors.red)),
             ),
           ],
         ),
@@ -100,12 +101,7 @@ class ServicosView extends ConsumerWidget {
       onNavigate: (route) => context.go(route),
       onLogout: () {},
       actions: canWrite
-          ? [
-              AppButton(
-                label: '+ Novo Serviço',
-                onPressed: () => showForm(),
-              ),
-            ]
+          ? [AppButton(label: '+ Novo Serviço', onPressed: () => showForm())]
           : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -119,10 +115,9 @@ class ServicosView extends ConsumerWidget {
             trailing: vmState.listState.whenOrNull(
               data: (r) => Text(
                 '${r.total} serviço${r.total != 1 ? 's' : ''}',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: AppColors.muted),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(color: AppColors.muted),
               ),
             ),
           ),
@@ -130,7 +125,8 @@ class ServicosView extends ConsumerWidget {
             child: AsyncStateView<PaginatedResult<ServicoDto>>(
               value: vmState.listState,
               onRetry: vm.load,
-              empty: () => const Center(child: Text('Nenhum serviço encontrado')),
+              empty: () =>
+                  const Center(child: Text('Nenhum serviço encontrado')),
               builder: (result) {
                 if (Breakpoints.isMobile(context)) {
                   return _MobileList(
@@ -196,18 +192,18 @@ class _DesktopTable extends StatelessWidget {
               rowBuilder: (s) => [Text(s.descricao)],
               actionsBuilder: canWrite
                   ? (s) => [
-                        IconActionButton(
-                          icon: LucideIcons.pencil,
-                          tooltip: 'Editar',
-                          onPressed: () => onEdit(s),
-                        ),
-                        const SizedBox(width: AppSpacing.s1),
-                        IconActionButton(
-                          icon: LucideIcons.trash2,
-                          tooltip: 'Excluir',
-                          onPressed: () => onDelete(s),
-                        ),
-                      ]
+                      IconActionButton(
+                        icon: LucideIcons.pencil,
+                        tooltip: 'Editar',
+                        onPressed: () => onEdit(s),
+                      ),
+                      const SizedBox(width: AppSpacing.s1),
+                      IconActionButton(
+                        icon: LucideIcons.trash2,
+                        tooltip: 'Excluir',
+                        onPressed: () => onDelete(s),
+                      ),
+                    ]
                   : null,
             ),
           ),
@@ -252,8 +248,7 @@ class _MobileList extends StatelessWidget {
           child: ListView.separated(
             padding: const EdgeInsets.all(AppSpacing.s3),
             itemCount: result.data.length,
-            separatorBuilder: (_, __) =>
-                const SizedBox(height: AppSpacing.s2),
+            separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.s2),
             itemBuilder: (_, i) {
               final s = result.data[i];
               return AppCardListItem(
@@ -354,8 +349,10 @@ class _ServicoFormDialogState extends State<_ServicoFormDialog> {
           Container(
             padding: const EdgeInsets.all(AppSpacing.s3),
             color: Colors.red.shade50,
-            child: Text(error,
-                style: const TextStyle(color: Colors.red, fontSize: 13)),
+            child: Text(
+              error,
+              style: const TextStyle(color: Colors.red, fontSize: 13),
+            ),
           ),
         AppTextField(
           label: 'Descrição',

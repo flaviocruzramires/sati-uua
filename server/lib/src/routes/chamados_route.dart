@@ -83,7 +83,8 @@ Router chamadosRouter(AppContainer container) {
 
     final body = jsonDecode(await req.readAsString()) as Map<String, dynamic>;
     final responsavelId = body['responsavelId'] as int?;
-    if (responsavelId == null) return _badRequest('responsavelId é obrigatório');
+    if (responsavelId == null)
+      return _badRequest('responsavelId é obrigatório');
 
     final chamado = await repo.atribuirResponsavel(
       id: chamadoId,

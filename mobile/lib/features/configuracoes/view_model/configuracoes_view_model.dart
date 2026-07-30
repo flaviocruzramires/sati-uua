@@ -18,12 +18,11 @@ class ConfiguracoesState {
     String? saveError,
     bool clearSaveError = false,
     bool? saving,
-  }) =>
-      ConfiguracoesState(
-        listState: listState ?? this.listState,
-        saveError: clearSaveError ? null : (saveError ?? this.saveError),
-        saving: saving ?? this.saving,
-      );
+  }) => ConfiguracoesState(
+    listState: listState ?? this.listState,
+    saveError: clearSaveError ? null : (saveError ?? this.saveError),
+    saving: saving ?? this.saving,
+  );
 }
 
 class ConfiguracoesViewModel extends Notifier<ConfiguracoesState> {
@@ -51,13 +50,8 @@ class ConfiguracoesViewModel extends Notifier<ConfiguracoesState> {
     try {
       final updated = await _repo.update(chave, valor);
       final current = state.listState.valueOrNull ?? [];
-      final next = current
-          .map((c) => c.chave == chave ? updated : c)
-          .toList();
-      state = state.copyWith(
-        listState: AsyncValue.data(next),
-        saving: false,
-      );
+      final next = current.map((c) => c.chave == chave ? updated : c).toList();
+      state = state.copyWith(listState: AsyncValue.data(next), saving: false);
       return true;
     } catch (e) {
       state = state.copyWith(saving: false, saveError: e.toString());
@@ -68,4 +62,5 @@ class ConfiguracoesViewModel extends Notifier<ConfiguracoesState> {
 
 final configuracoesViewModelProvider =
     NotifierProvider<ConfiguracoesViewModel, ConfiguracoesState>(
-        ConfiguracoesViewModel.new);
+      ConfiguracoesViewModel.new,
+    );

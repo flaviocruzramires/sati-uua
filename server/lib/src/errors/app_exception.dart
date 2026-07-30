@@ -12,7 +12,8 @@ class AppException implements Exception {
       : this(401, 'unauthorized', message);
 
   /// Autenticado, mas sem permissão para a ação (papel insuficiente).
-  const AppException.forbidden([String message = 'Sem permissão para esta ação'])
+  const AppException.forbidden(
+      [String message = 'Sem permissão para esta ação'])
       : this(403, 'forbidden', message);
 
   /// Registro não encontrado.
@@ -24,7 +25,8 @@ class AppException implements Exception {
   const AppException.conflict(String message) : this(409, 'conflict', message);
 
   /// Erro de validação de entrada.
-  const AppException.badRequest(String message) : this(400, 'bad_request', message);
+  const AppException.badRequest(String message)
+      : this(400, 'bad_request', message);
 
   final int statusCode;
   final String code;

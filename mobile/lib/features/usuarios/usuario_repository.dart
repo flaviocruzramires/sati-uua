@@ -8,10 +8,10 @@ import 'usuario_dto.dart';
 export 'usuario_dto.dart';
 
 String _papelToStr(PapelUsuario p) => switch (p) {
-      PapelUsuario.admin => 'ADMIN',
-      PapelUsuario.atendente => 'ATENDENTE',
-      PapelUsuario.solicitante => 'SOLICITANTE',
-    };
+  PapelUsuario.admin => 'ADMIN',
+  PapelUsuario.atendente => 'ATENDENTE',
+  PapelUsuario.solicitante => 'SOLICITANTE',
+};
 
 abstract class UsuarioRepositoryBase {
   Future<PaginatedResult<UsuarioDto>> list({

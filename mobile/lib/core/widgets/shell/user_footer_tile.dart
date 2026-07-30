@@ -31,7 +31,9 @@ class UserFooterTile extends StatelessWidget {
         border: Border(top: BorderSide(color: AppColors.divider, width: 2)),
       ),
       padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.s3, vertical: AppSpacing.s3),
+        horizontal: AppSpacing.s3,
+        vertical: AppSpacing.s3,
+      ),
       child: Row(
         children: [
           // Avatar quadrado com iniciais
@@ -75,7 +77,8 @@ class UserFooterTile extends StatelessWidget {
             color: AppColors.neutral600,
             style: IconButton.styleFrom(
               shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero),
+                borderRadius: BorderRadius.zero,
+              ),
             ),
           ),
         ],

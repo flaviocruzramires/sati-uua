@@ -30,10 +30,7 @@ class DashboardView extends ConsumerWidget {
       onNavigate: (r) => context.go(r),
       onLogout: () {},
       actions: [
-        _PeriodoSegmented(
-          dias: vmState.dias,
-          onChanged: vm.setPeriodo,
-        ),
+        _PeriodoSegmented(dias: vmState.dias, onChanged: vm.setPeriodo),
       ],
       child: vmState.resumoState.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -41,8 +38,10 @@ class DashboardView extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Erro ao carregar dashboard',
-                  style: TextStyle(color: AppColors.muted)),
+              Text(
+                'Erro ao carregar dashboard',
+                style: TextStyle(color: AppColors.muted),
+              ),
               const SizedBox(height: AppSpacing.s3),
               AppButton(label: 'Tentar novamente', onPressed: vm.load),
             ],
@@ -77,7 +76,8 @@ class _PeriodoSegmented extends StatelessWidget {
       style: ButtonStyle(
         visualDensity: VisualDensity.compact,
         textStyle: WidgetStateProperty.all(
-            const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+          const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        ),
       ),
     );
   }
@@ -133,7 +133,7 @@ class _DesktopContent extends StatelessWidget {
                 child: _BarSection(
                   title: 'Por Tipo de Equipamento',
                   items: data.porTipoEquipamento,
-                  color: const Color(0xFF2E7D32),
+                  color: AppColors.green,
                 ),
               ),
               const SizedBox(width: AppSpacing.s4),
@@ -179,7 +179,7 @@ class _MobileContent extends StatelessWidget {
           _BarSection(
             title: 'Por Tipo de Equipamento',
             items: data.porTipoEquipamento.take(4).toList(),
-            color: const Color(0xFF2E7D32),
+            color: AppColors.green,
           ),
           const SizedBox(height: AppSpacing.s3),
           _AtendenteList(atendentes: data.porAtendente.take(5).toList()),
@@ -199,20 +199,31 @@ class _KpiRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _KpiCard(kicker: 'ABERTOS', valor: '${kpi.abertos}',
-            meta: '+hoje'),
+        _KpiCard(kicker: 'ABERTOS', valor: '${kpi.abertos}', meta: '+hoje'),
         const SizedBox(width: AppSpacing.s3),
-        _KpiCard(kicker: 'EM ANDAMENTO', valor: '${kpi.emAndamento}',
-            meta: '${kpi.semAtendente} sem atendente'),
+        _KpiCard(
+          kicker: 'EM ANDAMENTO',
+          valor: '${kpi.emAndamento}',
+          meta: '${kpi.semAtendente} sem atendente',
+        ),
         const SizedBox(width: AppSpacing.s3),
-        _KpiCard(kicker: 'AGUARDANDO', valor: '${kpi.aguardandoSolicitante}',
-            meta: 'retorno pendente'),
+        _KpiCard(
+          kicker: 'AGUARDANDO',
+          valor: '${kpi.aguardandoSolicitante}',
+          meta: 'retorno pendente',
+        ),
         const SizedBox(width: AppSpacing.s3),
-        _KpiCard(kicker: 'ENCERRADOS', valor: '${kpi.encerrados}',
-            meta: 'no período'),
+        _KpiCard(
+          kicker: 'ENCERRADOS',
+          valor: '${kpi.encerrados}',
+          meta: 'no período',
+        ),
         const SizedBox(width: AppSpacing.s3),
-        _KpiCard(kicker: 'TEMPO MÉDIO', valor: kpi.tempoMedioFormatado,
-            meta: 'meta: 8h'),
+        _KpiCard(
+          kicker: 'TEMPO MÉDIO',
+          valor: kpi.tempoMedioFormatado,
+          meta: 'meta: 8h',
+        ),
       ].map((w) => Expanded(child: w)).toList(),
     );
   }
@@ -235,15 +246,22 @@ class _KpiGrid extends StatelessWidget {
         _KpiCard(kicker: 'ABERTOS', valor: '${kpi.abertos}', meta: ''),
         _KpiCard(kicker: 'EM ANDAMENTO', valor: '${kpi.emAndamento}', meta: ''),
         _KpiCard(kicker: 'ENCERRADOS', valor: '${kpi.encerrados}', meta: ''),
-        _KpiCard(kicker: 'TEMPO MÉDIO', valor: kpi.tempoMedioFormatado, meta: 'meta: 8h'),
+        _KpiCard(
+          kicker: 'TEMPO MÉDIO',
+          valor: kpi.tempoMedioFormatado,
+          meta: 'meta: 8h',
+        ),
       ],
     );
   }
 }
 
 class _KpiCard extends StatelessWidget {
-  const _KpiCard(
-      {required this.kicker, required this.valor, required this.meta});
+  const _KpiCard({
+    required this.kicker,
+    required this.valor,
+    required this.meta,
+  });
   final String kicker;
   final String valor;
   final String meta;
@@ -257,20 +275,28 @@ class _KpiCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(kicker,
-                style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.8,
-                    color: AppColors.neutral600)),
+            Text(
+              kicker,
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.8,
+                color: AppColors.neutral600,
+              ),
+            ),
             const SizedBox(height: AppSpacing.s1),
-            Text(valor,
-                style: const TextStyle(
-                    fontSize: 28, fontWeight: FontWeight.w800)),
+            Text(
+              valor,
+              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
+            ),
             if (meta.isNotEmpty)
-              Text(meta,
-                  style: const TextStyle(
-                      fontSize: 11, color: AppColors.neutral600)),
+              Text(
+                meta,
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: AppColors.neutral600,
+                ),
+              ),
           ],
         ),
       ),
@@ -301,19 +327,19 @@ class _BarSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title,
-                  style: Theme.of(context).textTheme.titleMedium),
+              Text(title, style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: AppSpacing.s3),
-              Text('Sem dados no período',
-                  style: TextStyle(color: AppColors.muted)),
+              Text(
+                'Sem dados no período',
+                style: TextStyle(color: AppColors.muted),
+              ),
             ],
           ),
         ),
       );
     }
 
-    final maxTotal =
-        items.map((e) => e.total).reduce((a, b) => a > b ? a : b);
+    final maxTotal = items.map((e) => e.total).reduce((a, b) => a > b ? a : b);
 
     return Card(
       child: Padding(
@@ -323,12 +349,14 @@ class _BarSection extends StatelessWidget {
           children: [
             Text(title, style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: AppSpacing.s3),
-            ...items.map((item) => _BarRow(
-                  label: labelMapper?.call(item.label) ?? item.label,
-                  total: item.total,
-                  maxTotal: maxTotal,
-                  color: color,
-                )),
+            ...items.map(
+              (item) => _BarRow(
+                label: labelMapper?.call(item.label) ?? item.label,
+                total: item.total,
+                maxTotal: maxTotal,
+                color: color,
+              ),
+            ),
           ],
         ),
       ),
@@ -360,32 +388,40 @@ class _BarRow extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                child: Text(label,
-                    style: const TextStyle(fontSize: 12),
-                    overflow: TextOverflow.ellipsis),
+                child: Text(
+                  label,
+                  style: const TextStyle(fontSize: 12),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              Text('$total',
-                  style: const TextStyle(
-                      fontSize: 12, fontWeight: FontWeight.w600)),
+              Text(
+                '$total',
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 2),
-          LayoutBuilder(builder: (_, constraints) {
-            return Stack(
-              children: [
-                Container(
-                  height: 8,
-                  width: constraints.maxWidth,
-                  color: AppColors.neutral200,
-                ),
-                Container(
-                  height: 8,
-                  width: constraints.maxWidth * fraction,
-                  color: color,
-                ),
-              ],
-            );
-          }),
+          LayoutBuilder(
+            builder: (_, constraints) {
+              return Stack(
+                children: [
+                  Container(
+                    height: 8,
+                    width: constraints.maxWidth,
+                    color: AppColors.neutral200,
+                  ),
+                  Container(
+                    height: 8,
+                    width: constraints.maxWidth * fraction,
+                    color: color,
+                  ),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );
@@ -404,8 +440,10 @@ class _EvolucaoCard extends StatelessWidget {
       return Card(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.s4),
-          child: Text('Abertos × Encerrados',
-              style: Theme.of(context).textTheme.titleMedium),
+          child: Text(
+            'Abertos × Encerrados',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
         ),
       );
     }
@@ -420,14 +458,16 @@ class _EvolucaoCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Abertos × Encerrados — últimos 6 meses',
-                style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              'Abertos × Encerrados — últimos 6 meses',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: AppSpacing.s2),
             Row(
               children: [
                 _LegendaDot(color: AppColors.navy, label: 'Abertos'),
                 const SizedBox(width: AppSpacing.s3),
-                _LegendaDot(color: const Color(0xFF2E7D32), label: 'Encerrados'),
+                _LegendaDot(color: AppColors.green, label: 'Encerrados'),
               ],
             ),
             const SizedBox(height: AppSpacing.s3),
@@ -439,8 +479,7 @@ class _EvolucaoCard extends StatelessWidget {
                   final mesLabel = m.mes.substring(5); // MM
                   return Expanded(
                     child: Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 2),
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -449,8 +488,7 @@ class _EvolucaoCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               _MiniBar(
-                                fraction:
-                                    maxVal > 0 ? m.abertos / maxVal : 0,
+                                fraction: maxVal > 0 ? m.abertos / maxVal : 0,
                                 color: AppColors.navy,
                               ),
                               const SizedBox(width: 2),
@@ -458,14 +496,18 @@ class _EvolucaoCard extends StatelessWidget {
                                 fraction: maxVal > 0
                                     ? m.encerrados / maxVal
                                     : 0,
-                                color: const Color(0xFF2E7D32),
+                                color: AppColors.green,
                               ),
                             ],
                           ),
                           const SizedBox(height: 2),
-                          Text(mesLabel,
-                              style: const TextStyle(
-                                  fontSize: 10, color: AppColors.neutral600)),
+                          Text(
+                            mesLabel,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: AppColors.neutral600,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -487,11 +529,7 @@ class _MiniBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 12,
-      height: 100 * fraction,
-      color: color,
-    );
+    return Container(width: 12, height: 100 * fraction, color: color);
   }
 }
 
@@ -528,8 +566,10 @@ class _AtendenteTable extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Por Atendente',
-                style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              'Por Atendente',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: AppSpacing.s3),
             Table(
               columnWidths: const {
@@ -541,28 +581,47 @@ class _AtendenteTable extends StatelessWidget {
               },
               children: [
                 TableRow(
-                  decoration:
-                      const BoxDecoration(border: Border(bottom: BorderSide(color: AppColors.divider))),
-                  children: ['Atendente', 'Setor', 'Ativos', 'Encerrados', 'Tempo médio']
-                      .map((h) => Padding(
-                            padding: const EdgeInsets.only(bottom: AppSpacing.s2),
-                            child: Text(h,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: AppColors.divider),
+                    ),
+                  ),
+                  children:
+                      [
+                            'Atendente',
+                            'Setor',
+                            'Ativos',
+                            'Encerrados',
+                            'Tempo médio',
+                          ]
+                          .map(
+                            (h) => Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: AppSpacing.s2,
+                              ),
+                              child: Text(
+                                h,
                                 style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.neutral600)),
-                          ))
-                      .toList(),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.neutral600,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
                 ),
-                ...atendentes.map((a) => TableRow(
-                      children: [
-                        _Cell(a.nome),
-                        _Cell(a.setorNome),
-                        _Cell('${a.ativos}'),
-                        _Cell('${a.encerrados}'),
-                        _Cell(_formatMinutos(a.tempoMedioMinutos)),
-                      ],
-                    )),
+                ...atendentes.map(
+                  (a) => TableRow(
+                    children: [
+                      _Cell(a.nome),
+                      _Cell(a.setorNome),
+                      _Cell('${a.ativos}'),
+                      _Cell('${a.encerrados}'),
+                      _Cell(_formatMinutos(a.tempoMedioMinutos)),
+                    ],
+                  ),
+                ),
               ],
             ),
           ],
@@ -578,9 +637,9 @@ class _Cell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.s2),
-        child: Text(text, style: const TextStyle(fontSize: 13)),
-      );
+    padding: const EdgeInsets.symmetric(vertical: AppSpacing.s2),
+    child: Text(text, style: const TextStyle(fontSize: 13)),
+  );
 }
 
 // ── Lista de atendentes (mobile) ──────────────────────────────────────────────
@@ -598,23 +657,25 @@ class _AtendenteList extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Por Atendente',
-                style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              'Por Atendente',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: AppSpacing.s2),
             ...atendentes.map(
               (a) => Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: AppSpacing.s1),
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.s1),
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(a.nome,
-                          style: const TextStyle(fontSize: 13)),
+                      child: Text(a.nome, style: const TextStyle(fontSize: 13)),
                     ),
                     Text(
                       '${a.ativos} ativos · ${a.encerrados} enc.',
                       style: const TextStyle(
-                          fontSize: 12, color: AppColors.neutral600),
+                        fontSize: 12,
+                        color: AppColors.neutral600,
+                      ),
                     ),
                   ],
                 ),
@@ -630,12 +691,12 @@ class _AtendenteList extends StatelessWidget {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 String _situacaoLabel(String raw) => switch (raw) {
-      'ABERTO' => 'Aberto',
-      'EM_ANDAMENTO' => 'Em andamento',
-      'AGUARDANDO_SOLICITANTE' => 'Aguard. solicitante',
-      'ENCERRADO' => 'Encerrado',
-      _ => raw,
-    };
+  'ABERTO' => 'Aberto',
+  'EM_ANDAMENTO' => 'Em andamento',
+  'AGUARDANDO_SOLICITANTE' => 'Aguard. solicitante',
+  'ENCERRADO' => 'Encerrado',
+  _ => raw,
+};
 
 String _formatMinutos(double min) {
   if (min <= 0) return '—';

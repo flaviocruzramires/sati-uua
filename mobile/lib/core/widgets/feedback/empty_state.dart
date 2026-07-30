@@ -27,10 +27,9 @@ class EmptyState extends StatelessWidget {
             Text(
               mensagem,
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: AppColors.muted),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.muted),
             ),
           ],
         ),

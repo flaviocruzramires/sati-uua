@@ -54,10 +54,12 @@ class TipoEquipamentoRepository implements TipoEquipamentoRepositoryBase {
   Future<List<ComboItem<int>>> combo() async {
     final res = await _client.get<List<dynamic>>('/tipos-equipamento/combo');
     return (res.data as List)
-        .map((e) => ComboItem<int>(
-              (e as Map<String, dynamic>)['id'] as int,
-              e['nome'] as String,
-            ))
+        .map(
+          (e) => ComboItem<int>(
+            (e as Map<String, dynamic>)['id'] as int,
+            e['nome'] as String,
+          ),
+        )
         .toList();
   }
 
@@ -87,5 +89,5 @@ class TipoEquipamentoRepository implements TipoEquipamentoRepositoryBase {
 
 final tipoEquipamentoRepositoryProvider =
     Provider<TipoEquipamentoRepositoryBase>((ref) {
-  return TipoEquipamentoRepository(ref.watch(apiClientProvider));
-});
+      return TipoEquipamentoRepository(ref.watch(apiClientProvider));
+    });

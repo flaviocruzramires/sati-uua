@@ -12,21 +12,20 @@ Widget _shell({
   required Size size,
   String route = '/',
   PapelUsuario papel = PapelUsuario.admin,
-}) =>
-    MaterialApp(
-      home: MediaQuery(
-        data: MediaQueryData(size: size),
-        child: AppShell(
-          currentRoute: route,
-          nomeUsuario: 'João Silva',
-          papelUsuario: papel,
-          title: 'Dashboard',
-          onNavigate: (_) {},
-          onLogout: () {},
-          child: const Text('Conteúdo'),
-        ),
-      ),
-    );
+}) => MaterialApp(
+  home: MediaQuery(
+    data: MediaQueryData(size: size),
+    child: AppShell(
+      currentRoute: route,
+      nomeUsuario: 'João Silva',
+      papelUsuario: papel,
+      title: 'Dashboard',
+      onNavigate: (_) {},
+      onLogout: () {},
+      child: const Text('Conteúdo'),
+    ),
+  ),
+);
 
 const _desktop = Size(1280, 800);
 const _mobile = Size(375, 812);
@@ -50,25 +49,35 @@ void main() {
       expect(find.byType(AppBottomNavBar), findsNothing);
     });
 
-    testWidgets('sidebar mostra UserFooterTile com nome e papel', (tester) async {
+    testWidgets('sidebar mostra UserFooterTile com nome e papel', (
+      tester,
+    ) async {
       await tester.pumpWidget(_shell(size: _desktop));
       expect(find.text('João Silva'), findsOneWidget);
       expect(find.text('Admin'), findsOneWidget);
     });
 
-    testWidgets('item ativo fica destacado (Dashboard na rota /)', (tester) async {
+    testWidgets('item ativo fica destacado (Dashboard na rota /)', (
+      tester,
+    ) async {
       await tester.pumpWidget(_shell(size: _desktop, route: '/'));
       // SidebarNavItem de Dashboard deve estar ativo
-      final items = tester.widgetList<SidebarNavItem>(find.byType(SidebarNavItem));
+      final items = tester.widgetList<SidebarNavItem>(
+        find.byType(SidebarNavItem),
+      );
       final dashboard = items.firstWhere((i) => i.label == 'Dashboard');
       expect(dashboard.active, isTrue);
     });
 
     testWidgets('SOLICITANTE não vê item Usuários na sidebar', (tester) async {
-      await tester.pumpWidget(_shell(size: _desktop, papel: PapelUsuario.solicitante));
+      await tester.pumpWidget(
+        _shell(size: _desktop, papel: PapelUsuario.solicitante),
+      );
       await tester.pump();
       // Usuários é visível apenas para ADMIN
-      final items = tester.widgetList<SidebarNavItem>(find.byType(SidebarNavItem));
+      final items = tester.widgetList<SidebarNavItem>(
+        find.byType(SidebarNavItem),
+      );
       final usuarios = items.firstWhere((i) => i.label == 'Usuários');
       expect(usuarios._visible, isFalse);
     });
@@ -89,47 +98,53 @@ void main() {
 
   group('SidebarNavItem', () {
     testWidgets('item visível sem restrição de papel', (tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-          body: SidebarNavItem(
-            icon: LucideIcons.layoutGrid,
-            label: 'Dashboard',
-            active: false,
-            onTap: () {},
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SidebarNavItem(
+              icon: LucideIcons.layoutGrid,
+              label: 'Dashboard',
+              active: false,
+              onTap: () {},
+            ),
           ),
         ),
-      ));
+      );
       expect(find.text('Dashboard'), findsOneWidget);
     });
 
     testWidgets('item invisível quando papel não autorizado', (tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-          body: SidebarNavItem(
-            icon: LucideIcons.users,
-            label: 'Usuários',
-            active: false,
-            onTap: () {},
-            visibleForPapeis: [PapelUsuario.admin],
-            currentPapel: PapelUsuario.solicitante,
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SidebarNavItem(
+              icon: LucideIcons.users,
+              label: 'Usuários',
+              active: false,
+              onTap: () {},
+              visibleForPapeis: [PapelUsuario.admin],
+              currentPapel: PapelUsuario.solicitante,
+            ),
           ),
         ),
-      ));
+      );
       expect(find.text('Usuários'), findsNothing);
     });
 
     testWidgets('chama onTap ao tocar', (tester) async {
       var tapped = false;
-      await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-          body: SidebarNavItem(
-            icon: LucideIcons.layoutGrid,
-            label: 'Item',
-            active: false,
-            onTap: () => tapped = true,
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SidebarNavItem(
+              icon: LucideIcons.layoutGrid,
+              label: 'Item',
+              active: false,
+              onTap: () => tapped = true,
+            ),
           ),
         ),
-      ));
+      );
       await tester.tap(find.byType(GestureDetector).first);
       expect(tapped, isTrue);
     });
@@ -137,29 +152,33 @@ void main() {
 
   group('UserFooterTile', () {
     testWidgets('exibe iniciais do nome', (tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-          body: UserFooterTile(
-            nome: 'Maria Souza',
-            papel: PapelUsuario.atendente,
-            onLogout: () {},
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: UserFooterTile(
+              nome: 'Maria Souza',
+              papel: PapelUsuario.atendente,
+              onLogout: () {},
+            ),
           ),
         ),
-      ));
+      );
       expect(find.text('MS'), findsOneWidget);
     });
 
     testWidgets('chama onLogout', (tester) async {
       var loggedOut = false;
-      await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-          body: UserFooterTile(
-            nome: 'Teste',
-            papel: PapelUsuario.solicitante,
-            onLogout: () => loggedOut = true,
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: UserFooterTile(
+              nome: 'Teste',
+              papel: PapelUsuario.solicitante,
+              onLogout: () => loggedOut = true,
+            ),
           ),
         ),
-      ));
+      );
       await tester.tap(find.byType(IconButton));
       expect(loggedOut, isTrue);
     });
@@ -167,11 +186,11 @@ void main() {
 
   group('AppBottomNavBar', () {
     testWidgets('renderiza 4 itens', (tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-          body: AppBottomNavBar(currentIndex: 0, onTap: (_) {}),
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(body: AppBottomNavBar(currentIndex: 0, onTap: (_) {})),
         ),
-      ));
+      );
       expect(find.text('Dashboard'), findsOneWidget);
       expect(find.text('Chamados'), findsOneWidget);
       expect(find.text('Cadastros'), findsOneWidget);
@@ -180,14 +199,13 @@ void main() {
 
     testWidgets('chama onTap com índice correto', (tester) async {
       int tapped = -1;
-      await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-          body: AppBottomNavBar(
-            currentIndex: 0,
-            onTap: (i) => tapped = i,
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: AppBottomNavBar(currentIndex: 0, onTap: (i) => tapped = i),
           ),
         ),
-      ));
+      );
       await tester.tap(find.text('Chamados'));
       expect(tapped, 1);
     });
@@ -195,21 +213,21 @@ void main() {
 
   group('BackIconButton', () {
     testWidgets('renderiza com ícone de seta', (tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-          body: BackIconButton(onPressed: () {}),
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(body: BackIconButton(onPressed: () {})),
         ),
-      ));
+      );
       expect(find.byIcon(LucideIcons.arrowLeft), findsOneWidget);
     });
 
     testWidgets('chama callback ao tocar', (tester) async {
       var tapped = false;
-      await tester.pumpWidget(MaterialApp(
-        home: Scaffold(
-          body: BackIconButton(onPressed: () => tapped = true),
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(body: BackIconButton(onPressed: () => tapped = true)),
         ),
-      ));
+      );
       await tester.tap(find.byType(OutlinedButton));
       expect(tapped, isTrue);
     });

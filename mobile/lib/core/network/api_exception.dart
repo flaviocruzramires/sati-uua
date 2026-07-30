@@ -10,13 +10,16 @@ class ApiException implements Exception {
     return switch (e.type) {
       DioExceptionType.connectionTimeout ||
       DioExceptionType.sendTimeout ||
-      DioExceptionType.receiveTimeout =>
-        const ApiException(message: 'Tempo de conexão esgotado'),
+      DioExceptionType.receiveTimeout => const ApiException(
+        message: 'Tempo de conexão esgotado',
+      ),
       DioExceptionType.badResponse => ApiException(
-          message: _extractMessage(e.response),
-          statusCode: e.response?.statusCode),
-      DioExceptionType.connectionError =>
-        const ApiException(message: 'Sem conexão com o servidor'),
+        message: _extractMessage(e.response),
+        statusCode: e.response?.statusCode,
+      ),
+      DioExceptionType.connectionError => const ApiException(
+        message: 'Sem conexão com o servidor',
+      ),
       _ => ApiException(message: e.message ?? 'Erro desconhecido'),
     };
   }

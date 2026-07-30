@@ -29,17 +29,13 @@ class PlaceholderScreen extends ConsumerWidget {
             children: [
               Container(width: 8, height: 48, color: AppColors.navy),
               const SizedBox(height: AppSpacing.s4),
-              Text(
-                'SATI UUA',
-                style: Theme.of(context).textTheme.displaySmall,
-              ),
+              Text('SATI UUA', style: Theme.of(context).textTheme.displaySmall),
               const SizedBox(height: AppSpacing.s2),
               Text(
                 'Tela em construção — $_titleFor',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: AppColors.muted),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppColors.muted),
               ),
             ],
           ),
@@ -49,10 +45,10 @@ class PlaceholderScreen extends ConsumerWidget {
   }
 
   String _titleFor(String r) => switch (r) {
-        '/' => 'Dashboard',
-        '/chamados' => 'Chamados',
-        '/setores' => 'Setores',
-        '/usuarios' => 'Usuários',
-        _ => r,
-      };
+    '/' => 'Dashboard',
+    '/chamados' => 'Chamados',
+    '/setores' => 'Setores',
+    '/usuarios' => 'Usuários',
+    _ => r,
+  };
 }

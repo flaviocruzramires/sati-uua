@@ -36,7 +36,8 @@ class UsuariosView extends ConsumerWidget {
     final vm = ref.read(usuariosViewModelProvider.notifier);
 
     final setoresCombo = vmState.setoresCombo.valueOrNull ?? [];
-    final listData = vmState.listState.valueOrNull?.data ?? const <UsuarioDto>[];
+    final listData =
+        vmState.listState.valueOrNull?.data ?? const <UsuarioDto>[];
     final selected = vmState.selectedUser(listData);
 
     final filtroPapelItems = [
@@ -49,23 +50,39 @@ class UsuariosView extends ConsumerWidget {
     // Abre o formulário: no mobile, push como rota; no desktop, seleciona no painel
     void openNew() {
       if (Breakpoints.isMobile(context)) {
-        Navigator.of(context).push(MaterialPageRoute(
-          fullscreenDialog: true,
-          builder: (_) => _UsuarioForm(
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            fullscreenDialog: true,
+            builder: (_) => _UsuarioForm(
               setoresCombo: setoresCombo,
               saving: vmState.saving,
               saveError: vmState.saveError,
-              onCreate: ({required nome, required email, required login,
-                required senha, required setorId, required papel}) async {
-                final ok = await vm.create(
-                  nome: nome, email: email, login: login,
-                  senha: senha, setorId: setorId, papel: papel,
-                );
-                if (ok && context.mounted) Navigator.of(context).pop();
+              onCreate:
+                  ({
+                    required nome,
+                    required email,
+                    required login,
+                    required senha,
+                    required setorId,
+                    required papel,
+                  }) async {
+                    final ok = await vm.create(
+                      nome: nome,
+                      email: email,
+                      login: login,
+                      senha: senha,
+                      setorId: setorId,
+                      papel: papel,
+                    );
+                    if (ok && context.mounted) Navigator.of(context).pop();
+                  },
+              onCancel: () {
+                vm.clearSaveError();
+                Navigator.of(context).pop();
               },
-              onCancel: () { vm.clearSaveError(); Navigator.of(context).pop(); },
             ),
-        ));
+          ),
+        );
       } else {
         vm.selectUser(-1);
       }
@@ -73,24 +90,41 @@ class UsuariosView extends ConsumerWidget {
 
     void openEdit(UsuarioDto u) {
       if (Breakpoints.isMobile(context)) {
-        Navigator.of(context).push(MaterialPageRoute(
-          fullscreenDialog: true,
-          builder: (_) => _UsuarioForm(
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            fullscreenDialog: true,
+            builder: (_) => _UsuarioForm(
               usuario: u,
               setoresCombo: setoresCombo,
               saving: vmState.saving,
               saveError: vmState.saveError,
-              onUpdate: ({required nome, required email, String? senha,
-                required setorId, required papel, required ativo}) async {
-                final ok = await vm.update(
-                  id: u.id, nome: nome, email: email,
-                  setorId: setorId, papel: papel, ativo: ativo, senha: senha,
-                );
-                if (ok && context.mounted) Navigator.of(context).pop();
+              onUpdate:
+                  ({
+                    required nome,
+                    required email,
+                    String? senha,
+                    required setorId,
+                    required papel,
+                    required ativo,
+                  }) async {
+                    final ok = await vm.update(
+                      id: u.id,
+                      nome: nome,
+                      email: email,
+                      setorId: setorId,
+                      papel: papel,
+                      ativo: ativo,
+                      senha: senha,
+                    );
+                    if (ok && context.mounted) Navigator.of(context).pop();
+                  },
+              onCancel: () {
+                vm.clearSaveError();
+                Navigator.of(context).pop();
               },
-              onCancel: () { vm.clearSaveError(); Navigator.of(context).pop(); },
             ),
-        ));
+          ),
+        );
       } else {
         vm.selectUser(u.id);
       }
@@ -104,9 +138,7 @@ class UsuariosView extends ConsumerWidget {
       subtitle: 'Gestão de usuários do sistema',
       onNavigate: (r) => context.go(r),
       onLogout: () {},
-      actions: [
-        AppButton(label: '+ Novo Usuário', onPressed: openNew),
-      ],
+      actions: [AppButton(label: '+ Novo Usuário', onPressed: openNew)],
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -129,10 +161,9 @@ class UsuariosView extends ConsumerWidget {
                   trailing: vmState.listState.whenOrNull(
                     data: (r) => Text(
                       '${r.total} usuário${r.total != 1 ? 's' : ''}',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelMedium
-                          ?.copyWith(color: AppColors.muted),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.labelMedium?.copyWith(color: AppColors.muted),
                     ),
                   ),
                 ),
@@ -140,8 +171,8 @@ class UsuariosView extends ConsumerWidget {
                   child: AsyncStateView<PaginatedResult<UsuarioDto>>(
                     value: vmState.listState,
                     onRetry: vm.load,
-                    empty: () => const Center(
-                        child: Text('Nenhum usuário encontrado')),
+                    empty: () =>
+                        const Center(child: Text('Nenhum usuário encontrado')),
                     builder: (result) => Breakpoints.isMobile(context)
                         ? _MobileList(
                             result: result,
@@ -169,30 +200,57 @@ class UsuariosView extends ConsumerWidget {
             Container(
               decoration: const BoxDecoration(
                 border: Border(
-                    left: BorderSide(color: AppColors.divider, width: 2)),
+                  left: BorderSide(color: AppColors.divider, width: 2),
+                ),
               ),
               child: _UsuarioForm(
                 usuario: vmState.selectedId == -1 ? null : selected,
                 setoresCombo: setoresCombo,
                 saving: vmState.saving,
                 saveError: vmState.saveError,
-                onCreate: ({required nome, required email, required login,
-                  required senha, required setorId, required papel}) async {
-                  final ok = await vm.create(
-                    nome: nome, email: email, login: login,
-                    senha: senha, setorId: setorId, papel: papel,
-                  );
-                  if (ok) vm.selectUser(null);
+                onCreate:
+                    ({
+                      required nome,
+                      required email,
+                      required login,
+                      required senha,
+                      required setorId,
+                      required papel,
+                    }) async {
+                      final ok = await vm.create(
+                        nome: nome,
+                        email: email,
+                        login: login,
+                        senha: senha,
+                        setorId: setorId,
+                        papel: papel,
+                      );
+                      if (ok) vm.selectUser(null);
+                    },
+                onUpdate:
+                    ({
+                      required nome,
+                      required email,
+                      String? senha,
+                      required setorId,
+                      required papel,
+                      required ativo,
+                    }) async {
+                      final ok = await vm.update(
+                        id: selected!.id,
+                        nome: nome,
+                        email: email,
+                        setorId: setorId,
+                        papel: papel,
+                        ativo: ativo,
+                        senha: senha,
+                      );
+                      if (ok) vm.selectUser(null);
+                    },
+                onCancel: () {
+                  vm.clearSaveError();
+                  vm.selectUser(null);
                 },
-                onUpdate: ({required nome, required email, String? senha,
-                  required setorId, required papel, required ativo}) async {
-                  final ok = await vm.update(
-                    id: selected!.id, nome: nome, email: email,
-                    setorId: setorId, papel: papel, ativo: ativo, senha: senha,
-                  );
-                  if (ok) vm.selectUser(null);
-                },
-                onCancel: () { vm.clearSaveError(); vm.selectUser(null); },
               ),
             ),
         ],
@@ -235,16 +293,18 @@ class _DesktopTable extends StatelessWidget {
               rows: result.data,
               onRowTap: onSelect,
               rowBuilder: (u) => [
-                Text(u.nome,
-                    style: u.id == selectedId
-                        ? const TextStyle(fontWeight: FontWeight.w700)
-                        : null),
+                Text(
+                  u.nome,
+                  style: u.id == selectedId
+                      ? const TextStyle(fontWeight: FontWeight.w700)
+                      : null,
+                ),
                 Text(u.email),
                 Text(u.setorNome ?? '—'),
                 PapelUsuarioTag(papel: u.papel),
                 AtivoTag(
-                    status:
-                        u.ativo ? StatusAtivo.ativo : StatusAtivo.inativo),
+                  status: u.ativo ? StatusAtivo.ativo : StatusAtivo.inativo,
+                ),
               ],
               actionsBuilder: (u) => [
                 IconActionButton(
@@ -292,25 +352,24 @@ class _MobileList extends StatelessWidget {
           child: ListView.separated(
             padding: const EdgeInsets.all(AppSpacing.s3),
             itemCount: result.data.length,
-            separatorBuilder: (_, __) =>
-                const SizedBox(height: AppSpacing.s2),
+            separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.s2),
             itemBuilder: (_, i) {
               final u = result.data[i];
               return AppCardListItem(
                 titulo: u.nome,
-                metaLines: [
-                  u.email,
-                  if (u.setorNome != null) u.setorNome!,
-                ],
-                tagSlot: Row(mainAxisSize: MainAxisSize.min, children: [
-                  PapelUsuarioTag(papel: u.papel),
-                  const SizedBox(width: AppSpacing.s1),
-                  IconActionButton(
-                    icon: LucideIcons.pencil,
-                    tooltip: 'Editar',
-                    onPressed: () => onEdit(u),
-                  ),
-                ]),
+                metaLines: [u.email, if (u.setorNome != null) u.setorNome!],
+                tagSlot: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    PapelUsuarioTag(papel: u.papel),
+                    const SizedBox(width: AppSpacing.s1),
+                    IconActionButton(
+                      icon: LucideIcons.pencil,
+                      tooltip: 'Editar',
+                      onPressed: () => onEdit(u),
+                    ),
+                  ],
+                ),
               );
             },
           ),
@@ -328,23 +387,25 @@ class _MobileList extends StatelessWidget {
 
 // ── Formulário único (desktop: painel lateral / mobile: tela cheia via AppSidePanelForm) ──
 
-typedef _OnCreate = Future<void> Function({
-  required String nome,
-  required String email,
-  required String login,
-  required String senha,
-  required int setorId,
-  required PapelUsuario papel,
-});
+typedef _OnCreate =
+    Future<void> Function({
+      required String nome,
+      required String email,
+      required String login,
+      required String senha,
+      required int setorId,
+      required PapelUsuario papel,
+    });
 
-typedef _OnUpdate = Future<void> Function({
-  required String nome,
-  required String email,
-  String? senha,
-  required int setorId,
-  required PapelUsuario papel,
-  required bool ativo,
-});
+typedef _OnUpdate =
+    Future<void> Function({
+      required String nome,
+      required String email,
+      String? senha,
+      required int setorId,
+      required PapelUsuario papel,
+      required bool ativo,
+    });
 
 class _UsuarioForm extends StatefulWidget {
   const _UsuarioForm({
@@ -460,11 +521,16 @@ class _UsuarioFormState extends State<_UsuarioForm> {
           Container(
             padding: const EdgeInsets.all(AppSpacing.s3),
             color: Colors.red.shade50,
-            child: Text(error,
-                style: const TextStyle(color: Colors.red, fontSize: 13)),
+            child: Text(
+              error,
+              style: const TextStyle(color: Colors.red, fontSize: 13),
+            ),
           ),
         AppTextField(
-            label: 'Nome completo', obrigatorio: true, controller: _nomeCtrl),
+          label: 'Nome completo',
+          obrigatorio: true,
+          controller: _nomeCtrl,
+        ),
         AppTextField(
           label: 'E-mail',
           obrigatorio: true,
@@ -472,10 +538,12 @@ class _UsuarioFormState extends State<_UsuarioForm> {
           keyboardType: TextInputType.emailAddress,
         ),
         AppTextField(
-            label: 'Login', obrigatorio: !_isEdit, controller: _loginCtrl),
+          label: 'Login',
+          obrigatorio: !_isEdit,
+          controller: _loginCtrl,
+        ),
         AppTextField(
-          label:
-              _isEdit ? 'Senha (deixe em branco para manter)' : 'Senha',
+          label: _isEdit ? 'Senha (deixe em branco para manter)' : 'Senha',
           obrigatorio: !_isEdit,
           controller: _senhaCtrl,
           obscure: true,

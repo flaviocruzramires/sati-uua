@@ -61,28 +61,27 @@ class RelatorioItemDto {
   final String? tipoEquipamentoNome;
   final String? servicoDescricao;
 
-  factory RelatorioItemDto.fromJson(Map<String, dynamic> j) =>
-      RelatorioItemDto(
-        id: j['id'] as int,
-        situacao: _parseSituacao(j['situacao'] as String),
-        dataAbertura: DateTime.parse(j['dataAbertura'] as String),
-        dataFechamento: j['dataFechamento'] != null
-            ? DateTime.parse(j['dataFechamento'] as String)
-            : null,
-        solicitanteNome: j['solicitanteNome'] as String,
-        solicitanteSetor: (j['solicitanteSetor'] as String?) ?? '—',
-        responsavelNome: j['responsavelNome'] as String?,
-        equipamentoDescricao: j['equipamentoDescricao'] as String?,
-        tipoEquipamentoNome: j['tipoEquipamentoNome'] as String?,
-        servicoDescricao: j['servicoDescricao'] as String?,
-      );
+  factory RelatorioItemDto.fromJson(Map<String, dynamic> j) => RelatorioItemDto(
+    id: j['id'] as int,
+    situacao: _parseSituacao(j['situacao'] as String),
+    dataAbertura: DateTime.parse(j['dataAbertura'] as String),
+    dataFechamento: j['dataFechamento'] != null
+        ? DateTime.parse(j['dataFechamento'] as String)
+        : null,
+    solicitanteNome: j['solicitanteNome'] as String,
+    solicitanteSetor: (j['solicitanteSetor'] as String?) ?? '—',
+    responsavelNome: j['responsavelNome'] as String?,
+    equipamentoDescricao: j['equipamentoDescricao'] as String?,
+    tipoEquipamentoNome: j['tipoEquipamentoNome'] as String?,
+    servicoDescricao: j['servicoDescricao'] as String?,
+  );
 
   static SituacaoChamado _parseSituacao(String s) => switch (s) {
-        'ABERTO' => SituacaoChamado.aberto,
-        'EM_ANDAMENTO' => SituacaoChamado.emAndamento,
-        'AGUARDANDO_SOLICITANTE' => SituacaoChamado.aguardandoSolicitante,
-        _ => SituacaoChamado.encerrado,
-      };
+    'ABERTO' => SituacaoChamado.aberto,
+    'EM_ANDAMENTO' => SituacaoChamado.emAndamento,
+    'AGUARDANDO_SOLICITANTE' => SituacaoChamado.aguardandoSolicitante,
+    _ => SituacaoChamado.encerrado,
+  };
 }
 
 class RelatorioResultDto {
@@ -103,13 +102,13 @@ class RelatorioResultDto {
   factory RelatorioResultDto.fromJson(Map<String, dynamic> j) =>
       RelatorioResultDto(
         data: (j['data'] as List)
-            .map((e) =>
-                RelatorioItemDto.fromJson(e as Map<String, dynamic>))
+            .map((e) => RelatorioItemDto.fromJson(e as Map<String, dynamic>))
             .toList(),
         total: j['total'] as int,
         page: j['page'] as int,
         pageSize: j['pageSize'] as int,
         resumo: RelatorioResumoDto.fromJson(
-            j['resumo'] as Map<String, dynamic>),
+          j['resumo'] as Map<String, dynamic>,
+        ),
       );
 }

@@ -44,8 +44,7 @@ class TipoEquipamentoRepository {
 
   Future<List<TipoEquipamento>> combo() async {
     final rows = await _db.execute(
-      Sql.named(
-          'SELECT id, nome FROM tipos_equipamento ORDER BY nome ASC'),
+      Sql.named('SELECT id, nome FROM tipos_equipamento ORDER BY nome ASC'),
     );
     return rows
         .map((r) => TipoEquipamento(id: r[0] as int, nome: r[1] as String))
@@ -86,8 +85,7 @@ class TipoEquipamentoRepository {
 
   Future<bool> delete(int id) async {
     final rows = await _db.execute(
-      Sql.named(
-          'DELETE FROM tipos_equipamento WHERE id = @id RETURNING id'),
+      Sql.named('DELETE FROM tipos_equipamento WHERE id = @id RETURNING id'),
       parameters: {'id': id},
     );
     return rows.isNotEmpty;

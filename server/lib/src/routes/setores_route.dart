@@ -18,7 +18,8 @@ Router setoresRouter(AppContainer container) {
         int.tryParse(req.url.queryParameters['pageSize'] ?? '20') ?? 20;
     final busca = req.url.queryParameters['busca'];
 
-    final result = await repo.list(page: page, pageSize: pageSize, busca: busca);
+    final result =
+        await repo.list(page: page, pageSize: pageSize, busca: busca);
     return _ok({
       'data': result.data.map((s) => s.toJson()).toList(),
       'total': result.total,
@@ -85,7 +86,8 @@ Router setoresRouter(AppContainer container) {
     } on Exception catch (e) {
       // FK RESTRICT: usuário vinculado ao setor
       if (e.toString().contains('violates foreign key')) {
-        return _conflict('Não é possível excluir: há usuários vinculados a este setor');
+        return _conflict(
+            'Não é possível excluir: há usuários vinculados a este setor');
       }
       rethrow;
     }

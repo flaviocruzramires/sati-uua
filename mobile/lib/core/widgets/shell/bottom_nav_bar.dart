@@ -43,19 +43,15 @@ class AppBottomNavBar extends StatelessWidget {
                     Icon(
                       item.icon,
                       size: 20,
-                      color:
-                          active ? AppColors.navy : AppColors.neutral600,
+                      color: active ? AppColors.navy : AppColors.neutral600,
                     ),
                     const SizedBox(height: 3),
                     Text(
                       item.label,
                       style: TextStyle(
                         fontSize: 9.5,
-                        fontWeight: active
-                            ? FontWeight.w600
-                            : FontWeight.w400,
-                        color:
-                            active ? AppColors.navy : AppColors.neutral600,
+                        fontWeight: active ? FontWeight.w600 : FontWeight.w400,
+                        color: active ? AppColors.navy : AppColors.neutral600,
                       ),
                     ),
                   ],

@@ -147,8 +147,7 @@ class RelatorioRepository {
       params['fechamentoAte'] = fechamentoAte.toUtc();
     }
 
-    final where =
-        conditions.isEmpty ? '' : 'WHERE ${conditions.join(' AND ')}';
+    final where = conditions.isEmpty ? '' : 'WHERE ${conditions.join(' AND ')}';
     final offset = (page - 1) * pageSize;
 
     // resumo calculado sobre o conjunto filtrado completo (não sobre a página)

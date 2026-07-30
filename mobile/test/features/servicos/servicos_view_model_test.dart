@@ -27,16 +27,18 @@ void main() {
 
   setUp(() {
     repo = _MockServicoRepository();
-    when(() => repo.list(
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-          busca: any(named: 'busca'),
-        )).thenAnswer((_) async => _emptyResult);
+    when(
+      () => repo.list(
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+        busca: any(named: 'busca'),
+      ),
+    ).thenAnswer((_) async => _emptyResult);
   });
 
   ProviderContainer makeContainer() => ProviderContainer(
-        overrides: [servicoRepositoryProvider.overrideWithValue(repo)],
-      );
+    overrides: [servicoRepositoryProvider.overrideWithValue(repo)],
+  );
 
   test('load popula listState com AsyncData', () async {
     final c = makeContainer();
@@ -51,13 +53,16 @@ void main() {
   test('create retorna true e recarrega lista', () async {
     final c = makeContainer();
     addTearDown(c.dispose);
-    when(() => repo.create('Suporte'))
-        .thenAnswer((_) async => const ServicoDto(id: 1, descricao: 'Suporte'));
-    when(() => repo.list(
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-          busca: any(named: 'busca'),
-        )).thenAnswer((_) async => _oneResult);
+    when(
+      () => repo.create('Suporte'),
+    ).thenAnswer((_) async => const ServicoDto(id: 1, descricao: 'Suporte'));
+    when(
+      () => repo.list(
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+        busca: any(named: 'busca'),
+      ),
+    ).thenAnswer((_) async => _oneResult);
 
     final vm = c.read(servicosViewModelProvider.notifier);
     final ok = await vm.create('Suporte');
@@ -98,8 +103,9 @@ void main() {
   test('update retorna true e recarrega lista', () async {
     final c = makeContainer();
     addTearDown(c.dispose);
-    when(() => repo.update(1, 'Suporte v2'))
-        .thenAnswer((_) async => const ServicoDto(id: 1, descricao: 'Suporte v2'));
+    when(
+      () => repo.update(1, 'Suporte v2'),
+    ).thenAnswer((_) async => const ServicoDto(id: 1, descricao: 'Suporte v2'));
 
     final vm = c.read(servicosViewModelProvider.notifier);
     final ok = await vm.update(1, 'Suporte v2');

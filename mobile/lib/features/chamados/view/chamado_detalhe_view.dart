@@ -30,7 +30,8 @@ class ChamadoDetalheView extends ConsumerWidget {
     final vmState = ref.watch(chamadoDetalheViewModelProvider(chamadoId));
     final vm = ref.read(chamadoDetalheViewModelProvider(chamadoId).notifier);
     final user = ref.watch(currentUserProvider).valueOrNull;
-    final isAtendente = user?.papel == PapelUsuario.atendente ||
+    final isAtendente =
+        user?.papel == PapelUsuario.atendente ||
         user?.papel == PapelUsuario.admin;
 
     return Scaffold(
@@ -39,7 +40,8 @@ class ChamadoDetalheView extends ConsumerWidget {
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.go('/chamados'),
         ),
-        title: vmState.detalheState.whenOrNull(
+        title:
+            vmState.detalheState.whenOrNull(
               data: (d) => Row(
                 children: [
                   Text('Chamado #${d.chamado.id}'),
@@ -56,8 +58,10 @@ class ChamadoDetalheView extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Erro ao carregar chamado',
-                  style: TextStyle(color: AppColors.muted)),
+              Text(
+                'Erro ao carregar chamado',
+                style: TextStyle(color: AppColors.muted),
+              ),
               const SizedBox(height: AppSpacing.s3),
               AppButton(
                 label: 'Tentar novamente',
@@ -125,10 +129,7 @@ class _DetalheBody extends StatelessWidget {
             resumoCard,
             const SizedBox(height: AppSpacing.s3),
             timeline,
-            if (form != null) ...[
-              const SizedBox(height: AppSpacing.s3),
-              form,
-            ],
+            if (form != null) ...[const SizedBox(height: AppSpacing.s3), form],
           ],
         ),
       );
@@ -189,11 +190,12 @@ class _ResumoCard extends StatelessWidget {
                   .toList(),
             ),
             const Divider(height: AppSpacing.s6),
-            Text('Descrição',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall
-                    ?.copyWith(color: AppColors.muted)),
+            Text(
+              'Descrição',
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: AppColors.muted),
+            ),
             const SizedBox(height: AppSpacing.s1),
             Text(chamado.descricao),
           ],
@@ -214,11 +216,12 @@ class _KickerValue extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(kicker,
-            style: Theme.of(context)
-                .textTheme
-                .labelSmall
-                ?.copyWith(color: AppColors.muted)),
+        Text(
+          kicker,
+          style: Theme.of(
+            context,
+          ).textTheme.labelSmall?.copyWith(color: AppColors.muted),
+        ),
         Text(value, style: Theme.of(context).textTheme.bodyMedium),
       ],
     );
@@ -252,8 +255,10 @@ class _Timeline extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Histórico de atendimento',
-                style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              'Histórico de atendimento',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: AppSpacing.s3),
             ...List.generate(historico.length, (i) {
               final h = historico[i];
@@ -292,10 +297,7 @@ class _TimelineItem extends StatelessWidget {
                 ),
                 if (!isLast)
                   Expanded(
-                    child: Container(
-                      width: 2,
-                      color: AppColors.divider,
-                    ),
+                    child: Container(width: 2, color: AppColors.divider),
                   ),
               ],
             ),
@@ -303,27 +305,28 @@ class _TimelineItem extends StatelessWidget {
           const SizedBox(width: AppSpacing.s2),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(
-                  bottom: isLast ? 0 : AppSpacing.s3),
+              padding: EdgeInsets.only(bottom: isLast ? 0 : AppSpacing.s3),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     '${item.responsavelNome} · ${_dtFmt.format(item.dataRetorno.toLocal())}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelSmall
-                        ?.copyWith(color: AppColors.muted),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelSmall?.copyWith(color: AppColors.muted),
                   ),
                   const SizedBox(height: AppSpacing.s1),
                   Text(item.descricao),
                   if (item.marcaEncerramento) ...[
                     const SizedBox(height: AppSpacing.s1),
-                    Text('Chamado encerrado',
-                        style: TextStyle(
-                            color: AppColors.accent500,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12)),
+                    Text(
+                      'Chamado encerrado',
+                      style: TextStyle(
+                        color: AppColors.accent500,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                      ),
+                    ),
                   ],
                 ],
               ),
@@ -410,8 +413,10 @@ class _RegistroFormState extends State<_RegistroForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('Nenhum atendente atribuído',
-                  style: Theme.of(context).textTheme.titleMedium),
+              Text(
+                'Nenhum atendente atribuído',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               const SizedBox(height: AppSpacing.s2),
               Text(
                 'Assuma este chamado para registrar atendimentos.',
@@ -435,16 +440,19 @@ class _RegistroFormState extends State<_RegistroForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Registrar Atendimento',
-                style: Theme.of(context).textTheme.titleMedium),
+            Text(
+              'Registrar Atendimento',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             const SizedBox(height: AppSpacing.s3),
             if (error != null) ...[
               Container(
                 padding: const EdgeInsets.all(AppSpacing.s3),
                 color: Colors.red.shade50,
-                child: Text(error,
-                    style:
-                        const TextStyle(color: Colors.red, fontSize: 13)),
+                child: Text(
+                  error,
+                  style: const TextStyle(color: Colors.red, fontSize: 13),
+                ),
               ),
               const SizedBox(height: AppSpacing.s3),
             ],

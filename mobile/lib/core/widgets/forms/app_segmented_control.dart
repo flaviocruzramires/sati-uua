@@ -42,10 +42,9 @@ class AppSegmentedControl<T> extends StatelessWidget {
               child: Text(
                 opt.label,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: selected ? AppColors.bg : AppColors.text,
-                      fontWeight:
-                          selected ? FontWeight.w600 : FontWeight.w400,
-                    ),
+                  color: selected ? AppColors.bg : AppColors.text,
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                ),
               ),
             ),
           ),

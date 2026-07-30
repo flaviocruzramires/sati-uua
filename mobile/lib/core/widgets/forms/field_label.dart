@@ -13,8 +13,7 @@ class FieldLabel extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(label, style: style),
-        if (obrigatorio)
-          Text(' *', style: style?.copyWith(color: Colors.red)),
+        if (obrigatorio) Text(' *', style: style?.copyWith(color: Colors.red)),
       ],
     );
   }

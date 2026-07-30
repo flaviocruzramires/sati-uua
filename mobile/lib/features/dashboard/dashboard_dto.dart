@@ -16,13 +16,13 @@ class KpiResumoDto {
   final double tempoMedioMinutos;
 
   factory KpiResumoDto.fromJson(Map<String, dynamic> j) => KpiResumoDto(
-        abertos: j['abertos'] as int,
-        emAndamento: j['emAndamento'] as int,
-        aguardandoSolicitante: j['aguardandoSolicitante'] as int,
-        encerrados: j['encerrados'] as int,
-        semAtendente: j['semAtendente'] as int,
-        tempoMedioMinutos: (j['tempoMedioMinutos'] as num).toDouble(),
-      );
+    abertos: j['abertos'] as int,
+    emAndamento: j['emAndamento'] as int,
+    aguardandoSolicitante: j['aguardandoSolicitante'] as int,
+    encerrados: j['encerrados'] as int,
+    semAtendente: j['semAtendente'] as int,
+    tempoMedioMinutos: (j['tempoMedioMinutos'] as num).toDouble(),
+  );
 
   String get tempoMedioFormatado {
     final h = (tempoMedioMinutos / 60).floor();
@@ -41,16 +41,19 @@ class BarItemDto {
 }
 
 class MesItemDto {
-  const MesItemDto(
-      {required this.mes, required this.abertos, required this.encerrados});
+  const MesItemDto({
+    required this.mes,
+    required this.abertos,
+    required this.encerrados,
+  });
   final String mes;
   final int abertos;
   final int encerrados;
   factory MesItemDto.fromJson(Map<String, dynamic> j) => MesItemDto(
-        mes: j['mes'] as String,
-        abertos: j['abertos'] as int,
-        encerrados: j['encerrados'] as int,
-      );
+    mes: j['mes'] as String,
+    abertos: j['abertos'] as int,
+    encerrados: j['encerrados'] as int,
+  );
 }
 
 class AtendenteResumoDto {
@@ -96,19 +99,18 @@ class DashboardDto {
   final List<AtendenteResumoDto> porAtendente;
 
   factory DashboardDto.fromJson(Map<String, dynamic> j) => DashboardDto(
-        kpi: KpiResumoDto.fromJson(j['kpi'] as Map<String, dynamic>),
-        porSituacao: _barList(j['porSituacao']),
-        porSetor: _barList(j['porSetor']),
-        porTipoEquipamento: _barList(j['porTipoEquipamento']),
-        porServico: _barList(j['porServico']),
-        evolucaoMensal: (j['evolucaoMensal'] as List)
-            .map((e) => MesItemDto.fromJson(e as Map<String, dynamic>))
-            .toList(),
-        porAtendente: (j['porAtendente'] as List)
-            .map((e) =>
-                AtendenteResumoDto.fromJson(e as Map<String, dynamic>))
-            .toList(),
-      );
+    kpi: KpiResumoDto.fromJson(j['kpi'] as Map<String, dynamic>),
+    porSituacao: _barList(j['porSituacao']),
+    porSetor: _barList(j['porSetor']),
+    porTipoEquipamento: _barList(j['porTipoEquipamento']),
+    porServico: _barList(j['porServico']),
+    evolucaoMensal: (j['evolucaoMensal'] as List)
+        .map((e) => MesItemDto.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    porAtendente: (j['porAtendente'] as List)
+        .map((e) => AtendenteResumoDto.fromJson(e as Map<String, dynamic>))
+        .toList(),
+  );
 
   static List<BarItemDto> _barList(dynamic raw) => (raw as List)
       .map((e) => BarItemDto.fromJson(e as Map<String, dynamic>))

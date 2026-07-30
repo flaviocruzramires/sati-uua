@@ -33,8 +33,8 @@ void main() {
   });
 
   ProviderContainer makeContainer() => ProviderContainer(
-        overrides: [dashboardRepositoryProvider.overrideWithValue(repo)],
-      );
+    overrides: [dashboardRepositoryProvider.overrideWithValue(repo)],
+  );
 
   test('load popula resumoState', () async {
     final c = makeContainer();
@@ -68,8 +68,12 @@ void main() {
 
   test('KpiResumoDto.tempoMedioFormatado formata corretamente', () {
     const kpi = KpiResumoDto(
-      abertos: 0, emAndamento: 0, aguardandoSolicitante: 0,
-      encerrados: 0, semAtendente: 0, tempoMedioMinutos: 400,
+      abertos: 0,
+      emAndamento: 0,
+      aguardandoSolicitante: 0,
+      encerrados: 0,
+      semAtendente: 0,
+      tempoMedioMinutos: 400,
     );
     expect(kpi.tempoMedioFormatado, '6h40');
   });

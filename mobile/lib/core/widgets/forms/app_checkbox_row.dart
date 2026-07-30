@@ -28,7 +28,9 @@ class AppCheckboxRow extends StatelessWidget {
               value: value,
               onChanged: (v) => onChanged(v ?? false),
               activeColor: AppColors.navy,
-              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
+              ),
               side: const BorderSide(color: AppColors.neutral400),
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),

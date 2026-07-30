@@ -16,8 +16,7 @@ class ConfiguracaoRepository implements ConfiguracaoRepositoryBase {
 
   @override
   Future<List<ConfiguracaoDto>> list() async {
-    final res =
-        await _client.get<List<dynamic>>('/configuracoes');
+    final res = await _client.get<List<dynamic>>('/configuracoes');
     return (res.data as List)
         .map((e) => ConfiguracaoDto.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -33,7 +32,8 @@ class ConfiguracaoRepository implements ConfiguracaoRepositoryBase {
   }
 }
 
-final configuracaoRepositoryProvider =
-    Provider<ConfiguracaoRepositoryBase>((ref) {
+final configuracaoRepositoryProvider = Provider<ConfiguracaoRepositoryBase>((
+  ref,
+) {
   return ConfiguracaoRepository(ref.watch(apiClientProvider));
 });

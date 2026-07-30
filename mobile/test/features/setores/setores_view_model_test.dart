@@ -27,16 +27,18 @@ void main() {
 
   setUp(() {
     repo = _MockSetorRepository();
-    when(() => repo.list(
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-          busca: any(named: 'busca'),
-        )).thenAnswer((_) async => _emptyResult);
+    when(
+      () => repo.list(
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+        busca: any(named: 'busca'),
+      ),
+    ).thenAnswer((_) async => _emptyResult);
   });
 
   ProviderContainer makeContainer() => ProviderContainer(
-        overrides: [setorRepositoryProvider.overrideWithValue(repo)],
-      );
+    overrides: [setorRepositoryProvider.overrideWithValue(repo)],
+  );
 
   test('load popula listState com AsyncData', () async {
     final c = makeContainer();
@@ -51,13 +53,16 @@ void main() {
   test('create retorna true e recarrega lista', () async {
     final c = makeContainer();
     addTearDown(c.dispose);
-    when(() => repo.create('TI'))
-        .thenAnswer((_) async => const SetorDto(id: 1, nome: 'TI'));
-    when(() => repo.list(
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-          busca: any(named: 'busca'),
-        )).thenAnswer((_) async => _oneResult);
+    when(
+      () => repo.create('TI'),
+    ).thenAnswer((_) async => const SetorDto(id: 1, nome: 'TI'));
+    when(
+      () => repo.list(
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+        busca: any(named: 'busca'),
+      ),
+    ).thenAnswer((_) async => _oneResult);
 
     final vm = c.read(setoresViewModelProvider.notifier);
     final ok = await vm.create('TI');

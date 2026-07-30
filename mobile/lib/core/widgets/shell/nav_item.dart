@@ -35,7 +35,9 @@ class SidebarNavItem extends StatelessWidget {
       child: Container(
         color: active ? AppColors.navy : Colors.transparent,
         padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.s3, vertical: 10),
+          horizontal: AppSpacing.s3,
+          vertical: 10,
+        ),
         child: Row(
           children: [
             Icon(
@@ -80,7 +82,11 @@ class SidebarNavGroup extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(
-              AppSpacing.s3, AppSpacing.s4, AppSpacing.s3, AppSpacing.s2),
+            AppSpacing.s3,
+            AppSpacing.s4,
+            AppSpacing.s3,
+            AppSpacing.s2,
+          ),
           child: Text(
             label.toUpperCase(),
             style: const TextStyle(

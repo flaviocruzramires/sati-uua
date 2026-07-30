@@ -18,12 +18,12 @@ class EquipamentoDto {
   final bool ativo;
 
   factory EquipamentoDto.fromJson(Map<String, dynamic> json) => EquipamentoDto(
-        id: json['id'] as int,
-        descricao: json['descricao'] as String,
-        tipoEquipamentoId: json['tipoEquipamentoId'] as int,
-        tipoEquipamentoNome: json['tipoEquipamentoNome'] as String,
-        setorId: json['setorId'] as int?,
-        setorNome: json['setorNome'] as String?,
-        ativo: json['ativo'] as bool,
-      );
+    id: json['id'] as int,
+    descricao: json['descricao'] as String,
+    tipoEquipamentoId: json['tipoEquipamentoId'] as int,
+    tipoEquipamentoNome: json['tipoEquipamentoNome'] as String,
+    setorId: json['setorId'] as int?,
+    setorNome: json['setorNome'] as String?,
+    ativo: json['ativo'] as bool,
+  );
 }

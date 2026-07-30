@@ -29,7 +29,8 @@ class TiposEquipamentoView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider).valueOrNull;
-    final canWrite = user?.papel == PapelUsuario.admin ||
+    final canWrite =
+        user?.papel == PapelUsuario.admin ||
         user?.papel == PapelUsuario.atendente;
 
     final vmState = ref.watch(tiposEquipamentoViewModelProvider);
@@ -65,21 +66,25 @@ class TiposEquipamentoView extends ConsumerWidget {
           content: Text('Deseja excluir "${t.nome}"?'),
           actions: [
             TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Cancelar')),
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancelar'),
+            ),
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
                 final ok = await vm.delete(t.id);
                 if (!ok && context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(vmState.saveError ?? 'Erro ao excluir tipo'),
-                    backgroundColor: Colors.red,
-                  ));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        vmState.saveError ?? 'Erro ao excluir tipo',
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 }
               },
-              child:
-                  const Text('Excluir', style: TextStyle(color: Colors.red)),
+              child: const Text('Excluir', style: TextStyle(color: Colors.red)),
             ),
           ],
         ),
@@ -106,10 +111,9 @@ class TiposEquipamentoView extends ConsumerWidget {
             trailing: vmState.listState.whenOrNull(
               data: (r) => Text(
                 '${r.total} tipo${r.total != 1 ? 's' : ''}',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: AppColors.muted),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(color: AppColors.muted),
               ),
             ),
           ),
@@ -117,8 +121,7 @@ class TiposEquipamentoView extends ConsumerWidget {
             child: AsyncStateView<PaginatedResult<TipoEquipamentoDto>>(
               value: vmState.listState,
               onRetry: vm.load,
-              empty: () =>
-                  const Center(child: Text('Nenhum tipo encontrado')),
+              empty: () => const Center(child: Text('Nenhum tipo encontrado')),
               builder: (result) => Breakpoints.isMobile(context)
                   ? _MobileList(
                       result: result,
@@ -179,16 +182,18 @@ class _DesktopTable extends StatelessWidget {
               rowBuilder: (t) => [Text(t.nome)],
               actionsBuilder: canWrite
                   ? (t) => [
-                        IconActionButton(
-                            icon: LucideIcons.pencil,
-                            tooltip: 'Editar',
-                            onPressed: () => onEdit(t)),
-                        const SizedBox(width: AppSpacing.s1),
-                        IconActionButton(
-                            icon: LucideIcons.trash2,
-                            tooltip: 'Excluir',
-                            onPressed: () => onDelete(t)),
-                      ]
+                      IconActionButton(
+                        icon: LucideIcons.pencil,
+                        tooltip: 'Editar',
+                        onPressed: () => onEdit(t),
+                      ),
+                      const SizedBox(width: AppSpacing.s1),
+                      IconActionButton(
+                        icon: LucideIcons.trash2,
+                        tooltip: 'Excluir',
+                        onPressed: () => onDelete(t),
+                      ),
+                    ]
                   : null,
             ),
           ),
@@ -237,17 +242,22 @@ class _MobileList extends StatelessWidget {
               return AppCardListItem(
                 titulo: t.nome,
                 tagSlot: canWrite
-                    ? Row(mainAxisSize: MainAxisSize.min, children: [
-                        IconActionButton(
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconActionButton(
                             icon: LucideIcons.pencil,
                             tooltip: 'Editar',
-                            onPressed: () => onEdit(t)),
-                        const SizedBox(width: AppSpacing.s1),
-                        IconActionButton(
+                            onPressed: () => onEdit(t),
+                          ),
+                          const SizedBox(width: AppSpacing.s1),
+                          IconActionButton(
                             icon: LucideIcons.trash2,
                             tooltip: 'Excluir',
-                            onPressed: () => onDelete(t)),
-                      ])
+                            onPressed: () => onDelete(t),
+                          ),
+                        ],
+                      )
                     : null,
               );
             },
@@ -322,8 +332,10 @@ class _TipoFormDialogState extends State<_TipoFormDialog> {
           Container(
             padding: const EdgeInsets.all(AppSpacing.s3),
             color: Colors.red.shade50,
-            child: Text(error,
-                style: const TextStyle(color: Colors.red, fontSize: 13)),
+            child: Text(
+              error,
+              style: const TextStyle(color: Colors.red, fontSize: 13),
+            ),
           ),
         AppTextField(
           label: 'Nome',

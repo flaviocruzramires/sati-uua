@@ -30,19 +30,18 @@ class ChamadosListState {
     String? busca,
     bool clearBusca = false,
     int? page,
-  }) =>
-      ChamadosListState(
-        listState: listState ?? this.listState,
-        filtroSituacao: clearFiltroSituacao
-            ? null
-            : (filtroSituacao ?? this.filtroSituacao),
-        filtroResponsavelId: clearFiltroResponsavel
-            ? null
-            : (filtroResponsavelId ?? this.filtroResponsavelId),
-        busca: clearBusca ? null : (busca ?? this.busca),
-        page: page ?? this.page,
-        pageSize: pageSize,
-      );
+  }) => ChamadosListState(
+    listState: listState ?? this.listState,
+    filtroSituacao: clearFiltroSituacao
+        ? null
+        : (filtroSituacao ?? this.filtroSituacao),
+    filtroResponsavelId: clearFiltroResponsavel
+        ? null
+        : (filtroResponsavelId ?? this.filtroResponsavelId),
+    busca: clearBusca ? null : (busca ?? this.busca),
+    page: page ?? this.page,
+    pageSize: pageSize,
+  );
 }
 
 class ChamadosListViewModel extends Notifier<ChamadosListState> {
@@ -95,4 +94,5 @@ class ChamadosListViewModel extends Notifier<ChamadosListState> {
 
 final chamadosListViewModelProvider =
     NotifierProvider<ChamadosListViewModel, ChamadosListState>(
-        ChamadosListViewModel.new);
+      ChamadosListViewModel.new,
+    );

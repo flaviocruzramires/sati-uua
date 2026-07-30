@@ -42,7 +42,8 @@ Router configuracoesRouter(AppContainer container) {
       return _badRequest('valor deve ser inteiro para chave do tipo int');
     }
     if (current.tipo == 'bool' && valor != 'true' && valor != 'false') {
-      return _badRequest('valor deve ser "true" ou "false" para chave do tipo bool');
+      return _badRequest(
+          'valor deve ser "true" ou "false" para chave do tipo bool');
     }
 
     final updated = await repo.update(chave, valor, payload.userId);

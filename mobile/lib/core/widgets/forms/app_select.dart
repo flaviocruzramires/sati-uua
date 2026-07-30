@@ -41,23 +41,22 @@ class AppSelect<T> extends StatelessWidget {
             : DropdownButtonFormField<T>(
                 value: value,
                 isExpanded: true,
-                decoration: InputDecoration(
-                  errorText: errorText,
-                ),
+                decoration: InputDecoration(errorText: errorText),
                 hint: placeholder != null
                     ? Text(
                         placeholder!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: AppColors.neutral500),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.neutral500,
+                        ),
                       )
                     : null,
                 items: items
-                    .map((e) => DropdownMenuItem<T>(
-                          value: e.id,
-                          child: Text(e.label),
-                        ))
+                    .map(
+                      (e) => DropdownMenuItem<T>(
+                        value: e.id,
+                        child: Text(e.label),
+                      ),
+                    )
                     .toList(),
                 onChanged: onChanged,
                 style: Theme.of(context).textTheme.bodyMedium,

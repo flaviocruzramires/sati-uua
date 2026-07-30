@@ -102,6 +102,8 @@ class EquipamentoRepository implements EquipamentoRepositoryBase {
   }
 }
 
-final equipamentoRepositoryProvider = Provider<EquipamentoRepositoryBase>((ref) {
+final equipamentoRepositoryProvider = Provider<EquipamentoRepositoryBase>((
+  ref,
+) {
   return EquipamentoRepository(ref.watch(apiClientProvider));
 });

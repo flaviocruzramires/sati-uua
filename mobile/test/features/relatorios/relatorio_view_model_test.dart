@@ -10,19 +10,19 @@ class _MockRelatorioRepository extends Mock
     implements RelatorioRepositoryBase {}
 
 RelatorioResultDto _fakeResult({int total = 0}) => RelatorioResultDto(
-      data: const [],
-      total: total,
-      page: 1,
-      pageSize: 20,
-      resumo: const RelatorioResumoDto(
-        total: 0,
-        abertos: 0,
-        emAndamento: 0,
-        aguardandoSolicitante: 0,
-        encerrados: 0,
-        tempoMedioMinutos: 0,
-      ),
-    );
+  data: const [],
+  total: total,
+  page: 1,
+  pageSize: 20,
+  resumo: const RelatorioResumoDto(
+    total: 0,
+    abertos: 0,
+    emAndamento: 0,
+    aguardandoSolicitante: 0,
+    encerrados: 0,
+    tempoMedioMinutos: 0,
+  ),
+);
 
 void main() {
   late _MockRelatorioRepository repo;
@@ -33,21 +33,23 @@ void main() {
 
   setUp(() {
     repo = _MockRelatorioRepository();
-    when(() => repo.chamados(
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-          situacao: any(named: 'situacao'),
-          aberturaDe: any(named: 'aberturaDe'),
-          aberturaAte: any(named: 'aberturaAte'),
-          fechamentoDe: any(named: 'fechamentoDe'),
-          fechamentoAte: any(named: 'fechamentoAte'),
-        )).thenAnswer((_) async => _fakeResult());
+    when(
+      () => repo.chamados(
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+        situacao: any(named: 'situacao'),
+        aberturaDe: any(named: 'aberturaDe'),
+        aberturaAte: any(named: 'aberturaAte'),
+        fechamentoDe: any(named: 'fechamentoDe'),
+        fechamentoAte: any(named: 'fechamentoAte'),
+      ),
+    ).thenAnswer((_) async => _fakeResult());
   });
 
   ProviderContainer makeContainer() {
-    return ProviderContainer(overrides: [
-      relatorioRepositoryProvider.overrideWithValue(repo),
-    ]);
+    return ProviderContainer(
+      overrides: [relatorioRepositoryProvider.overrideWithValue(repo)],
+    );
   }
 
   test('buscar emite data', () async {
@@ -66,7 +68,8 @@ void main() {
     final vm = c.read(relatorioViewModelProvider.notifier);
     await vm.buscar();
     vm.aplicarFiltros(
-        const RelatorioFiltros(situacao: SituacaoChamado.encerrado));
+      const RelatorioFiltros(situacao: SituacaoChamado.encerrado),
+    );
     await Future.microtask(() {});
     final state = c.read(relatorioViewModelProvider);
     expect(state.filtros.situacao, SituacaoChamado.encerrado);
@@ -78,8 +81,7 @@ void main() {
     addTearDown(c.dispose);
     final vm = c.read(relatorioViewModelProvider.notifier);
     await vm.buscar();
-    vm.aplicarFiltros(
-        const RelatorioFiltros(situacao: SituacaoChamado.aberto));
+    vm.aplicarFiltros(const RelatorioFiltros(situacao: SituacaoChamado.aberto));
     await Future.microtask(() {});
     vm.limparFiltros();
     await Future.microtask(() {});

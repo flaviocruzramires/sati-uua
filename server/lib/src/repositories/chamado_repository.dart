@@ -54,8 +54,7 @@ class ChamadoRepository {
       params['responsavelId'] = responsavelId;
     }
 
-    final where =
-        conditions.isEmpty ? '' : 'WHERE ${conditions.join(' AND ')}';
+    final where = conditions.isEmpty ? '' : 'WHERE ${conditions.join(' AND ')}';
 
     final countResult = await _db.execute(
       Sql.named('SELECT COUNT(*) FROM chamados c $where'),

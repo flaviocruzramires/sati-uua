@@ -43,10 +43,7 @@ class AppTextField extends StatelessWidget {
           enabled: enabled,
           onChanged: onChanged,
           validator: validator,
-          decoration: InputDecoration(
-            hintText: hint,
-            errorText: errorText,
-          ),
+          decoration: InputDecoration(hintText: hint, errorText: errorText),
         ),
       ],
     );
@@ -87,13 +84,9 @@ class AppTextArea extends StatelessWidget {
           maxLines: maxLines,
           onChanged: onChanged,
           validator: validator,
-          decoration: InputDecoration(
-            hintText: hint,
-            errorText: errorText,
-          ),
+          decoration: InputDecoration(hintText: hint, errorText: errorText),
         ),
       ],
     );
   }
 }
-

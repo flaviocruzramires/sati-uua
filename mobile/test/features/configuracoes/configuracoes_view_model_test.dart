@@ -22,13 +22,14 @@ void main() {
   setUp(() {
     repo = _MockConfiguracaoRepository();
     when(() => repo.list()).thenAnswer((_) async => [_kConfig]);
-    when(() => repo.update(any(), any()))
-        .thenAnswer((_) async => _kConfig.copyWith(valor: 'DEBUG'));
+    when(
+      () => repo.update(any(), any()),
+    ).thenAnswer((_) async => _kConfig.copyWith(valor: 'DEBUG'));
   });
 
-  ProviderContainer makeContainer() => ProviderContainer(overrides: [
-        configuracaoRepositoryProvider.overrideWithValue(repo),
-      ]);
+  ProviderContainer makeContainer() => ProviderContainer(
+    overrides: [configuracaoRepositoryProvider.overrideWithValue(repo)],
+  );
 
   test('load popula listState', () async {
     final c = makeContainer();
@@ -57,7 +58,10 @@ void main() {
     await vm.load();
     final ok = await vm.save('LOG_LEVEL', 'DEBUG');
     expect(ok, isTrue);
-    final configs = c.read(configuracoesViewModelProvider).listState.valueOrNull;
+    final configs = c
+        .read(configuracoesViewModelProvider)
+        .listState
+        .valueOrNull;
     expect(configs?.first.valor, 'DEBUG');
   });
 

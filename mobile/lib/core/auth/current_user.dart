@@ -20,7 +20,8 @@ class CurrentUser {
       if (parts.length != 3) return null;
       final payload = base64Url.normalize(parts[1]);
       final json =
-          jsonDecode(utf8.decode(base64Url.decode(payload))) as Map<String, dynamic>;
+          jsonDecode(utf8.decode(base64Url.decode(payload)))
+              as Map<String, dynamic>;
       return CurrentUser(
         id: int.parse(json['sub'] as String),
         nome: json['nome'] as String,
@@ -32,8 +33,8 @@ class CurrentUser {
   }
 
   static PapelUsuario _parsePapel(String s) => switch (s) {
-        'admin' => PapelUsuario.admin,
-        'atendente' => PapelUsuario.atendente,
-        _ => PapelUsuario.solicitante,
-      };
+    'admin' => PapelUsuario.admin,
+    'atendente' => PapelUsuario.atendente,
+    _ => PapelUsuario.solicitante,
+  };
 }

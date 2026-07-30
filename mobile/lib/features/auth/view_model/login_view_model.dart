@@ -1,16 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/network/api_client.dart';
-import '../../../core/network/auth_storage.dart';
 import '../auth_service.dart';
 
-// Estado da tela de login
 class LoginState {
   const LoginState({this.loading = false, this.errorMessage});
   final bool loading;
   final String? errorMessage;
 
-  LoginState copyWith({bool? loading, String? errorMessage, bool clearError = false}) {
+  LoginState copyWith({
+    bool? loading,
+    String? errorMessage,
+    bool clearError = false,
+  }) {
     return LoginState(
       loading: loading ?? this.loading,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
@@ -22,10 +23,7 @@ class LoginViewModel extends Notifier<LoginState> {
   @override
   LoginState build() => const LoginState();
 
-  AuthService get _service => AuthService(
-        ref.read(apiClientProvider),
-        ref.read(authStorageProvider),
-      );
+  AuthService get _service => ref.read(authServiceProvider);
 
   Future<bool> login(String login, String senha) async {
     state = state.copyWith(loading: true, clearError: true);
@@ -43,12 +41,10 @@ class LoginViewModel extends Notifier<LoginState> {
   }
 
   Future<void> logout() async {
-    await AuthService(
-      ref.read(apiClientProvider),
-      ref.read(authStorageProvider),
-    ).logout();
+    await _service.logout();
   }
 }
 
-final loginViewModelProvider =
-    NotifierProvider<LoginViewModel, LoginState>(LoginViewModel.new);
+final loginViewModelProvider = NotifierProvider<LoginViewModel, LoginState>(
+  LoginViewModel.new,
+);

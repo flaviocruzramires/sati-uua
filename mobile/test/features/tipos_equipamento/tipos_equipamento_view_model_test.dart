@@ -21,16 +21,18 @@ void main() {
 
   setUp(() {
     repo = MockTipoRepo();
-    when(() => repo.list(
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-          busca: any(named: 'busca'),
-        )).thenAnswer((_) async => emptyResult);
+    when(
+      () => repo.list(
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+        busca: any(named: 'busca'),
+      ),
+    ).thenAnswer((_) async => emptyResult);
   });
 
   ProviderContainer makeContainer() => ProviderContainer(
-        overrides: [tipoEquipamentoRepositoryProvider.overrideWithValue(repo)],
-      );
+    overrides: [tipoEquipamentoRepositoryProvider.overrideWithValue(repo)],
+  );
 
   test('load popula listState', () async {
     final c = makeContainer();
@@ -43,9 +45,9 @@ void main() {
   });
 
   test('combo retorna lista de ComboItem', () async {
-    when(() => repo.combo()).thenAnswer((_) async => [
-          const ComboItem<int>(1, 'Notebook'),
-        ]);
+    when(
+      () => repo.combo(),
+    ).thenAnswer((_) async => [const ComboItem<int>(1, 'Notebook')]);
     final c = makeContainer();
     addTearDown(c.dispose);
     final items = await c.read(tipoEquipamentoRepositoryProvider).combo();
@@ -55,7 +57,8 @@ void main() {
 
   test('create retorna true', () async {
     when(() => repo.create('Notebook')).thenAnswer(
-        (_) async => const TipoEquipamentoDto(id: 1, nome: 'Notebook'));
+      (_) async => const TipoEquipamentoDto(id: 1, nome: 'Notebook'),
+    );
     final c = makeContainer();
     addTearDown(c.dispose);
     final ok = await c

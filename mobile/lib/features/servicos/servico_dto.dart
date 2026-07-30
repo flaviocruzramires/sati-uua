@@ -4,8 +4,6 @@ class ServicoDto {
   final int id;
   final String descricao;
 
-  factory ServicoDto.fromJson(Map<String, dynamic> json) => ServicoDto(
-        id: json['id'] as int,
-        descricao: json['descricao'] as String,
-      );
+  factory ServicoDto.fromJson(Map<String, dynamic> json) =>
+      ServicoDto(id: json['id'] as int, descricao: json['descricao'] as String);
 }

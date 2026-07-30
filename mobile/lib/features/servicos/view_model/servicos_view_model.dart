@@ -27,15 +27,14 @@ class ServicosState {
     bool? saving,
     String? saveError,
     bool clearSaveError = false,
-  }) =>
-      ServicosState(
-        listState: listState ?? this.listState,
-        busca: busca ?? this.busca,
-        page: page ?? this.page,
-        pageSize: pageSize,
-        saving: saving ?? this.saving,
-        saveError: clearSaveError ? null : (saveError ?? this.saveError),
-      );
+  }) => ServicosState(
+    listState: listState ?? this.listState,
+    busca: busca ?? this.busca,
+    page: page ?? this.page,
+    pageSize: pageSize,
+    saving: saving ?? this.saving,
+    saveError: clearSaveError ? null : (saveError ?? this.saveError),
+  );
 }
 
 class ServicosViewModel extends Notifier<ServicosState> {

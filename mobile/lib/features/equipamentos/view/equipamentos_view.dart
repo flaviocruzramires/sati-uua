@@ -33,7 +33,8 @@ class EquipamentosView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider).valueOrNull;
-    final canWrite = user?.papel == PapelUsuario.admin ||
+    final canWrite =
+        user?.papel == PapelUsuario.admin ||
         user?.papel == PapelUsuario.atendente;
 
     final vmState = ref.watch(equipamentosViewModelProvider);
@@ -49,30 +50,31 @@ class EquipamentosView extends ConsumerWidget {
           tiposCombo: tiposCombo,
           saving: vmState.saving,
           saveError: vmState.saveError,
-          onSave: ({
-            required String descricao,
-            required int tipoId,
-            int? setorId,
-            required bool ativo,
-          }) async {
-            final bool ok;
-            if (eq == null) {
-              ok = await vm.create(
-                descricao: descricao,
-                tipoEquipamentoId: tipoId,
-                setorId: setorId,
-              );
-            } else {
-              ok = await vm.update(
-                id: eq.id,
-                descricao: descricao,
-                tipoEquipamentoId: tipoId,
-                setorId: setorId,
-                ativo: ativo,
-              );
-            }
-            if (ok && context.mounted) Navigator.of(context).pop();
-          },
+          onSave:
+              ({
+                required String descricao,
+                required int tipoId,
+                int? setorId,
+                required bool ativo,
+              }) async {
+                final bool ok;
+                if (eq == null) {
+                  ok = await vm.create(
+                    descricao: descricao,
+                    tipoEquipamentoId: tipoId,
+                    setorId: setorId,
+                  );
+                } else {
+                  ok = await vm.update(
+                    id: eq.id,
+                    descricao: descricao,
+                    tipoEquipamentoId: tipoId,
+                    setorId: setorId,
+                    ativo: ativo,
+                  );
+                }
+                if (ok && context.mounted) Navigator.of(context).pop();
+              },
           onCancel: () {
             vm.clearSaveError();
             Navigator.of(context).pop();
@@ -90,22 +92,25 @@ class EquipamentosView extends ConsumerWidget {
           content: Text('Deseja excluir "${eq.descricao}"?'),
           actions: [
             TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Cancelar')),
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancelar'),
+            ),
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
                 final ok = await vm.delete(eq.id);
                 if (!ok && context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(
-                        vmState.saveError ?? 'Erro ao excluir equipamento'),
-                    backgroundColor: Colors.red,
-                  ));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        vmState.saveError ?? 'Erro ao excluir equipamento',
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
                 }
               },
-              child:
-                  const Text('Excluir', style: TextStyle(color: Colors.red)),
+              child: const Text('Excluir', style: TextStyle(color: Colors.red)),
             ),
           ],
         ),
@@ -127,7 +132,12 @@ class EquipamentosView extends ConsumerWidget {
       onNavigate: (r) => context.go(r),
       onLogout: () {},
       actions: canWrite
-          ? [AppButton(label: '+ Novo Equipamento', onPressed: () => showForm())]
+          ? [
+              AppButton(
+                label: '+ Novo Equipamento',
+                onPressed: () => showForm(),
+              ),
+            ]
           : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -147,10 +157,9 @@ class EquipamentosView extends ConsumerWidget {
             trailing: vmState.listState.whenOrNull(
               data: (r) => Text(
                 '${r.total} equipamento${r.total != 1 ? 's' : ''}',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: AppColors.muted),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(color: AppColors.muted),
               ),
             ),
           ),
@@ -223,20 +232,24 @@ class _DesktopTable extends StatelessWidget {
                 Text(eq.descricao),
                 Text(eq.tipoEquipamentoNome),
                 Text(eq.setorNome ?? '—'),
-                AtivoTag(status: eq.ativo ? StatusAtivo.ativo : StatusAtivo.inativo),
+                AtivoTag(
+                  status: eq.ativo ? StatusAtivo.ativo : StatusAtivo.inativo,
+                ),
               ],
               actionsBuilder: canWrite
                   ? (eq) => [
-                        IconActionButton(
-                            icon: LucideIcons.pencil,
-                            tooltip: 'Editar',
-                            onPressed: () => onEdit(eq)),
-                        const SizedBox(width: AppSpacing.s1),
-                        IconActionButton(
-                            icon: LucideIcons.trash2,
-                            tooltip: 'Excluir',
-                            onPressed: () => onDelete(eq)),
-                      ]
+                      IconActionButton(
+                        icon: LucideIcons.pencil,
+                        tooltip: 'Editar',
+                        onPressed: () => onEdit(eq),
+                      ),
+                      const SizedBox(width: AppSpacing.s1),
+                      IconActionButton(
+                        icon: LucideIcons.trash2,
+                        tooltip: 'Excluir',
+                        onPressed: () => onDelete(eq),
+                      ),
+                    ]
                   : null,
             ),
           ),
@@ -290,21 +303,30 @@ class _MobileList extends StatelessWidget {
                   eq.tipoEquipamentoNome,
                   if (eq.setorNome != null) eq.setorNome!,
                 ],
-                tagSlot: Row(mainAxisSize: MainAxisSize.min, children: [
-                  AtivoTag(status: eq.ativo ? StatusAtivo.ativo : StatusAtivo.inativo),
-                  if (canWrite) ...[
-                    const SizedBox(width: AppSpacing.s1),
-                    IconActionButton(
+                tagSlot: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AtivoTag(
+                      status: eq.ativo
+                          ? StatusAtivo.ativo
+                          : StatusAtivo.inativo,
+                    ),
+                    if (canWrite) ...[
+                      const SizedBox(width: AppSpacing.s1),
+                      IconActionButton(
                         icon: LucideIcons.pencil,
                         tooltip: 'Editar',
-                        onPressed: () => onEdit(eq)),
-                    const SizedBox(width: AppSpacing.s1),
-                    IconActionButton(
+                        onPressed: () => onEdit(eq),
+                      ),
+                      const SizedBox(width: AppSpacing.s1),
+                      IconActionButton(
                         icon: LucideIcons.trash2,
                         tooltip: 'Excluir',
-                        onPressed: () => onDelete(eq)),
+                        onPressed: () => onDelete(eq),
+                      ),
+                    ],
                   ],
-                ]),
+                ),
               );
             },
           ),
@@ -339,7 +361,8 @@ class _EquipamentoFormDialog extends ConsumerStatefulWidget {
     required int tipoId,
     int? setorId,
     required bool ativo,
-  }) onSave;
+  })
+  onSave;
   final VoidCallback onCancel;
   final bool saving;
   final String? saveError;
@@ -436,8 +459,10 @@ class _EquipamentoFormDialogState
           Container(
             padding: const EdgeInsets.all(AppSpacing.s3),
             color: Colors.red.shade50,
-            child: Text(error,
-                style: const TextStyle(color: Colors.red, fontSize: 13)),
+            child: Text(
+              error,
+              style: const TextStyle(color: Colors.red, fontSize: 13),
+            ),
           ),
         AppTextField(
           label: 'Descrição',

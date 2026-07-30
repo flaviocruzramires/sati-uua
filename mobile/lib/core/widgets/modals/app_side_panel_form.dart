@@ -76,7 +76,9 @@ class _SidePanel extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: _intersperse(
-                    fields, const SizedBox(height: AppSpacing.s4)),
+                  fields,
+                  const SizedBox(height: AppSpacing.s4),
+                ),
               ),
             ),
           ),
@@ -110,15 +112,13 @@ class _FullScreenPanel extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.navy,
         foregroundColor: AppColors.bg,
-        title: Text(title,
-            style: Theme.of(context)
-                .textTheme
-                .headlineSmall
-                ?.copyWith(color: AppColors.bg)),
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: onCancel,
+        title: Text(
+          title,
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(color: AppColors.bg),
         ),
+        leading: IconButton(icon: const Icon(Icons.close), onPressed: onCancel),
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         elevation: 0,
       ),
@@ -130,7 +130,9 @@ class _FullScreenPanel extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: _intersperse(
-                    fields, const SizedBox(height: AppSpacing.s4)),
+                  fields,
+                  const SizedBox(height: AppSpacing.s4),
+                ),
               ),
             ),
           ),
@@ -151,19 +153,24 @@ class _PanelTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.s4, vertical: AppSpacing.s3),
+        horizontal: AppSpacing.s4,
+        vertical: AppSpacing.s3,
+      ),
       child: Row(
         children: [
           Expanded(
-            child: Text(title,
-                style: Theme.of(context).textTheme.headlineSmall),
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
           ),
           IconButton(
             icon: const Icon(Icons.close, size: 18),
             onPressed: onCancel,
             style: IconButton.styleFrom(
               shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero),
+                borderRadius: BorderRadius.zero,
+              ),
             ),
           ),
         ],
@@ -173,8 +180,11 @@ class _PanelTitle extends StatelessWidget {
 }
 
 class _PanelActions extends StatelessWidget {
-  const _PanelActions(
-      {required this.onCancel, required this.onSave, required this.saving});
+  const _PanelActions({
+    required this.onCancel,
+    required this.onSave,
+    required this.saving,
+  });
   final VoidCallback onCancel;
   final VoidCallback onSave;
   final bool saving;

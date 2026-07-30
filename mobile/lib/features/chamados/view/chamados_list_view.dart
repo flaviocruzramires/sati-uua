@@ -32,9 +32,14 @@ class ChamadosListView extends ConsumerWidget {
     final situacaoItems = [
       const ComboItem<SituacaoChamado?>(null, 'Todos'),
       const ComboItem<SituacaoChamado?>(SituacaoChamado.aberto, 'Aberto'),
-      const ComboItem<SituacaoChamado?>(SituacaoChamado.emAndamento, 'Em andamento'),
       const ComboItem<SituacaoChamado?>(
-          SituacaoChamado.aguardandoSolicitante, 'Aguard. solicitante'),
+        SituacaoChamado.emAndamento,
+        'Em andamento',
+      ),
+      const ComboItem<SituacaoChamado?>(
+        SituacaoChamado.aguardandoSolicitante,
+        'Aguard. solicitante',
+      ),
       const ComboItem<SituacaoChamado?>(SituacaoChamado.encerrado, 'Encerrado'),
     ];
 
@@ -70,10 +75,9 @@ class ChamadosListView extends ConsumerWidget {
             trailing: vmState.listState.whenOrNull(
               data: (r) => Text(
                 '${r.total} chamado${r.total != 1 ? 's' : ''}',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: AppColors.muted),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(color: AppColors.muted),
               ),
             ),
           ),
@@ -198,12 +202,12 @@ class _MobileList extends StatelessWidget {
           child: ListView.separated(
             padding: const EdgeInsets.all(AppSpacing.s3),
             itemCount: result.data.length,
-            separatorBuilder: (_, __) =>
-                const SizedBox(height: AppSpacing.s2),
+            separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.s2),
             itemBuilder: (_, i) {
               final c = result.data[i];
               return AppCardListItem(
-                titulo: '#${c.id} · ${c.descricao.length > 50 ? '${c.descricao.substring(0, 50)}…' : c.descricao}',
+                titulo:
+                    '#${c.id} · ${c.descricao.length > 50 ? '${c.descricao.substring(0, 50)}…' : c.descricao}',
                 metaLines: [
                   c.solicitanteNome,
                   if (c.responsavelNome != null)

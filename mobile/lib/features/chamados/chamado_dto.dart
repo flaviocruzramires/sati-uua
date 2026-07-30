@@ -32,27 +32,27 @@ class ChamadoDto {
   final DateTime? dataFechamento;
 
   factory ChamadoDto.fromJson(Map<String, dynamic> json) => ChamadoDto(
-        id: json['id'] as int,
-        descricao: json['descricao'] as String,
-        solicitanteId: json['solicitanteId'] as int,
-        solicitanteNome: json['solicitanteNome'] as String,
-        responsavelId: json['responsavelId'] as int?,
-        responsavelNome: json['responsavelNome'] as String?,
-        equipamentoId: json['equipamentoId'] as int?,
-        equipamentoDescricao: json['equipamentoDescricao'] as String?,
-        servicoId: json['servicoId'] as int?,
-        servicoNome: json['servicoNome'] as String?,
-        situacao: _parseSituacao(json['situacao'] as String),
-        dataAbertura: DateTime.parse(json['dataAbertura'] as String),
-        dataFechamento: json['dataFechamento'] != null
-            ? DateTime.parse(json['dataFechamento'] as String)
-            : null,
-      );
+    id: json['id'] as int,
+    descricao: json['descricao'] as String,
+    solicitanteId: json['solicitanteId'] as int,
+    solicitanteNome: json['solicitanteNome'] as String,
+    responsavelId: json['responsavelId'] as int?,
+    responsavelNome: json['responsavelNome'] as String?,
+    equipamentoId: json['equipamentoId'] as int?,
+    equipamentoDescricao: json['equipamentoDescricao'] as String?,
+    servicoId: json['servicoId'] as int?,
+    servicoNome: json['servicoNome'] as String?,
+    situacao: _parseSituacao(json['situacao'] as String),
+    dataAbertura: DateTime.parse(json['dataAbertura'] as String),
+    dataFechamento: json['dataFechamento'] != null
+        ? DateTime.parse(json['dataFechamento'] as String)
+        : null,
+  );
 
   static SituacaoChamado _parseSituacao(String s) => switch (s) {
-        'ABERTO' => SituacaoChamado.aberto,
-        'EM_ANDAMENTO' => SituacaoChamado.emAndamento,
-        'AGUARDANDO_SOLICITANTE' => SituacaoChamado.aguardandoSolicitante,
-        _ => SituacaoChamado.encerrado,
-      };
+    'ABERTO' => SituacaoChamado.aberto,
+    'EM_ANDAMENTO' => SituacaoChamado.emAndamento,
+    'AGUARDANDO_SOLICITANTE' => SituacaoChamado.aguardandoSolicitante,
+    _ => SituacaoChamado.encerrado,
+  };
 }

@@ -29,7 +29,8 @@ Router usuariosRouter(AppContainer container) {
       }
     }
 
-    final result = await repo.list(page: page, pageSize: pageSize, papel: papel);
+    final result =
+        await repo.list(page: page, pageSize: pageSize, papel: papel);
     return _ok({
       'data': result.data.map((u) => u.toJson()).toList(),
       'total': result.total,
@@ -53,7 +54,8 @@ Router usuariosRouter(AppContainer container) {
     if (nome.isEmpty) return _badRequest('nome é obrigatório');
     if (email.isEmpty) return _badRequest('email é obrigatório');
     if (login.isEmpty) return _badRequest('login é obrigatório');
-    if (senha.length < 8) return _badRequest('senha deve ter no mínimo 8 caracteres');
+    if (senha.length < 8)
+      return _badRequest('senha deve ter no mínimo 8 caracteres');
     if (setorId == null) return _badRequest('setorId é obrigatório');
 
     Papel papel;

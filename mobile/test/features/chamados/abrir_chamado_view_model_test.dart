@@ -35,36 +35,36 @@ void main() {
     equipRepo = MockEquipamentoRepo();
     servicoRepo = MockServicoRepo();
 
-    when(() => equipRepo.list(
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-          tipoEquipamentoId: any(named: 'tipoEquipamentoId'),
-        )).thenAnswer((_) async => PaginatedResult(
-          data: const [],
-          total: 0,
-          page: 1,
-          pageSize: 200,
-        ));
+    when(
+      () => equipRepo.list(
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+        tipoEquipamentoId: any(named: 'tipoEquipamentoId'),
+      ),
+    ).thenAnswer(
+      (_) async =>
+          PaginatedResult(data: const [], total: 0, page: 1, pageSize: 200),
+    );
 
-    when(() => servicoRepo.list(
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-          busca: any(named: 'busca'),
-        )).thenAnswer((_) async => PaginatedResult(
-          data: const [],
-          total: 0,
-          page: 1,
-          pageSize: 200,
-        ));
+    when(
+      () => servicoRepo.list(
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+        busca: any(named: 'busca'),
+      ),
+    ).thenAnswer(
+      (_) async =>
+          PaginatedResult(data: const [], total: 0, page: 1, pageSize: 200),
+    );
   });
 
   ProviderContainer makeContainer() => ProviderContainer(
-        overrides: [
-          chamadoRepositoryProvider.overrideWithValue(repo),
-          equipamentoRepositoryProvider.overrideWithValue(equipRepo),
-          servicoRepositoryProvider.overrideWithValue(servicoRepo),
-        ],
-      );
+    overrides: [
+      chamadoRepositoryProvider.overrideWithValue(repo),
+      equipamentoRepositoryProvider.overrideWithValue(equipRepo),
+      servicoRepositoryProvider.overrideWithValue(servicoRepo),
+    ],
+  );
 
   test('init carrega combos de equipamentos e serviços', () async {
     final c = makeContainer();
@@ -78,11 +78,13 @@ void main() {
   });
 
   test('abrir retorna true e guarda chamadoCriadoId', () async {
-    when(() => repo.create(
-          descricao: any(named: 'descricao'),
-          equipamentoId: any(named: 'equipamentoId'),
-          servicoId: any(named: 'servicoId'),
-        )).thenAnswer((_) async => kChamado);
+    when(
+      () => repo.create(
+        descricao: any(named: 'descricao'),
+        equipamentoId: any(named: 'equipamentoId'),
+        servicoId: any(named: 'servicoId'),
+      ),
+    ).thenAnswer((_) async => kChamado);
 
     final c = makeContainer();
     addTearDown(c.dispose);
@@ -94,11 +96,13 @@ void main() {
   });
 
   test('abrir retorna false em erro e salva saveError', () async {
-    when(() => repo.create(
-          descricao: any(named: 'descricao'),
-          equipamentoId: any(named: 'equipamentoId'),
-          servicoId: any(named: 'servicoId'),
-        )).thenThrow(Exception('500'));
+    when(
+      () => repo.create(
+        descricao: any(named: 'descricao'),
+        equipamentoId: any(named: 'equipamentoId'),
+        servicoId: any(named: 'servicoId'),
+      ),
+    ).thenThrow(Exception('500'));
 
     final c = makeContainer();
     addTearDown(c.dispose);

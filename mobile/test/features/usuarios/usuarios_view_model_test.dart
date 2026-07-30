@@ -12,7 +12,6 @@ class MockUsuarioRepo extends Mock implements UsuarioRepositoryBase {}
 
 class MockSetorRepo extends Mock implements SetorRepositoryBase {}
 
-
 const kUsuario = UsuarioDto(
   id: 1,
   nome: 'Ana',
@@ -49,24 +48,28 @@ void main() {
   setUp(() {
     repo = MockUsuarioRepo();
     setorRepo = MockSetorRepo();
-    when(() => repo.list(
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-          papel: any(named: 'papel'),
-        )).thenAnswer((_) async => emptyResult);
-    when(() => setorRepo.list(
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-          busca: any(named: 'busca'),
-        )).thenAnswer((_) async => emptySetores);
+    when(
+      () => repo.list(
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+        papel: any(named: 'papel'),
+      ),
+    ).thenAnswer((_) async => emptyResult);
+    when(
+      () => setorRepo.list(
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+        busca: any(named: 'busca'),
+      ),
+    ).thenAnswer((_) async => emptySetores);
   });
 
   ProviderContainer makeContainer() => ProviderContainer(
-        overrides: [
-          usuarioRepositoryProvider.overrideWithValue(repo),
-          setorRepositoryProvider.overrideWithValue(setorRepo),
-        ],
-      );
+    overrides: [
+      usuarioRepositoryProvider.overrideWithValue(repo),
+      setorRepositoryProvider.overrideWithValue(setorRepo),
+    ],
+  );
 
   test('load popula listState', () async {
     final c = makeContainer();
@@ -79,17 +82,21 @@ void main() {
   });
 
   test('create retorna true', () async {
-    when(() => repo.create(
-          nome: any(named: 'nome'),
-          email: any(named: 'email'),
-          login: any(named: 'login'),
-          senha: any(named: 'senha'),
-          setorId: any(named: 'setorId'),
-          papel: any(named: 'papel'),
-        )).thenAnswer((_) async => kUsuario);
+    when(
+      () => repo.create(
+        nome: any(named: 'nome'),
+        email: any(named: 'email'),
+        login: any(named: 'login'),
+        senha: any(named: 'senha'),
+        setorId: any(named: 'setorId'),
+        papel: any(named: 'papel'),
+      ),
+    ).thenAnswer((_) async => kUsuario);
     final c = makeContainer();
     addTearDown(c.dispose);
-    final ok = await c.read(usuariosViewModelProvider.notifier).create(
+    final ok = await c
+        .read(usuariosViewModelProvider.notifier)
+        .create(
           nome: 'Ana',
           email: 'ana@uems.br',
           login: 'ana',
@@ -101,14 +108,16 @@ void main() {
   });
 
   test('create retorna false em conflito e salva saveError', () async {
-    when(() => repo.create(
-          nome: any(named: 'nome'),
-          email: any(named: 'email'),
-          login: any(named: 'login'),
-          senha: any(named: 'senha'),
-          setorId: any(named: 'setorId'),
-          papel: any(named: 'papel'),
-        )).thenThrow(Exception('409'));
+    when(
+      () => repo.create(
+        nome: any(named: 'nome'),
+        email: any(named: 'email'),
+        login: any(named: 'login'),
+        senha: any(named: 'senha'),
+        setorId: any(named: 'setorId'),
+        papel: any(named: 'papel'),
+      ),
+    ).thenThrow(Exception('409'));
     final c = makeContainer();
     addTearDown(c.dispose);
     final vm = c.read(usuariosViewModelProvider.notifier);
@@ -126,18 +135,22 @@ void main() {
   });
 
   test('update retorna true', () async {
-    when(() => repo.update(
-          id: any(named: 'id'),
-          nome: any(named: 'nome'),
-          email: any(named: 'email'),
-          setorId: any(named: 'setorId'),
-          papel: any(named: 'papel'),
-          ativo: any(named: 'ativo'),
-          senha: any(named: 'senha'),
-        )).thenAnswer((_) async => kUsuario);
+    when(
+      () => repo.update(
+        id: any(named: 'id'),
+        nome: any(named: 'nome'),
+        email: any(named: 'email'),
+        setorId: any(named: 'setorId'),
+        papel: any(named: 'papel'),
+        ativo: any(named: 'ativo'),
+        senha: any(named: 'senha'),
+      ),
+    ).thenAnswer((_) async => kUsuario);
     final c = makeContainer();
     addTearDown(c.dispose);
-    final ok = await c.read(usuariosViewModelProvider.notifier).update(
+    final ok = await c
+        .read(usuariosViewModelProvider.notifier)
+        .update(
           id: 1,
           nome: 'Ana',
           email: 'ana@uems.br',

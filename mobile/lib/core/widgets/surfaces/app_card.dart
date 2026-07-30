@@ -22,10 +22,10 @@ class AppCard extends StatelessWidget {
   static const _shadows = {
     AppCardElevation.none: <BoxShadow>[],
     AppCardElevation.sm: [
-      BoxShadow(color: Color(0x2423262D), blurRadius: 2, offset: Offset(0, 1))
+      BoxShadow(color: Color(0x2423262D), blurRadius: 2, offset: Offset(0, 1)),
     ],
     AppCardElevation.md: [
-      BoxShadow(color: Color(0x2923262D), blurRadius: 10, offset: Offset(0, 3))
+      BoxShadow(color: Color(0x2923262D), blurRadius: 10, offset: Offset(0, 3)),
     ],
   };
 

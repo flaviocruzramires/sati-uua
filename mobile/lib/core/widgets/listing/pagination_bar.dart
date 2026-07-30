@@ -33,10 +33,9 @@ class PaginationBar extends StatelessWidget {
         children: [
           Text(
             paginacaoLabel(page, pageSize, total),
-            style: Theme.of(context)
-                .textTheme
-                .labelSmall
-                ?.copyWith(color: AppColors.muted),
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(color: AppColors.muted),
           ),
           const Spacer(),
           _PgBtn(
@@ -44,20 +43,23 @@ class PaginationBar extends StatelessWidget {
             enabled: page > 1,
             onTap: () => onPageChanged(page - 1),
           ),
-          ..._pageNumbers(last).map((n) => n == null
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Text('…',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall
-                          ?.copyWith(color: AppColors.muted)),
-                )
-              : _PgBtn(
-                  label: '$n',
-                  active: n == page,
-                  onTap: () => onPageChanged(n),
-                )),
+          ..._pageNumbers(last).map(
+            (n) => n == null
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Text(
+                      '…',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.labelSmall?.copyWith(color: AppColors.muted),
+                    ),
+                  )
+                : _PgBtn(
+                    label: '$n',
+                    active: n == page,
+                    onTap: () => onPageChanged(n),
+                  ),
+          ),
           _PgBtn(
             icon: LucideIcons.chevronRight,
             enabled: page < last,
@@ -79,7 +81,13 @@ class PaginationBar extends StatelessWidget {
 }
 
 class _PgBtn extends StatelessWidget {
-  const _PgBtn({this.label, this.icon, this.active = false, this.enabled = true, required this.onTap});
+  const _PgBtn({
+    this.label,
+    this.icon,
+    this.active = false,
+    this.enabled = true,
+    required this.onTap,
+  });
 
   final String? label;
   final IconData? icon;
@@ -93,8 +101,8 @@ class _PgBtn extends StatelessWidget {
     final fg = active
         ? AppColors.bg
         : enabled
-            ? AppColors.text
-            : AppColors.neutral400;
+        ? AppColors.text
+        : AppColors.neutral400;
 
     return GestureDetector(
       onTap: enabled ? onTap : null,
@@ -113,10 +121,9 @@ class _PgBtn extends StatelessWidget {
             ? Icon(icon, size: 14, color: fg)
             : Text(
                 label!,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall
-                    ?.copyWith(color: fg, fontSize: 12),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelSmall?.copyWith(color: fg, fontSize: 12),
               ),
       ),
     );

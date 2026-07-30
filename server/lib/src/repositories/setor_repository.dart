@@ -35,7 +35,9 @@ class SetorRepository {
     );
 
     return (
-      data: rows.map((r) => Setor(id: r[0] as int, nome: r[1] as String)).toList(),
+      data: rows
+          .map((r) => Setor(id: r[0] as int, nome: r[1] as String))
+          .toList(),
       total: total,
     );
   }
@@ -44,7 +46,9 @@ class SetorRepository {
     final rows = await _db.execute(
       Sql.named('SELECT id, nome FROM setores ORDER BY nome ASC'),
     );
-    return rows.map((r) => Setor(id: r[0] as int, nome: r[1] as String)).toList();
+    return rows
+        .map((r) => Setor(id: r[0] as int, nome: r[1] as String))
+        .toList();
   }
 
   Future<Setor?> findById(int id) async {
@@ -72,8 +76,7 @@ class SetorRepository {
 
   Future<Setor> create(String nome) async {
     final rows = await _db.execute(
-      Sql.named(
-          'INSERT INTO setores (nome) VALUES (@nome) RETURNING id, nome'),
+      Sql.named('INSERT INTO setores (nome) VALUES (@nome) RETURNING id, nome'),
       parameters: {'nome': nome},
     );
     return Setor(id: rows.first[0] as int, nome: rows.first[1] as String);

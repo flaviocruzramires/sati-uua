@@ -21,10 +21,7 @@ class AppDataTable<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final allColumns = [
-      ...columns,
-      if (actionsBuilder != null) 'Ações',
-    ];
+    final allColumns = [...columns, if (actionsBuilder != null) 'Ações'];
 
     return Table(
       border: TableBorder.all(color: AppColors.neutral300, width: 1),
@@ -45,12 +42,11 @@ class AppDataTable<T> extends StatelessWidget {
     return TableRow(
       decoration: const BoxDecoration(color: AppColors.surface),
       children: cols
-          .map((col) => _Cell(
-                child: Text(
-                  col,
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-              ))
+          .map(
+            (col) => _Cell(
+              child: Text(col, style: Theme.of(context).textTheme.titleSmall),
+            ),
+          )
           .toList(),
     );
   }
@@ -58,14 +54,14 @@ class AppDataTable<T> extends StatelessWidget {
   TableRow _dataRow(BuildContext context, T item) {
     final cells = rowBuilder(item);
     return TableRow(
-      decoration: BoxDecoration(
-        color: AppColors.bg,
-      ),
+      decoration: BoxDecoration(color: AppColors.bg),
       children: [
-        ...cells.map((c) => GestureDetector(
-              onTap: onRowTap != null ? () => onRowTap!(item) : null,
-              child: _Cell(child: c),
-            )),
+        ...cells.map(
+          (c) => GestureDetector(
+            onTap: onRowTap != null ? () => onRowTap!(item) : null,
+            child: _Cell(child: c),
+          ),
+        ),
         if (actionsBuilder != null)
           _Cell(
             child: Row(
@@ -86,7 +82,9 @@ class _Cell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.s3, vertical: AppSpacing.s2),
+        horizontal: AppSpacing.s3,
+        vertical: AppSpacing.s2,
+      ),
       child: child,
     );
   }

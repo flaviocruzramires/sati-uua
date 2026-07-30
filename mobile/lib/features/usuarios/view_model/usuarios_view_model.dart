@@ -38,18 +38,16 @@ class UsuariosState {
     bool? saving,
     String? saveError,
     bool clearSaveError = false,
-  }) =>
-      UsuariosState(
-        listState: listState ?? this.listState,
-        setoresCombo: setoresCombo ?? this.setoresCombo,
-        filtroPapel:
-            clearFiltroPapel ? null : (filtroPapel ?? this.filtroPapel),
-        page: page ?? this.page,
-        pageSize: pageSize,
-        selectedId: clearSelected ? null : (selectedId ?? this.selectedId),
-        saving: saving ?? this.saving,
-        saveError: clearSaveError ? null : (saveError ?? this.saveError),
-      );
+  }) => UsuariosState(
+    listState: listState ?? this.listState,
+    setoresCombo: setoresCombo ?? this.setoresCombo,
+    filtroPapel: clearFiltroPapel ? null : (filtroPapel ?? this.filtroPapel),
+    page: page ?? this.page,
+    pageSize: pageSize,
+    selectedId: clearSelected ? null : (selectedId ?? this.selectedId),
+    saving: saving ?? this.saving,
+    saveError: clearSaveError ? null : (saveError ?? this.saveError),
+  );
 
   UsuarioDto? selectedUser(List<UsuarioDto> data) =>
       data.where((u) => u.id == selectedId).firstOrNull;

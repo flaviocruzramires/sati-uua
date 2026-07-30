@@ -15,8 +15,7 @@ Router dashboardRouter(AppContainer container) {
     final payload = requireAuth(req);
     requirePapel(payload, Papel.atendente);
 
-    final dias =
-        int.tryParse(req.url.queryParameters['dias'] ?? '30') ?? 30;
+    final dias = int.tryParse(req.url.queryParameters['dias'] ?? '30') ?? 30;
     final diasValido = [7, 30, 90].contains(dias) ? dias : 30;
 
     final resumo = await repo.resumo(diasValido);

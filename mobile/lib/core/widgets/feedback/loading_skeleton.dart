@@ -96,10 +96,6 @@ class _SkeletonBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      color: AppColors.neutral200,
-    );
+    return Container(width: width, height: height, color: AppColors.neutral200);
   }
 }

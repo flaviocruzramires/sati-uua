@@ -28,7 +28,8 @@ class AuthService {
   Future<String> login(String login, String senha) async {
     final usuario = await _repo.findByLogin(login);
     if (usuario == null) {
-      _log.warning('Tentativa de login: usuário não encontrado (login omitido)');
+      _log.warning(
+          'Tentativa de login: usuário não encontrado (login omitido)');
       throw const AuthException('Credenciais inválidas');
     }
 

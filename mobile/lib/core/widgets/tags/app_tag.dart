@@ -14,26 +14,45 @@ class AppTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (bg, fg, border) = switch (variant) {
-      AppTagVariant.accent => (AppColors.accent100, AppColors.accent800, Colors.transparent),
-      AppTagVariant.accent2 => (AppColors.green100, AppColors.green800, Colors.transparent),
-      AppTagVariant.neutral => (AppColors.neutral100, AppColors.neutral800, Colors.transparent),
-      AppTagVariant.outline => (Colors.transparent, AppColors.navy, AppColors.navy),
+      AppTagVariant.accent => (
+        AppColors.accent100,
+        AppColors.accent800,
+        Colors.transparent,
+      ),
+      AppTagVariant.accent2 => (
+        AppColors.green100,
+        AppColors.green800,
+        Colors.transparent,
+      ),
+      AppTagVariant.neutral => (
+        AppColors.neutral100,
+        AppColors.neutral800,
+        Colors.transparent,
+      ),
+      AppTagVariant.outline => (
+        Colors.transparent,
+        AppColors.navy,
+        AppColors.navy,
+      ),
     };
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
         color: bg,
-        border: Border.all(color: border, width: border == Colors.transparent ? 0 : 1),
+        border: Border.all(
+          color: border,
+          width: border == Colors.transparent ? 0 : 1,
+        ),
       ),
       child: Text(
         label,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: fg,
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0,
-            ),
+          color: fg,
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0,
+        ),
       ),
     );
   }
@@ -49,7 +68,10 @@ class StatusChamadoTag extends StatelessWidget {
     final (label, variant) = switch (situacao) {
       SituacaoChamado.aberto => ('Aberto', AppTagVariant.accent),
       SituacaoChamado.emAndamento => ('Em andamento', AppTagVariant.accent2),
-      SituacaoChamado.aguardandoSolicitante => ('Aguardando solicitante', AppTagVariant.outline),
+      SituacaoChamado.aguardandoSolicitante => (
+        'Aguardando solicitante',
+        AppTagVariant.outline,
+      ),
       SituacaoChamado.encerrado => ('Encerrado', AppTagVariant.neutral),
     };
     return AppTag(label: label, variant: variant);
@@ -81,7 +103,9 @@ class AtivoTag extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppTag(
       label: status == StatusAtivo.ativo ? 'Ativo' : 'Inativo',
-      variant: status == StatusAtivo.ativo ? AppTagVariant.accent2 : AppTagVariant.neutral,
+      variant: status == StatusAtivo.ativo
+          ? AppTagVariant.accent2
+          : AppTagVariant.neutral,
     );
   }
 }

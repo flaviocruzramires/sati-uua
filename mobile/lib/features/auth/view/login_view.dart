@@ -89,10 +89,7 @@ class _DesktopLayout extends StatelessWidget {
     return Row(
       children: [
         // Painel esquerdo — 42%
-        Flexible(
-          flex: 42,
-          child: _BrandPanel(),
-        ),
+        Flexible(flex: 42, child: _BrandPanel()),
         // Painel direito — 58%
         Flexible(
           flex: 58,
@@ -141,16 +138,18 @@ class _BrandPanel extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('SATI-UUA',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(color: AppColors.bg)),
-                  Text('UEMS Aquidauana',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall
-                          ?.copyWith(color: AppColors.bg.withAlpha(180))),
+                  Text(
+                    'SATI-UUA',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlineSmall?.copyWith(color: AppColors.bg),
+                  ),
+                  Text(
+                    'UEMS Aquidauana',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.bg.withAlpha(180),
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -158,28 +157,26 @@ class _BrandPanel extends StatelessWidget {
           const Spacer(),
           Text(
             'Sistema de Atendimento de\nTecnologia da Informação',
-            style: Theme.of(context)
-                .textTheme
-                .displaySmall
-                ?.copyWith(color: AppColors.bg, height: 1.15),
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
+              color: AppColors.bg,
+              height: 1.15,
+            ),
           ),
           const SizedBox(height: AppSpacing.s4),
           Text(
             'Registre, acompanhe e resolva solicitações de TI\nde forma rápida e organizada.',
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: AppColors.bg.withAlpha(199)),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppColors.bg.withAlpha(199),
+            ),
           ),
           const Spacer(),
           Divider(color: Colors.white.withAlpha(56), thickness: 2),
           const SizedBox(height: AppSpacing.s3),
           Text(
             'UEMS · Unidade Universitária Aquidauana',
-            style: Theme.of(context)
-                .textTheme
-                .labelSmall
-                ?.copyWith(color: AppColors.bg.withAlpha(180)),
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: AppColors.bg.withAlpha(180),
+            ),
           ),
         ],
       ),
@@ -227,19 +224,19 @@ class _MobileLayout extends StatelessWidget {
                 child: const FlutterLogo(),
               ),
               const SizedBox(height: AppSpacing.s3),
-              Text('SATI-UUA',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineSmall
-                      ?.copyWith(color: AppColors.bg)),
+              Text(
+                'SATI-UUA',
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineSmall?.copyWith(color: AppColors.bg),
+              ),
               const SizedBox(height: AppSpacing.s1),
               Text(
                 'Sistema de Atendimento de TI — UEMS Aquidauana',
                 textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall
-                    ?.copyWith(color: AppColors.bg.withAlpha(180)),
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.bg.withAlpha(180),
+                ),
               ),
             ],
           ),
@@ -248,7 +245,9 @@ class _MobileLayout extends StatelessWidget {
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
-                horizontal: 24, vertical: AppSpacing.s6),
+              horizontal: 24,
+              vertical: AppSpacing.s6,
+            ),
             child: _FormContent(
               loginCtrl: loginCtrl,
               senhaCtrl: senhaCtrl,
@@ -292,10 +291,9 @@ class _FormContent extends StatelessWidget {
         const SizedBox(height: AppSpacing.s1),
         Text(
           'Acesse com seu usuário institucional.',
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: AppColors.muted),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: AppColors.muted),
         ),
         const SizedBox(height: AppSpacing.s6),
         AppTextField(
@@ -324,11 +322,12 @@ class _FormContent extends StatelessWidget {
             const Spacer(),
             TextButton(
               onPressed: () {},
-              child: Text('Esqueci minha senha',
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(color: AppColors.navy)),
+              child: Text(
+                'Esqueci minha senha',
+                style: Theme.of(
+                  context,
+                ).textTheme.labelSmall?.copyWith(color: AppColors.navy),
+              ),
             ),
           ],
         ),
@@ -339,10 +338,9 @@ class _FormContent extends StatelessWidget {
             color: Colors.red.shade50,
             child: Text(
               state.errorMessage!,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: Colors.red.shade700),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.red.shade700),
             ),
           ),
         ],
@@ -359,10 +357,9 @@ class _FormContent extends StatelessWidget {
         const SizedBox(height: AppSpacing.s3),
         Text(
           'Precisa de acesso? Fale com o Administrador de TI.',
-          style: Theme.of(context)
-              .textTheme
-              .labelSmall
-              ?.copyWith(color: AppColors.muted),
+          style: Theme.of(
+            context,
+          ).textTheme.labelSmall?.copyWith(color: AppColors.muted),
         ),
       ],
     );

@@ -7,11 +7,11 @@ import 'relatorio_dto.dart';
 export 'relatorio_dto.dart';
 
 String _situacaoStr(SituacaoChamado s) => switch (s) {
-      SituacaoChamado.aberto => 'ABERTO',
-      SituacaoChamado.emAndamento => 'EM_ANDAMENTO',
-      SituacaoChamado.aguardandoSolicitante => 'AGUARDANDO_SOLICITANTE',
-      SituacaoChamado.encerrado => 'ENCERRADO',
-    };
+  SituacaoChamado.aberto => 'ABERTO',
+  SituacaoChamado.emAndamento => 'EM_ANDAMENTO',
+  SituacaoChamado.aguardandoSolicitante => 'AGUARDANDO_SOLICITANTE',
+  SituacaoChamado.encerrado => 'ENCERRADO',
+};
 
 abstract class RelatorioRepositoryBase {
   Future<RelatorioResultDto> chamados({
@@ -72,7 +72,6 @@ class RelatorioRepository implements RelatorioRepositoryBase {
   }
 }
 
-final relatorioRepositoryProvider =
-    Provider<RelatorioRepositoryBase>((ref) {
+final relatorioRepositoryProvider = Provider<RelatorioRepositoryBase>((ref) {
   return RelatorioRepository(ref.watch(apiClientProvider));
 });

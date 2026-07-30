@@ -43,10 +43,8 @@ class AppDateField extends StatelessWidget {
               initialDate: value ?? DateTime.now(),
               firstDate: firstDate ?? DateTime(2000),
               lastDate: lastDate ?? DateTime(2100),
-              builder: (ctx, child) => Theme(
-                data: Theme.of(ctx),
-                child: child!,
-              ),
+              builder: (ctx, child) =>
+                  Theme(data: Theme.of(ctx), child: child!),
             );
             onChanged(picked);
           },
@@ -99,12 +97,14 @@ class AppDateTimeField extends StatelessWidget {
             if (date == null || !context.mounted) return;
             final time = await showTimePicker(
               context: context,
-              initialTime:
-                  value != null ? TimeOfDay.fromDateTime(value!) : TimeOfDay.now(),
+              initialTime: value != null
+                  ? TimeOfDay.fromDateTime(value!)
+                  : TimeOfDay.now(),
             );
             if (time == null) return;
-            onChanged(DateTime(
-                date.year, date.month, date.day, time.hour, time.minute));
+            onChanged(
+              DateTime(date.year, date.month, date.day, time.hour, time.minute),
+            );
           },
           child: _DateDisplayField(
             text: value != null ? _dateTimeFmt.format(value!) : null,
@@ -131,8 +131,10 @@ class _DateDisplayField extends StatelessWidget {
       decoration: InputDecoration(
         errorText: errorText,
         suffixIcon: Icon(icon, size: 16, color: AppColors.neutral600),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 14,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.zero,
           borderSide: BorderSide(
@@ -149,8 +151,8 @@ class _DateDisplayField extends StatelessWidget {
       child: Text(
         text ?? '',
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: text == null ? AppColors.neutral500 : null,
-            ),
+          color: text == null ? AppColors.neutral500 : null,
+        ),
       ),
     );
   }

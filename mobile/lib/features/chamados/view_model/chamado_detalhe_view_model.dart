@@ -18,12 +18,11 @@ class ChamadoDetalheState {
     bool? saving,
     String? saveError,
     bool clearSaveError = false,
-  }) =>
-      ChamadoDetalheState(
-        detalheState: detalheState ?? this.detalheState,
-        saving: saving ?? this.saving,
-        saveError: clearSaveError ? null : (saveError ?? this.saveError),
-      );
+  }) => ChamadoDetalheState(
+    detalheState: detalheState ?? this.detalheState,
+    saving: saving ?? this.saving,
+    saveError: clearSaveError ? null : (saveError ?? this.saveError),
+  );
 }
 
 class ChamadoDetalheViewModel extends FamilyNotifier<ChamadoDetalheState, int> {
@@ -60,7 +59,9 @@ class ChamadoDetalheViewModel extends FamilyNotifier<ChamadoDetalheState, int> {
         marcaEncerramento: marcaEncerramento,
       );
       state = state.copyWith(
-          saving: false, detalheState: AsyncValue.data(detalhe));
+        saving: false,
+        detalheState: AsyncValue.data(detalhe),
+      );
       return true;
     } catch (e) {
       state = state.copyWith(saving: false, saveError: e.toString());
@@ -75,7 +76,9 @@ class ChamadoDetalheViewModel extends FamilyNotifier<ChamadoDetalheState, int> {
     state = state.copyWith(saving: true, clearSaveError: true);
     try {
       await _repo.atribuirResponsavel(
-          id: chamadoId, responsavelId: responsavelId);
+        id: chamadoId,
+        responsavelId: responsavelId,
+      );
       await load(chamadoId);
       state = state.copyWith(saving: false);
       return true;
@@ -88,7 +91,7 @@ class ChamadoDetalheViewModel extends FamilyNotifier<ChamadoDetalheState, int> {
   void clearSaveError() => state = state.copyWith(clearSaveError: true);
 }
 
-final chamadoDetalheViewModelProvider = NotifierProviderFamily<
-    ChamadoDetalheViewModel, ChamadoDetalheState, int>(
-  ChamadoDetalheViewModel.new,
-);
+final chamadoDetalheViewModelProvider =
+    NotifierProviderFamily<ChamadoDetalheViewModel, ChamadoDetalheState, int>(
+      ChamadoDetalheViewModel.new,
+    );

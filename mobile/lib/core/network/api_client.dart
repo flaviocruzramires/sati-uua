@@ -19,34 +19,40 @@ class ApiClient {
   void setUnauthorizedCallback(VoidCallback cb) => _onUnauthorized = cb;
 
   Dio _build() {
-    final dio = Dio(BaseOptions(
-      baseUrl: _kBaseUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 30),
-      headers: {'Content-Type': 'application/json'},
-    ));
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: _kBaseUrl,
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 30),
+        headers: {'Content-Type': 'application/json'},
+      ),
+    );
 
-    dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        final token = await _authStorage.readToken();
-        if (token != null) {
-          options.headers['Authorization'] = 'Bearer $token';
-        }
-        handler.next(options);
-      },
-      onError: (e, handler) {
-        if (e.response?.statusCode == 401) {
-          _onUnauthorized?.call();
-        }
-        handler.next(e);
-      },
-    ));
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final token = await _authStorage.readToken();
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          handler.next(options);
+        },
+        onError: (e, handler) {
+          if (e.response?.statusCode == 401) {
+            _onUnauthorized?.call();
+          }
+          handler.next(e);
+        },
+      ),
+    );
 
     return dio;
   }
 
-  Future<Response<T>> get<T>(String path,
-      {Map<String, dynamic>? queryParameters}) async {
+  Future<Response<T>> get<T>(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
       return await _dio.get<T>(path, queryParameters: queryParameters);
     } on DioException catch (e) {

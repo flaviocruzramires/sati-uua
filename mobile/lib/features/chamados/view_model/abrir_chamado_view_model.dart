@@ -27,14 +27,13 @@ class AbrirChamadoState {
     String? saveError,
     bool clearSaveError = false,
     int? chamadoCriadoId,
-  }) =>
-      AbrirChamadoState(
-        equipamentosCombo: equipamentosCombo ?? this.equipamentosCombo,
-        servicosCombo: servicosCombo ?? this.servicosCombo,
-        saving: saving ?? this.saving,
-        saveError: clearSaveError ? null : (saveError ?? this.saveError),
-        chamadoCriadoId: chamadoCriadoId ?? this.chamadoCriadoId,
-      );
+  }) => AbrirChamadoState(
+    equipamentosCombo: equipamentosCombo ?? this.equipamentosCombo,
+    servicosCombo: servicosCombo ?? this.servicosCombo,
+    saving: saving ?? this.saving,
+    saveError: clearSaveError ? null : (saveError ?? this.saveError),
+    chamadoCriadoId: chamadoCriadoId ?? this.chamadoCriadoId,
+  );
 }
 
 class AbrirChamadoViewModel extends Notifier<AbrirChamadoState> {
@@ -104,4 +103,5 @@ class AbrirChamadoViewModel extends Notifier<AbrirChamadoState> {
 
 final abrirChamadoViewModelProvider =
     NotifierProvider<AbrirChamadoViewModel, AbrirChamadoState>(
-        AbrirChamadoViewModel.new);
+      AbrirChamadoViewModel.new,
+    );

@@ -22,19 +22,19 @@ class UsuarioDto {
   final bool ativo;
 
   factory UsuarioDto.fromJson(Map<String, dynamic> json) => UsuarioDto(
-        id: json['id'] as int,
-        nome: json['nome'] as String,
-        email: json['email'] as String,
-        login: json['login'] as String,
-        setorId: json['setorId'] as int,
-        setorNome: json['setorNome'] as String?,
-        papel: _parsePapel(json['papel'] as String),
-        ativo: json['ativo'] as bool,
-      );
+    id: json['id'] as int,
+    nome: json['nome'] as String,
+    email: json['email'] as String,
+    login: json['login'] as String,
+    setorId: json['setorId'] as int,
+    setorNome: json['setorNome'] as String?,
+    papel: _parsePapel(json['papel'] as String),
+    ativo: json['ativo'] as bool,
+  );
 
   static PapelUsuario _parsePapel(String s) => switch (s.toUpperCase()) {
-        'ADMIN' => PapelUsuario.admin,
-        'ATENDENTE' => PapelUsuario.atendente,
-        _ => PapelUsuario.solicitante,
-      };
+    'ADMIN' => PapelUsuario.admin,
+    'ATENDENTE' => PapelUsuario.atendente,
+    _ => PapelUsuario.solicitante,
+  };
 }

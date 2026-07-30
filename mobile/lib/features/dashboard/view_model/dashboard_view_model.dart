@@ -11,10 +11,7 @@ class DashboardState {
   final AsyncValue<DashboardDto> resumoState;
   final int dias;
 
-  DashboardState copyWith({
-    AsyncValue<DashboardDto>? resumoState,
-    int? dias,
-  }) =>
+  DashboardState copyWith({AsyncValue<DashboardDto>? resumoState, int? dias}) =>
       DashboardState(
         resumoState: resumoState ?? this.resumoState,
         dias: dias ?? this.dias,
@@ -48,4 +45,5 @@ class DashboardViewModel extends Notifier<DashboardState> {
 
 final dashboardViewModelProvider =
     NotifierProvider<DashboardViewModel, DashboardState>(
-        DashboardViewModel.new);
+      DashboardViewModel.new,
+    );

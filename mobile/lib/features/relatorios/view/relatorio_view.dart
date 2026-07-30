@@ -50,10 +50,9 @@ class RelatorioView extends ConsumerWidget {
             trailing: vmState.resultState.whenOrNull(
               data: (r) => Text(
                 '${r.resumo.total} resultado${r.resumo.total != 1 ? 's' : ''}',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: AppColors.muted),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(color: AppColors.muted),
               ),
             ),
           ),
@@ -65,23 +64,22 @@ class RelatorioView extends ConsumerWidget {
               value: vmState.resultState,
               onRetry: vm.buscar,
               empty: () => const Center(
-                  child: Text('Nenhum chamado encontrado para os filtros')),
+                child: Text('Nenhum chamado encontrado para os filtros'),
+              ),
               builder: (result) => Breakpoints.isMobile(context)
                   ? _MobileList(
                       result: result,
                       currentPage: vmState.page,
                       pageSize: vmState.pageSize,
                       onPageChange: vm.setPage,
-                      onTap: (item) =>
-                          context.go('/chamados/${item.id}'),
+                      onTap: (item) => context.go('/chamados/${item.id}'),
                     )
                   : _DesktopTable(
                       result: result,
                       currentPage: vmState.page,
                       pageSize: vmState.pageSize,
                       onPageChange: vm.setPage,
-                      onTap: (item) =>
-                          context.go('/chamados/${item.id}'),
+                      onTap: (item) => context.go('/chamados/${item.id}'),
                     ),
             ),
           ),
@@ -123,11 +121,13 @@ class _FiltrosBarState extends State<_FiltrosBar> {
   }
 
   void _aplicar() {
-    widget.onAplicar(RelatorioFiltros(
-      situacao: _situacao,
-      aberturaDe: _aberturaDe,
-      aberturaAte: _aberturaAte,
-    ));
+    widget.onAplicar(
+      RelatorioFiltros(
+        situacao: _situacao,
+        aberturaDe: _aberturaDe,
+        aberturaAte: _aberturaAte,
+      ),
+    );
   }
 
   @override
@@ -136,11 +136,14 @@ class _FiltrosBarState extends State<_FiltrosBar> {
       const ComboItem<SituacaoChamado?>(null, 'Todas as situações'),
       const ComboItem<SituacaoChamado?>(SituacaoChamado.aberto, 'Aberto'),
       const ComboItem<SituacaoChamado?>(
-          SituacaoChamado.emAndamento, 'Em andamento'),
+        SituacaoChamado.emAndamento,
+        'Em andamento',
+      ),
       const ComboItem<SituacaoChamado?>(
-          SituacaoChamado.aguardandoSolicitante, 'Aguard. solicitante'),
-      const ComboItem<SituacaoChamado?>(
-          SituacaoChamado.encerrado, 'Encerrado'),
+        SituacaoChamado.aguardandoSolicitante,
+        'Aguard. solicitante',
+      ),
+      const ComboItem<SituacaoChamado?>(SituacaoChamado.encerrado, 'Encerrado'),
     ];
 
     return FilterBar(
@@ -170,10 +173,7 @@ class _FiltrosBarState extends State<_FiltrosBar> {
             onChanged: (v) => setState(() => _aberturaAte = v),
           ),
         ),
-        AppButton(
-          label: 'Buscar',
-          onPressed: _aplicar,
-        ),
+        AppButton(label: 'Buscar', onPressed: _aplicar),
         if (widget.filtros.hasAnyFilter)
           AppButton(
             label: 'Limpar',
@@ -203,16 +203,20 @@ class _ResumoBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.s4, vertical: AppSpacing.s2),
+        horizontal: AppSpacing.s4,
+        vertical: AppSpacing.s2,
+      ),
       color: AppColors.surface,
       child: Wrap(
         spacing: AppSpacing.s4,
         children: [
           _ResumoChip('Abertos', resumo.abertos, AppColors.navy),
+          _ResumoChip('Em andamento', resumo.emAndamento, AppColors.accent500),
           _ResumoChip(
-              'Em andamento', resumo.emAndamento, AppColors.accent500),
-          _ResumoChip('Aguardando', resumo.aguardandoSolicitante,
-              AppColors.neutral600),
+            'Aguardando',
+            resumo.aguardandoSolicitante,
+            AppColors.neutral600,
+          ),
           _ResumoChip('Encerrados', resumo.encerrados, AppColors.neutral600),
           Text(
             'Tempo médio: ${resumo.tempoMedioFormatado}',
@@ -234,8 +238,7 @@ class _ResumoChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       '$label: $valor',
-      style: TextStyle(
-          fontSize: 12, fontWeight: FontWeight.w600, color: color),
+      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: color),
     );
   }
 }
@@ -282,18 +285,24 @@ class _DesktopTable extends StatelessWidget {
                 StatusChamadoTag(situacao: item.situacao),
                 Text(item.solicitanteNome),
                 Text(item.solicitanteSetor),
-                Text(item.responsavelNome ?? '—',
-                    style: item.responsavelNome == null
-                        ? TextStyle(color: AppColors.muted)
-                        : null),
-                Text(item.servicoDescricao ?? '—',
-                    style: item.servicoDescricao == null
-                        ? TextStyle(color: AppColors.muted)
-                        : null),
+                Text(
+                  item.responsavelNome ?? '—',
+                  style: item.responsavelNome == null
+                      ? TextStyle(color: AppColors.muted)
+                      : null,
+                ),
+                Text(
+                  item.servicoDescricao ?? '—',
+                  style: item.servicoDescricao == null
+                      ? TextStyle(color: AppColors.muted)
+                      : null,
+                ),
                 Text(_dtFmt.format(item.dataAbertura.toLocal())),
-                Text(item.dataFechamento != null
-                    ? _dtFmt.format(item.dataFechamento!.toLocal())
-                    : '—'),
+                Text(
+                  item.dataFechamento != null
+                      ? _dtFmt.format(item.dataFechamento!.toLocal())
+                      : '—',
+                ),
               ],
             ),
           ),
@@ -333,8 +342,7 @@ class _MobileList extends StatelessWidget {
           child: ListView.separated(
             padding: const EdgeInsets.all(AppSpacing.s3),
             itemCount: result.data.length,
-            separatorBuilder: (_, __) =>
-                const SizedBox(height: AppSpacing.s2),
+            separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.s2),
             itemBuilder: (_, i) {
               final item = result.data[i];
               return AppCardListItem(

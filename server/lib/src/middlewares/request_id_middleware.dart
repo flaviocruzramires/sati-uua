@@ -13,9 +13,11 @@ Middleware requestIdMiddleware() {
   return (Handler innerHandler) {
     return (Request request) async {
       final incoming = request.headers[requestIdHeader];
-      final requestId = (incoming != null && incoming.isNotEmpty) ? incoming : _uuid.v4();
+      final requestId =
+          (incoming != null && incoming.isNotEmpty) ? incoming : _uuid.v4();
 
-      final updatedRequest = request.change(context: {_requestIdContextKey: requestId});
+      final updatedRequest =
+          request.change(context: {_requestIdContextKey: requestId});
       final response = await innerHandler(updatedRequest);
       return response.change(headers: {requestIdHeader: requestId});
     };
@@ -23,5 +25,6 @@ Middleware requestIdMiddleware() {
 }
 
 extension RequestIdContext on Request {
-  String get requestId => (context[_requestIdContextKey] as String?) ?? 'sem-id';
+  String get requestId =>
+      (context[_requestIdContextKey] as String?) ?? 'sem-id';
 }

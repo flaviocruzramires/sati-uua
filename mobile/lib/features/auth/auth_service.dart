@@ -1,3 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../core/network/api_client.dart';
 import '../../core/network/auth_storage.dart';
 
@@ -23,3 +25,10 @@ class AuthService {
     return token != null;
   }
 }
+
+final authServiceProvider = Provider<AuthService>((ref) {
+  return AuthService(
+    ref.watch(apiClientProvider),
+    ref.watch(authStorageProvider),
+  );
+});

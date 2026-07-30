@@ -25,7 +25,8 @@ class AsyncStateView<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return value.when(
-      loading: () => LoadingSkeleton(tipo: skeletonTipo, linhas: skeletonLinhas),
+      loading: () =>
+          LoadingSkeleton(tipo: skeletonTipo, linhas: skeletonLinhas),
       error: (e, _) => ErrorState(mensagem: e.toString(), onRetry: onRetry),
       data: (data) {
         if (empty != null && _isEmpty(data)) return empty!();

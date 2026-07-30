@@ -75,7 +75,8 @@ class Env {
   String get dbPassword => _require('DB_PASSWORD');
 
   String get jwtSecret => _require('JWT_SECRET');
-  int get jwtExpirationHours => int.parse(_optional('JWT_EXPIRATION_HOURS', '8'));
+  int get jwtExpirationHours =>
+      int.parse(_optional('JWT_EXPIRATION_HOURS', '8'));
 
   String get logLevel => _optional('LOG_LEVEL', 'INFO');
 }

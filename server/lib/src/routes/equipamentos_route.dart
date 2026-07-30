@@ -19,8 +19,8 @@ Router equipamentosRouter(AppContainer container) {
     final tipoId =
         int.tryParse(req.url.queryParameters['tipoEquipamentoId'] ?? '');
 
-    final result =
-        await repo.list(page: page, pageSize: pageSize, tipoEquipamentoId: tipoId);
+    final result = await repo.list(
+        page: page, pageSize: pageSize, tipoEquipamentoId: tipoId);
     return _ok({
       'data': result.data.map((e) => e.toJson()).toList(),
       'total': result.total,

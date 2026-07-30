@@ -41,14 +41,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/equipamentos',
         builder: (_, __) => const EquipamentosView(),
       ),
-      GoRoute(
-        path: '/usuarios',
-        builder: (_, __) => const UsuariosView(),
-      ),
-      GoRoute(
-        path: '/chamados',
-        builder: (_, __) => const ChamadosListView(),
-      ),
+      GoRoute(path: '/usuarios', builder: (_, __) => const UsuariosView()),
+      GoRoute(path: '/chamados', builder: (_, __) => const ChamadosListView()),
       GoRoute(
         path: '/chamados/abrir',
         builder: (_, __) => const AbrirChamadoView(),
@@ -57,10 +51,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/configuracoes',
         builder: (_, __) => const ConfiguracoesView(),
       ),
-      GoRoute(
-        path: '/relatorios',
-        builder: (_, __) => const RelatorioView(),
-      ),
+      GoRoute(path: '/relatorios', builder: (_, __) => const RelatorioView()),
       GoRoute(
         path: '/chamados/:id',
         builder: (_, state) {

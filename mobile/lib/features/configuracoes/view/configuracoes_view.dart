@@ -34,17 +34,22 @@ class ConfiguracoesView extends ConsumerWidget {
       child: AsyncStateView<List<ConfiguracaoDto>>(
         value: vmState.listState,
         onRetry: vm.load,
-        empty: () => const Center(child: Text('Nenhuma configuração disponível')),
+        empty: () =>
+            const Center(child: Text('Nenhuma configuração disponível')),
         builder: (configs) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (vmState.saveError != null)
               Padding(
                 padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.s4, AppSpacing.s4, AppSpacing.s4, 0),
+                  AppSpacing.s4,
+                  AppSpacing.s4,
+                  AppSpacing.s4,
+                  0,
+                ),
                 child: Text(
                   vmState.saveError!,
-                  style: const TextStyle(color: Color(0xFFB91C1C)),
+                  style: TextStyle(color: Colors.red.shade700),
                 ),
               ),
             Expanded(
@@ -113,8 +118,9 @@ class _ConfiguracaoCardState extends State<_ConfiguracaoCard> {
   }
 
   Future<void> _salvar() async {
-    final valor =
-        widget.config.tipo == 'bool' ? _boolValue.toString() : _ctrl.text.trim();
+    final valor = widget.config.tipo == 'bool'
+        ? _boolValue.toString()
+        : _ctrl.text.trim();
     final ok = await widget.onSave(valor);
     if (ok) setState(() => _dirty = false);
   }
@@ -137,14 +143,16 @@ class _ConfiguracaoCardState extends State<_ConfiguracaoCard> {
                 Text(
                   widget.config.chave,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontFamily: 'monospace',
-                        color: AppColors.navy,
-                      ),
+                    fontFamily: 'monospace',
+                    color: AppColors.navy,
+                  ),
                 ),
                 const SizedBox(width: AppSpacing.s2),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 6, vertical: 2),
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.surface,
                     borderRadius: BorderRadius.circular(4),
@@ -153,7 +161,9 @@ class _ConfiguracaoCardState extends State<_ConfiguracaoCard> {
                   child: Text(
                     widget.config.tipo,
                     style: const TextStyle(
-                        fontSize: 11, color: AppColors.muted),
+                      fontSize: 11,
+                      color: AppColors.muted,
+                    ),
                   ),
                 ),
               ],
@@ -162,10 +172,9 @@ class _ConfiguracaoCardState extends State<_ConfiguracaoCard> {
               const SizedBox(height: AppSpacing.s1),
               Text(
                 widget.config.descricao!,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: AppColors.muted),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.muted),
               ),
             ],
             const SizedBox(height: AppSpacing.s3),
@@ -199,7 +208,9 @@ class _ConfiguracaoCardState extends State<_ConfiguracaoCard> {
                   Text(
                     'Atualizado por ${widget.config.atualizadoPorNome}',
                     style: const TextStyle(
-                        fontSize: 11, color: AppColors.muted),
+                      fontSize: 11,
+                      color: AppColors.muted,
+                    ),
                   ),
                 ],
               ],

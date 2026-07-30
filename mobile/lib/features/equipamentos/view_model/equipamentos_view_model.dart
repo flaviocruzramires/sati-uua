@@ -36,18 +36,16 @@ class EquipamentosState {
     bool? saving,
     String? saveError,
     bool clearSaveError = false,
-  }) =>
-      EquipamentosState(
-        listState: listState ?? this.listState,
-        tiposCombo: tiposCombo ?? this.tiposCombo,
-        setoresCombo: setoresCombo ?? this.setoresCombo,
-        filtroTipoId:
-            clearFiltroTipo ? null : (filtroTipoId ?? this.filtroTipoId),
-        page: page ?? this.page,
-        pageSize: pageSize,
-        saving: saving ?? this.saving,
-        saveError: clearSaveError ? null : (saveError ?? this.saveError),
-      );
+  }) => EquipamentosState(
+    listState: listState ?? this.listState,
+    tiposCombo: tiposCombo ?? this.tiposCombo,
+    setoresCombo: setoresCombo ?? this.setoresCombo,
+    filtroTipoId: clearFiltroTipo ? null : (filtroTipoId ?? this.filtroTipoId),
+    page: page ?? this.page,
+    pageSize: pageSize,
+    saving: saving ?? this.saving,
+    saveError: clearSaveError ? null : (saveError ?? this.saveError),
+  );
 }
 
 class EquipamentosViewModel extends Notifier<EquipamentosState> {
@@ -167,4 +165,5 @@ class EquipamentosViewModel extends Notifier<EquipamentosState> {
 
 final equipamentosViewModelProvider =
     NotifierProvider<EquipamentosViewModel, EquipamentosState>(
-        EquipamentosViewModel.new);
+      EquipamentosViewModel.new,
+    );

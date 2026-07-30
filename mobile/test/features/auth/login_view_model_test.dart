@@ -46,7 +46,8 @@ void main() {
       addTearDown(container.dispose);
 
       final notifier =
-          container.read(loginViewModelProvider.notifier) as _TestLoginViewModel;
+          container.read(loginViewModelProvider.notifier)
+              as _TestLoginViewModel;
 
       expect(container.read(loginViewModelProvider).loading, isFalse);
       final future = notifier.login('admin', 'senha123');
@@ -68,12 +69,15 @@ void main() {
       addTearDown(container.dispose);
 
       final notifier =
-          container.read(loginViewModelProvider.notifier) as _TestLoginViewModel;
+          container.read(loginViewModelProvider.notifier)
+              as _TestLoginViewModel;
 
       final ok = await notifier.login('admin', 'errada');
       expect(ok, isFalse);
-      expect(container.read(loginViewModelProvider).errorMessage,
-          'Login ou senha inválidos');
+      expect(
+        container.read(loginViewModelProvider).errorMessage,
+        'Login ou senha inválidos',
+      );
       expect(container.read(loginViewModelProvider).loading, isFalse);
     });
 
@@ -87,12 +91,12 @@ void main() {
       addTearDown(container.dispose);
 
       final notifier =
-          container.read(loginViewModelProvider.notifier) as _TestLoginViewModel;
+          container.read(loginViewModelProvider.notifier)
+              as _TestLoginViewModel;
 
       // Primeiro login falha
       await notifier.login('admin', 'errada');
-      expect(
-          container.read(loginViewModelProvider).errorMessage, isNotNull);
+      expect(container.read(loginViewModelProvider).errorMessage, isNotNull);
 
       // Segundo login: error deve ser limpo no início
       mock.shouldFail = false;

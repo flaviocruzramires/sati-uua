@@ -35,18 +35,19 @@ class AppCardListItem extends StatelessWidget {
                   Text(
                     titulo,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   if (metaLines.isNotEmpty) ...[
                     const SizedBox(height: AppSpacing.s1),
-                    ...metaLines.map((m) => Text(
-                          m,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall
-                              ?.copyWith(color: AppColors.muted),
-                        )),
+                    ...metaLines.map(
+                      (m) => Text(
+                        m,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.muted,
+                        ),
+                      ),
+                    ),
                   ],
                 ],
               ),

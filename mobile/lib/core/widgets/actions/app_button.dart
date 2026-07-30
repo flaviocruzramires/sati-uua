@@ -34,26 +34,26 @@ class AppButton extends StatelessWidget {
 
     return switch (variant) {
       AppButtonVariant.primary => ElevatedButton(
-          onPressed: effectiveOnPressed,
-          style: ElevatedButton.styleFrom(
-            alignment: centerLabel ? Alignment.center : Alignment.centerLeft,
-          ),
-          child: child,
+        onPressed: effectiveOnPressed,
+        style: ElevatedButton.styleFrom(
+          alignment: centerLabel ? Alignment.center : Alignment.centerLeft,
         ),
+        child: child,
+      ),
       AppButtonVariant.secondary => OutlinedButton(
-          onPressed: effectiveOnPressed,
-          style: OutlinedButton.styleFrom(
-            alignment: centerLabel ? Alignment.center : Alignment.centerLeft,
-          ),
-          child: child,
+        onPressed: effectiveOnPressed,
+        style: OutlinedButton.styleFrom(
+          alignment: centerLabel ? Alignment.center : Alignment.centerLeft,
         ),
+        child: child,
+      ),
       AppButtonVariant.ghost => TextButton(
-          onPressed: effectiveOnPressed,
-          style: TextButton.styleFrom(
-            alignment: centerLabel ? Alignment.center : Alignment.centerLeft,
-          ),
-          child: child,
+        onPressed: effectiveOnPressed,
+        style: TextButton.styleFrom(
+          alignment: centerLabel ? Alignment.center : Alignment.centerLeft,
         ),
+        child: child,
+      ),
     };
   }
 

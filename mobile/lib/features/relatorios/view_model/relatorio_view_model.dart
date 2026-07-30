@@ -45,26 +45,25 @@ class RelatorioFiltros {
     bool clearFechamentoDe = false,
     DateTime? fechamentoAte,
     bool clearFechamentoAte = false,
-  }) =>
-      RelatorioFiltros(
-        situacao: clearSituacao ? null : (situacao ?? this.situacao),
-        solicitanteId:
-            clearSolicitante ? null : (solicitanteId ?? this.solicitanteId),
-        atendenteId:
-            clearAtendente ? null : (atendenteId ?? this.atendenteId),
-        equipamentoId:
-            clearEquipamento ? null : (equipamentoId ?? this.equipamentoId),
-        servicoId: clearServico ? null : (servicoId ?? this.servicoId),
-        aberturaDe:
-            clearAberturaDe ? null : (aberturaDe ?? this.aberturaDe),
-        aberturaAte:
-            clearAberturaAte ? null : (aberturaAte ?? this.aberturaAte),
-        fechamentoDe:
-            clearFechamentoDe ? null : (fechamentoDe ?? this.fechamentoDe),
-        fechamentoAte: clearFechamentoAte
-            ? null
-            : (fechamentoAte ?? this.fechamentoAte),
-      );
+  }) => RelatorioFiltros(
+    situacao: clearSituacao ? null : (situacao ?? this.situacao),
+    solicitanteId: clearSolicitante
+        ? null
+        : (solicitanteId ?? this.solicitanteId),
+    atendenteId: clearAtendente ? null : (atendenteId ?? this.atendenteId),
+    equipamentoId: clearEquipamento
+        ? null
+        : (equipamentoId ?? this.equipamentoId),
+    servicoId: clearServico ? null : (servicoId ?? this.servicoId),
+    aberturaDe: clearAberturaDe ? null : (aberturaDe ?? this.aberturaDe),
+    aberturaAte: clearAberturaAte ? null : (aberturaAte ?? this.aberturaAte),
+    fechamentoDe: clearFechamentoDe
+        ? null
+        : (fechamentoDe ?? this.fechamentoDe),
+    fechamentoAte: clearFechamentoAte
+        ? null
+        : (fechamentoAte ?? this.fechamentoAte),
+  );
 
   bool get hasAnyFilter =>
       situacao != null ||
@@ -95,13 +94,12 @@ class RelatorioState {
     AsyncValue<RelatorioResultDto>? resultState,
     RelatorioFiltros? filtros,
     int? page,
-  }) =>
-      RelatorioState(
-        resultState: resultState ?? this.resultState,
-        filtros: filtros ?? this.filtros,
-        page: page ?? this.page,
-        pageSize: pageSize,
-      );
+  }) => RelatorioState(
+    resultState: resultState ?? this.resultState,
+    filtros: filtros ?? this.filtros,
+    page: page ?? this.page,
+    pageSize: pageSize,
+  );
 }
 
 class RelatorioViewModel extends Notifier<RelatorioState> {
@@ -142,8 +140,7 @@ class RelatorioViewModel extends Notifier<RelatorioState> {
   }
 
   void limparFiltros() {
-    state = state.copyWith(
-        filtros: const RelatorioFiltros(), page: 1);
+    state = state.copyWith(filtros: const RelatorioFiltros(), page: 1);
     buscar();
   }
 
@@ -155,4 +152,5 @@ class RelatorioViewModel extends Notifier<RelatorioState> {
 
 final relatorioViewModelProvider =
     NotifierProvider<RelatorioViewModel, RelatorioState>(
-        RelatorioViewModel.new);
+      RelatorioViewModel.new,
+    );

@@ -183,10 +183,13 @@ class _Sidebar extends StatelessWidget {
           Container(
             decoration: const BoxDecoration(
               border: Border(
-                  bottom: BorderSide(color: AppColors.divider, width: 2)),
+                bottom: BorderSide(color: AppColors.divider, width: 2),
+              ),
             ),
             padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.s3, vertical: AppSpacing.s3),
+              horizontal: AppSpacing.s3,
+              vertical: AppSpacing.s3,
+            ),
             child: Row(
               children: [
                 Container(
@@ -202,10 +205,9 @@ class _Sidebar extends StatelessWidget {
                   children: [
                     Text(
                       'SATI-UUA',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(fontSize: 14),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.headlineSmall?.copyWith(fontSize: 14),
                     ),
                     Text(
                       'UEMS AQUIDAUANA',
@@ -228,32 +230,36 @@ class _Sidebar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Itens raiz (sem grupo)
-                  ...(grouped[null] ?? []).map((e) => SidebarNavItem(
-                        icon: e.icon,
-                        label: e.label,
-                        active: shell.currentRoute == e.route,
-                        onTap: () => shell.onNavigate(e.route),
-                        visibleForPapeis: e.visibleForPapeis,
-                        currentPapel: shell.papelUsuario,
-                      )),
+                  ...(grouped[null] ?? []).map(
+                    (e) => SidebarNavItem(
+                      icon: e.icon,
+                      label: e.label,
+                      active: shell.currentRoute == e.route,
+                      onTap: () => shell.onNavigate(e.route),
+                      visibleForPapeis: e.visibleForPapeis,
+                      currentPapel: shell.papelUsuario,
+                    ),
+                  ),
                   // Grupos
                   ...grouped.entries
                       .where((en) => en.key != null)
-                      .map((en) => SidebarNavGroup(
-                            label: en.key!,
-                            children: en.value
-                                .map((e) => SidebarNavItem(
-                                      icon: e.icon,
-                                      label: e.label,
-                                      active:
-                                          shell.currentRoute == e.route,
-                                      onTap: () =>
-                                          shell.onNavigate(e.route),
-                                      visibleForPapeis: e.visibleForPapeis,
-                                      currentPapel: shell.papelUsuario,
-                                    ))
-                                .toList(),
-                          )),
+                      .map(
+                        (en) => SidebarNavGroup(
+                          label: en.key!,
+                          children: en.value
+                              .map(
+                                (e) => SidebarNavItem(
+                                  icon: e.icon,
+                                  label: e.label,
+                                  active: shell.currentRoute == e.route,
+                                  onTap: () => shell.onNavigate(e.route),
+                                  visibleForPapeis: e.visibleForPapeis,
+                                  currentPapel: shell.papelUsuario,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
                 ],
               ),
             ),
@@ -280,8 +286,7 @@ class _Topbar extends StatelessWidget {
       height: 64,
       decoration: const BoxDecoration(
         color: AppColors.bg,
-        border: Border(
-            bottom: BorderSide(color: AppColors.divider, width: 2)),
+        border: Border(bottom: BorderSide(color: AppColors.divider, width: 2)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 28),
       child: Row(
@@ -291,22 +296,24 @@ class _Topbar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(shell.title,
-                    style: Theme.of(context).textTheme.headlineMedium),
+                Text(
+                  shell.title,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
                 if (shell.subtitle != null)
-                  Text(shell.subtitle!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall
-                          ?.copyWith(color: AppColors.muted)),
+                  Text(
+                    shell.subtitle!,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelSmall?.copyWith(color: AppColors.muted),
+                  ),
               ],
             ),
           ),
           if (shell.actions != null)
             Row(mainAxisSize: MainAxisSize.min, children: shell.actions!),
           const SizedBox(width: AppSpacing.s3),
-          Icon(LucideIcons.bell,
-              size: 20, color: AppColors.neutral600),
+          Icon(LucideIcons.bell, size: 20, color: AppColors.neutral600),
         ],
       ),
     );
@@ -347,24 +354,27 @@ class _MobileShell extends StatelessWidget {
         elevation: 0,
         scrolledUnderElevation: 0,
         shape: const Border(
-            bottom: BorderSide(color: AppColors.divider, width: 2)),
+          bottom: BorderSide(color: AppColors.divider, width: 2),
+        ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(shell.title,
-                style: Theme.of(context).textTheme.headlineMedium),
+            Text(
+              shell.title,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
             if (shell.subtitle != null)
-              Text(shell.subtitle!,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(color: AppColors.muted)),
+              Text(
+                shell.subtitle!,
+                style: Theme.of(
+                  context,
+                ).textTheme.labelSmall?.copyWith(color: AppColors.muted),
+              ),
           ],
         ),
         actions: [
           if (shell.actions != null) ...shell.actions!,
-          Icon(LucideIcons.bell,
-              size: 20, color: AppColors.neutral600),
+          Icon(LucideIcons.bell, size: 20, color: AppColors.neutral600),
           const SizedBox(width: AppSpacing.s3),
         ],
       ),

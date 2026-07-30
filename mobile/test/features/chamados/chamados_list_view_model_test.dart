@@ -25,18 +25,20 @@ void main() {
 
   setUp(() {
     repo = MockChamadoRepo();
-    when(() => repo.list(
-          page: any(named: 'page'),
-          pageSize: any(named: 'pageSize'),
-          situacao: any(named: 'situacao'),
-          solicitanteId: any(named: 'solicitanteId'),
-          responsavelId: any(named: 'responsavelId'),
-        )).thenAnswer((_) async => _empty);
+    when(
+      () => repo.list(
+        page: any(named: 'page'),
+        pageSize: any(named: 'pageSize'),
+        situacao: any(named: 'situacao'),
+        solicitanteId: any(named: 'solicitanteId'),
+        responsavelId: any(named: 'responsavelId'),
+      ),
+    ).thenAnswer((_) async => _empty);
   });
 
   ProviderContainer makeContainer() => ProviderContainer(
-        overrides: [chamadoRepositoryProvider.overrideWithValue(repo)],
-      );
+    overrides: [chamadoRepositoryProvider.overrideWithValue(repo)],
+  );
 
   test('load popula listState', () async {
     final c = makeContainer();

@@ -41,7 +41,8 @@ Future<void> main(List<String> arguments) async {
     if (seedDir.existsSync()) {
       await _applySqlFiles(db, seedDir, trackAsMigration: false);
     } else {
-      stdout.writeln('Nenhum diretório migrations/seed encontrado — pulando seed.');
+      stdout.writeln(
+          'Nenhum diretório migrations/seed encontrado — pulando seed.');
     }
   }
 
@@ -68,7 +69,8 @@ Future<void> _applySqlFiles(
 
     if (trackAsMigration) {
       final alreadyApplied = await db.execute(
-        Sql.named('SELECT version FROM schema_migrations WHERE version = @version'),
+        Sql.named(
+            'SELECT version FROM schema_migrations WHERE version = @version'),
         parameters: {'version': version},
       );
       if (alreadyApplied.isNotEmpty) {

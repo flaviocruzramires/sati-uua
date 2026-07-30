@@ -40,7 +40,10 @@ class AppFormDialog extends StatelessWidget {
                 padding: const EdgeInsets.all(AppSpacing.s6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: _intersperse(fields, const SizedBox(height: AppSpacing.s4)),
+                  children: _intersperse(
+                    fields,
+                    const SizedBox(height: AppSpacing.s4),
+                  ),
                 ),
               ),
             ),
@@ -71,19 +74,24 @@ class _DialogTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.s6, vertical: AppSpacing.s4),
+        horizontal: AppSpacing.s6,
+        vertical: AppSpacing.s4,
+      ),
       child: Row(
         children: [
           Expanded(
-            child: Text(title,
-                style: Theme.of(context).textTheme.headlineSmall),
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
           ),
           IconButton(
             icon: const Icon(Icons.close, size: 18),
             onPressed: onCancel,
             style: IconButton.styleFrom(
               shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero),
+                borderRadius: BorderRadius.zero,
+              ),
             ),
           ),
         ],
@@ -93,8 +101,11 @@ class _DialogTitle extends StatelessWidget {
 }
 
 class _DialogActions extends StatelessWidget {
-  const _DialogActions(
-      {required this.onCancel, required this.onSave, required this.saving});
+  const _DialogActions({
+    required this.onCancel,
+    required this.onSave,
+    required this.saving,
+  });
   final VoidCallback onCancel;
   final VoidCallback onSave;
   final bool saving;
@@ -103,7 +114,9 @@ class _DialogActions extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.s6, vertical: AppSpacing.s4),
+        horizontal: AppSpacing.s6,
+        vertical: AppSpacing.s4,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

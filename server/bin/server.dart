@@ -32,7 +32,8 @@ void main(List<String> arguments) async {
   _log.info('Iniciando SATI-UUA server (env=${env.appEnv})...');
 
   final container = await AppContainer.create(env);
-  _log.info('Conectado ao Postgres em ${env.dbHost}:${env.dbPort}/${env.dbName}');
+  _log.info(
+      'Conectado ao Postgres em ${env.dbHost}:${env.dbPort}/${env.dbName}');
 
   final router = Router()
     ..mount('/', healthRouter(container).call)

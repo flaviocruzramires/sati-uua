@@ -51,8 +51,10 @@ class _SearchFieldState extends State<SearchField> {
             size: 16,
             color: AppColors.neutral500,
           ),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 0,
+          ),
         ),
       ),
     );

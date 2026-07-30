@@ -3,7 +3,8 @@ import 'package:shelf/shelf.dart';
 const _corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Origin, Content-Type, Authorization, $requestIdHeaderName',
+  'Access-Control-Allow-Headers':
+      'Origin, Content-Type, Authorization, $requestIdHeaderName',
 };
 
 const requestIdHeaderName = 'X-Request-Id';

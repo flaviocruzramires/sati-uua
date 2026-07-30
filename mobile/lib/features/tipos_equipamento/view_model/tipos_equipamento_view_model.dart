@@ -27,15 +27,14 @@ class TiposEquipamentoState {
     bool? saving,
     String? saveError,
     bool clearSaveError = false,
-  }) =>
-      TiposEquipamentoState(
-        listState: listState ?? this.listState,
-        busca: busca ?? this.busca,
-        page: page ?? this.page,
-        pageSize: pageSize,
-        saving: saving ?? this.saving,
-        saveError: clearSaveError ? null : (saveError ?? this.saveError),
-      );
+  }) => TiposEquipamentoState(
+    listState: listState ?? this.listState,
+    busca: busca ?? this.busca,
+    page: page ?? this.page,
+    pageSize: pageSize,
+    saving: saving ?? this.saving,
+    saveError: clearSaveError ? null : (saveError ?? this.saveError),
+  );
 }
 
 class TiposEquipamentoViewModel extends Notifier<TiposEquipamentoState> {
@@ -116,4 +115,5 @@ class TiposEquipamentoViewModel extends Notifier<TiposEquipamentoState> {
 
 final tiposEquipamentoViewModelProvider =
     NotifierProvider<TiposEquipamentoViewModel, TiposEquipamentoState>(
-        TiposEquipamentoViewModel.new);
+      TiposEquipamentoViewModel.new,
+    );

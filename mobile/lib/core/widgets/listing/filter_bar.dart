@@ -22,8 +22,7 @@ class FilterBar extends StatelessWidget {
       runSpacing: AppSpacing.s3,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        if (search != null)
-          SizedBox(width: 240, child: search),
+        if (search != null) SizedBox(width: 240, child: search),
         ...filters,
         if (trailing != null) trailing!,
       ],

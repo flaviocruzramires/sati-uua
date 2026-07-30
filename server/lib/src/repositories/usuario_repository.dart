@@ -78,9 +78,7 @@ class UsuarioRepository implements UsuarioRepositoryBase {
     Papel? papel,
   }) async {
     final offset = (page - 1) * pageSize;
-    final where = papel != null
-        ? "WHERE u.papel = @papel::papel_usuario"
-        : '';
+    final where = papel != null ? "WHERE u.papel = @papel::papel_usuario" : '';
 
     final countResult = await _db.execute(
       Sql.named('SELECT COUNT(*) FROM usuarios u $where'),
