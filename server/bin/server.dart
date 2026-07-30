@@ -14,6 +14,7 @@ import 'package:sati_uua_server/src/middlewares/request_id_middleware.dart';
 import 'package:sati_uua_server/src/routes/auth_route.dart';
 import 'package:sati_uua_server/src/routes/chamados_route.dart';
 import 'package:sati_uua_server/src/routes/dashboard_route.dart';
+import 'package:sati_uua_server/src/routes/configuracoes_route.dart';
 import 'package:sati_uua_server/src/routes/relatorios_route.dart';
 import 'package:sati_uua_server/src/routes/equipamentos_route.dart';
 import 'package:sati_uua_server/src/routes/health_route.dart';
@@ -43,7 +44,8 @@ void main(List<String> arguments) async {
     ..mount('/', usuariosRouter(container).call)
     ..mount('/', chamadosRouter(container).call)
     ..mount('/', dashboardRouter(container).call)
-    ..mount('/', relatoriosRouter(container).call);
+    ..mount('/', relatoriosRouter(container).call)
+    ..mount('/', configuracoesRouter(container).call);
 
   final handler = const Pipeline()
       .addMiddleware(requestIdMiddleware())

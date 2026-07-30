@@ -11,6 +11,7 @@ import '../../features/dashboard/view/dashboard_view.dart';
 import '../../features/chamados/view/chamado_detalhe_view.dart';
 import '../../features/chamados/view/chamados_list_view.dart';
 import '../../features/usuarios/view/usuarios_view.dart';
+import '../../features/configuracoes/view/configuracoes_view.dart';
 import '../../features/relatorios/view/relatorio_view.dart';
 import '../network/auth_storage.dart';
 
@@ -51,6 +52,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/chamados/abrir',
         builder: (_, __) => const AbrirChamadoView(),
+      ),
+      GoRoute(
+        path: '/configuracoes',
+        builder: (_, __) => const ConfiguracoesView(),
       ),
       GoRoute(
         path: '/relatorios',
