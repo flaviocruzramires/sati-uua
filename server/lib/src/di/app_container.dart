@@ -1,6 +1,7 @@
 import 'package:postgres/postgres.dart';
 
 import '../config/env.dart';
+import '../repositories/chamado_repository.dart';
 import '../repositories/equipamento_repository.dart';
 import '../repositories/servico_repository.dart';
 import '../repositories/setor_repository.dart';
@@ -15,6 +16,7 @@ class AppContainer {
     servicoRepository = ServicoRepository(_db);
     tipoEquipamentoRepository = TipoEquipamentoRepository(_db);
     equipamentoRepository = EquipamentoRepository(_db);
+    chamadoRepository = ChamadoRepository(_db);
     authService = AuthService(usuarioRepository, _env);
   }
 
@@ -26,6 +28,7 @@ class AppContainer {
   late final ServicoRepository servicoRepository;
   late final TipoEquipamentoRepository tipoEquipamentoRepository;
   late final EquipamentoRepository equipamentoRepository;
+  late final ChamadoRepository chamadoRepository;
   late final AuthService authService;
 
   Connection get db => _db;
@@ -41,7 +44,6 @@ class AppContainer {
       ),
       settings: const ConnectionSettings(sslMode: SslMode.disable),
     );
-
     return AppContainer._(db, env);
   }
 

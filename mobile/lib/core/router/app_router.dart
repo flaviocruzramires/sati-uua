@@ -7,6 +7,7 @@ import '../../features/placeholder/placeholder_screen.dart';
 import '../../features/servicos/view/servicos_view.dart';
 import '../../features/setores/view/setores_view.dart';
 import '../../features/tipos_equipamento/view/tipos_equipamento_view.dart';
+import '../../features/chamados/view/abrir_chamado_view.dart';
 import '../../features/usuarios/view/usuarios_view.dart';
 import '../network/auth_storage.dart';
 
@@ -39,6 +40,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/usuarios',
         builder: (_, __) => const UsuariosView(),
+      ),
+      GoRoute(
+        path: '/chamados',
+        builder: (_, __) => const PlaceholderScreen(),
+      ),
+      GoRoute(
+        path: '/chamados/abrir',
+        builder: (_, __) => const AbrirChamadoView(),
+      ),
+      GoRoute(
+        path: '/chamados/:id',
+        builder: (_, __) => const PlaceholderScreen(),
       ),
     ],
   );
