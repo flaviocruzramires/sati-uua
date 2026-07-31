@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../theme/app_spacing.dart';
 import 'field_label.dart';
 
-class AppTextField extends StatelessWidget {
+class AppTextField extends StatefulWidget {
   const AppTextField({
     super.key,
     required this.label,
@@ -30,20 +30,46 @@ class AppTextField extends StatelessWidget {
   final bool enabled;
 
   @override
+  State<AppTextField> createState() => _AppTextFieldState();
+}
+
+class _AppTextFieldState extends State<AppTextField> {
+  late bool _obscured;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscured = widget.obscure;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FieldLabel(label: label, obrigatorio: obrigatorio),
+        FieldLabel(label: widget.label, obrigatorio: widget.obrigatorio),
         const SizedBox(height: AppSpacing.s1),
         TextFormField(
-          controller: controller,
-          obscureText: obscure,
-          keyboardType: keyboardType,
-          enabled: enabled,
-          onChanged: onChanged,
-          validator: validator,
-          decoration: InputDecoration(hintText: hint, errorText: errorText),
+          controller: widget.controller,
+          obscureText: _obscured,
+          keyboardType: widget.keyboardType,
+          enabled: widget.enabled,
+          onChanged: widget.onChanged,
+          validator: widget.validator,
+          decoration: InputDecoration(
+            hintText: widget.hint,
+            errorText: widget.errorText,
+            suffixIcon: widget.obscure
+                ? IconButton(
+                    icon: Icon(
+                      _obscured ? Icons.visibility_off : Icons.visibility,
+                      size: 20,
+                    ),
+                    tooltip: _obscured ? 'Mostrar senha' : 'Ocultar senha',
+                    onPressed: () => setState(() => _obscured = !_obscured),
+                  )
+                : null,
+          ),
         ),
       ],
     );

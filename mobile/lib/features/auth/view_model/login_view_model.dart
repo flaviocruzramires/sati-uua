@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../auth_service.dart';
@@ -32,10 +33,12 @@ class LoginViewModel extends Notifier<LoginState> {
       state = state.copyWith(loading: false);
       return true;
     } catch (e) {
-      state = state.copyWith(
-        loading: false,
-        errorMessage: 'Login ou senha inválidos',
-      );
+      final msg = (e is DioException &&
+              (e.type == DioExceptionType.connectionError ||
+                  e.type == DioExceptionType.connectionTimeout))
+          ? 'Não foi possível conectar ao servidor. Verifique sua conexão.'
+          : 'Login ou senha inválidos';
+      state = state.copyWith(loading: false, errorMessage: msg);
       return false;
     }
   }
