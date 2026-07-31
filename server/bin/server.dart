@@ -11,6 +11,7 @@ import 'package:sati_uua_server/src/middlewares/cors_middleware.dart';
 import 'package:sati_uua_server/src/middlewares/error_handling_middleware.dart';
 import 'package:sati_uua_server/src/middlewares/logging_middleware.dart';
 import 'package:sati_uua_server/src/middlewares/request_id_middleware.dart';
+import 'package:sati_uua_server/src/middlewares/auth_middleware.dart';
 import 'package:sati_uua_server/src/routes/auth_route.dart';
 import 'package:sati_uua_server/src/routes/chamados_route.dart';
 import 'package:sati_uua_server/src/routes/dashboard_route.dart';
@@ -55,6 +56,7 @@ void main(List<String> arguments) async {
       .addMiddleware(loggingMiddleware())
       .addMiddleware(errorHandlingMiddleware())
       .addMiddleware(corsMiddleware())
+      .addMiddleware(authMiddleware(container.authService))
       .addHandler(router.call);
 
   final server = await shelf_io.serve(handler, env.httpHost, env.httpPort);

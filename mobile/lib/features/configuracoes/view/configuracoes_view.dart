@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,7 +26,7 @@ class ConfiguracoesView extends ConsumerWidget {
     return AppShell(
       currentRoute: '/configuracoes',
       nomeUsuario: user?.nome ?? '',
-      papelUsuario: user?.papel ?? PapelUsuario.solicitante,
+      papelUsuario: user?.papel,
       title: 'Configurações',
       subtitle: 'Parâmetros do sistema',
       onNavigate: (r) => context.go(r),

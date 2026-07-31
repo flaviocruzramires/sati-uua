@@ -24,7 +24,7 @@ class ChamadoRepository {
     c.equipamento_id,
     e.descricao AS equipamento_descricao,
     c.servico_id,
-    s.nome AS servico_nome,
+    s.descricao AS servico_nome,
     c.situacao,
     c.data_abertura,
     c.data_fechamento

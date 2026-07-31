@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -35,7 +35,7 @@ class RelatorioView extends ConsumerWidget {
     return AppShell(
       currentRoute: '/relatorios',
       nomeUsuario: user?.nome ?? '',
-      papelUsuario: user?.papel ?? PapelUsuario.solicitante,
+      papelUsuario: user?.papel,
       title: 'Relatórios',
       subtitle: 'Chamados de TI',
       onNavigate: (r) => context.go(r),

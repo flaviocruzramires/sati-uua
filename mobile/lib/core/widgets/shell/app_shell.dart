@@ -105,7 +105,7 @@ class AppShell extends StatelessWidget {
     required this.child,
     required this.currentRoute,
     required this.nomeUsuario,
-    required this.papelUsuario,
+    this.papelUsuario,
     required this.onNavigate,
     required this.onLogout,
     this.title = '',
@@ -116,7 +116,7 @@ class AppShell extends StatelessWidget {
   final Widget child;
   final String currentRoute;
   final String nomeUsuario;
-  final PapelUsuario papelUsuario;
+  final PapelUsuario? papelUsuario;
   final ValueChanged<String> onNavigate;
   final VoidCallback onLogout;
   final String title;
@@ -192,12 +192,14 @@ class _Sidebar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Container(
-                  width: 34,
-                  height: 34,
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(3),
-                  child: const FlutterLogo(),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Image.asset(
+                    'assets/images/logo_sati_uua.jpg',
+                    width: 34,
+                    height: 34,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 const SizedBox(width: AppSpacing.s2),
                 Column(

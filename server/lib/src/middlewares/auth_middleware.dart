@@ -7,10 +7,18 @@ import '../services/auth_service.dart';
 
 const _kUserKey = 'authenticatedUser';
 
-/// Extrai e valida o Bearer token. Em rotas públicas, não use este middleware.
+/// Popula o contexto da request com o payload do Bearer token quando presente.
+/// Rotas públicas (/auth/*, /health) passam sem token; rotas protegidas
+/// devem chamar [requireAuth] para garantir que o payload existe.
 Middleware authMiddleware(AuthService authService) {
   return (Handler inner) {
     return (Request request) async {
+      final path = request.url.path;
+      // Rotas públicas: não exigem token
+      if (path.startsWith('auth/') || path == 'health') {
+        return inner(request);
+      }
+
       final authHeader = request.headers['authorization'];
       if (authHeader == null || !authHeader.startsWith('Bearer ')) {
         return _unauthorized('Token ausente');

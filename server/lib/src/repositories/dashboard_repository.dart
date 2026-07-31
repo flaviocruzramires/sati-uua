@@ -1,4 +1,19 @@
-import 'package:postgres/postgres.dart';
+﻿import 'package:postgres/postgres.dart';
+
+double _toDouble(Object? v) {
+  if (v == null) return 0.0;
+  if (v is num) return v.toDouble();
+  if (v is String) return double.tryParse(v) ?? 0.0;
+  return 0.0;
+}
+
+int _toInt(Object? v) {
+  if (v == null) return 0;
+  if (v is int) return v;
+  if (v is num) return v.toInt();
+  if (v is String) return int.tryParse(v) ?? 0;
+  return 0;
+}
 
 class KpiResumo {
   const KpiResumo({
@@ -143,12 +158,12 @@ class DashboardRepository {
     );
     final r = rows.first;
     return KpiResumo(
-      abertos: (r[0] as int?) ?? 0,
-      emAndamento: (r[1] as int?) ?? 0,
-      aguardandoSolicitante: (r[2] as int?) ?? 0,
-      encerrados: (r[3] as int?) ?? 0,
-      semAtendente: (r[4] as int?) ?? 0,
-      tempoMedioMinutos: (r[5] as num?)?.toDouble() ?? 0.0,
+      abertos: _toInt(r[0]),
+      emAndamento: _toInt(r[1]),
+      aguardandoSolicitante: _toInt(r[2]),
+      encerrados: _toInt(r[3]),
+      semAtendente: _toInt(r[4]),
+      tempoMedioMinutos: _toDouble(r[5]),
     );
   }
 
@@ -230,8 +245,8 @@ class DashboardRepository {
     return rows
         .map((r) => MesItem(
               mes: r[0] as String,
-              abertos: (r[1] as int?) ?? 0,
-              encerrados: (r[2] as int?) ?? 0,
+              abertos: _toInt(r[1]),
+              encerrados: _toInt(r[2]),
             ))
         .toList();
   }
@@ -256,9 +271,9 @@ class DashboardRepository {
         .map((r) => AtendendteResumo(
               nome: r[0] as String,
               setorNome: r[1] as String,
-              ativos: (r[2] as int?) ?? 0,
-              encerrados: (r[3] as int?) ?? 0,
-              tempoMedioMinutos: (r[4] as num?)?.toDouble() ?? 0.0,
+              ativos: _toInt(r[2]),
+              encerrados: _toInt(r[3]),
+              tempoMedioMinutos: _toDouble(r[4]),
             ))
         .toList();
   }

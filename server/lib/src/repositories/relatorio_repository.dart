@@ -2,6 +2,21 @@ import 'dart:convert';
 
 import 'package:postgres/postgres.dart';
 
+double _toDouble(Object? v) {
+  if (v == null) return 0.0;
+  if (v is num) return v.toDouble();
+  if (v is String) return double.tryParse(v) ?? 0.0;
+  return 0.0;
+}
+
+int _toInt(Object? v) {
+  if (v == null) return 0;
+  if (v is int) return v;
+  if (v is num) return v.toInt();
+  if (v is String) return int.tryParse(v) ?? 0;
+  return 0;
+}
+
 String _pgEnum(Object? value) {
   if (value is String) return value;
   if (value is UndecodedBytes) return utf8.decode(value.bytes);
@@ -174,12 +189,12 @@ class RelatorioRepository {
     );
     final rr = resumoRows.first;
     final resumo = RelatorioResumo(
-      total: (rr[0] as int?) ?? 0,
-      abertos: (rr[1] as int?) ?? 0,
-      emAndamento: (rr[2] as int?) ?? 0,
-      aguardandoSolicitante: (rr[3] as int?) ?? 0,
-      encerrados: (rr[4] as int?) ?? 0,
-      tempoMedioMinutos: (rr[5] as num?)?.toDouble() ?? 0.0,
+      total: _toInt(rr[0]),
+      abertos: _toInt(rr[1]),
+      emAndamento: _toInt(rr[2]),
+      aguardandoSolicitante: _toInt(rr[3]),
+      encerrados: _toInt(rr[4]),
+      tempoMedioMinutos: _toDouble(rr[5]),
     );
 
     final dataRows = await _db.execute(

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -126,7 +126,7 @@ class EquipamentosView extends ConsumerWidget {
     return AppShell(
       currentRoute: '/equipamentos',
       nomeUsuario: user?.nome ?? '',
-      papelUsuario: user?.papel ?? PapelUsuario.solicitante,
+      papelUsuario: user?.papel,
       title: 'Equipamentos',
       subtitle: 'Inventário de equipamentos',
       onNavigate: (r) => context.go(r),

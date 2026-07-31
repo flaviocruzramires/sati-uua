@@ -85,7 +85,7 @@ class ChamadoHistoricoRepository {
         Sql.named(
           'SELECT c.id, c.descricao, c.usuario_solicitante_id, us.nome, '
           '       c.usuario_responsavel_id, ur.nome, '
-          '       c.equipamento_id, e.descricao, c.servico_id, s.nome, '
+          '       c.equipamento_id, e.descricao, c.servico_id, s.descricao, '
           '       c.situacao, c.data_abertura, c.data_fechamento '
           'FROM chamados c '
           'JOIN usuarios us ON us.id = c.usuario_solicitante_id '

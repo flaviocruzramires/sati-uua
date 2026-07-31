@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -94,7 +94,7 @@ class TiposEquipamentoView extends ConsumerWidget {
     return AppShell(
       currentRoute: '/tipos-equipamento',
       nomeUsuario: user?.nome ?? '',
-      papelUsuario: user?.papel ?? PapelUsuario.solicitante,
+      papelUsuario: user?.papel,
       title: 'Tipos de Equipamento',
       subtitle: 'Classificação de equipamentos',
       onNavigate: (r) => context.go(r),

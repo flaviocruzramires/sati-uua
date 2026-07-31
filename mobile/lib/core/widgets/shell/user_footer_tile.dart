@@ -15,11 +15,12 @@ class UserFooterTile extends StatelessWidget {
   });
 
   final String nome;
-  final PapelUsuario papel;
+  final PapelUsuario? papel;
   final VoidCallback onLogout;
 
   String get _iniciais {
-    final parts = nome.trim().split(' ');
+    final parts = nome.trim().split(' ').where((p) => p.isNotEmpty).toList();
+    if (parts.isEmpty) return '?';
     if (parts.length == 1) return parts[0][0].toUpperCase();
     return (parts.first[0] + parts.last[0]).toUpperCase();
   }
@@ -66,8 +67,10 @@ class UserFooterTile extends StatelessWidget {
                     color: AppColors.text,
                   ),
                 ),
-                const SizedBox(height: 2),
-                PapelUsuarioTag(papel: papel),
+                if (papel != null) ...[
+                  const SizedBox(height: 2),
+                  PapelUsuarioTag(papel: papel!),
+                ],
               ],
             ),
           ),

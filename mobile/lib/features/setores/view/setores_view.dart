@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -93,7 +93,7 @@ class SetoresView extends ConsumerWidget {
     return AppShell(
       currentRoute: '/setores',
       nomeUsuario: user?.nome ?? '',
-      papelUsuario: user?.papel ?? PapelUsuario.solicitante,
+      papelUsuario: user?.papel,
       title: 'Setores',
       subtitle: 'Gestão de setores',
       onNavigate: (route) => context.go(route),
