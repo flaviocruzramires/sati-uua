@@ -32,9 +32,9 @@ class CurrentUser {
     }
   }
 
-  static PapelUsuario _parsePapel(String s) => switch (s) {
-    'admin' => PapelUsuario.admin,
-    'atendente' => PapelUsuario.atendente,
+  static PapelUsuario _parsePapel(String s) => switch (s.toUpperCase()) {
+    'ADMIN' => PapelUsuario.admin,
+    'ATENDENTE' => PapelUsuario.atendente,
     _ => PapelUsuario.solicitante,
   };
 }

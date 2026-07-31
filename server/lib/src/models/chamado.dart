@@ -4,6 +4,7 @@ class Chamado {
     required this.descricao,
     required this.solicitanteId,
     required this.solicitanteNome,
+    this.solicitanteSetorNome,
     this.responsavelId,
     this.responsavelNome,
     this.equipamentoId,
@@ -19,6 +20,7 @@ class Chamado {
   final String descricao;
   final int solicitanteId;
   final String solicitanteNome;
+  final String? solicitanteSetorNome;
   final int? responsavelId;
   final String? responsavelNome;
   final int? equipamentoId;
@@ -34,6 +36,7 @@ class Chamado {
         'descricao': descricao,
         'solicitanteId': solicitanteId,
         'solicitanteNome': solicitanteNome,
+        'solicitanteSetorNome': solicitanteSetorNome,
         'responsavelId': responsavelId,
         'responsavelNome': responsavelNome,
         'equipamentoId': equipamentoId,

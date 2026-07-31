@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:shelf/shelf.dart';
 
+import '../errors/app_exception.dart';
 import '../models/usuario.dart';
 import '../services/auth_service.dart';
 
@@ -50,11 +51,9 @@ TokenPayload requireAuth(Request request) {
 void requirePapel(TokenPayload payload, Papel papel) {
   final order = [Papel.solicitante, Papel.atendente, Papel.admin];
   if (order.indexOf(payload.papel) < order.indexOf(papel)) {
-    throw _ForbiddenException();
+    throw const AppException.forbidden();
   }
 }
-
-class _ForbiddenException implements Exception {}
 
 Response _unauthorized(String msg) => Response(
       401,

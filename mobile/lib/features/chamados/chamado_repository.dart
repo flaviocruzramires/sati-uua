@@ -9,6 +9,9 @@ import 'chamado_dto.dart';
 export 'chamado_detalhe_dto.dart';
 export 'chamado_dto.dart';
 
+String _dateToStr(DateTime d) =>
+    '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
 String _situacaoToStr(SituacaoChamado s) => switch (s) {
   SituacaoChamado.aberto => 'ABERTO',
   SituacaoChamado.emAndamento => 'EM_ANDAMENTO',
@@ -23,6 +26,8 @@ abstract class ChamadoRepositoryBase {
     SituacaoChamado? situacao,
     int? solicitanteId,
     int? responsavelId,
+    DateTime? dataAberturaInicio,
+    DateTime? dataAberturaFim,
   });
 
   Future<ChamadoDto> findById(int id);
@@ -59,6 +64,8 @@ class ChamadoRepository implements ChamadoRepositoryBase {
     SituacaoChamado? situacao,
     int? solicitanteId,
     int? responsavelId,
+    DateTime? dataAberturaInicio,
+    DateTime? dataAberturaFim,
   }) async {
     final params = <String, dynamic>{
       'page': page.toString(),
@@ -66,6 +73,10 @@ class ChamadoRepository implements ChamadoRepositoryBase {
       if (situacao != null) 'situacao': _situacaoToStr(situacao),
       if (solicitanteId != null) 'solicitanteId': solicitanteId.toString(),
       if (responsavelId != null) 'responsavelId': responsavelId.toString(),
+      if (dataAberturaInicio != null)
+        'dataAberturaInicio': _dateToStr(dataAberturaInicio),
+      if (dataAberturaFim != null)
+        'dataAberturaFim': _dateToStr(dataAberturaFim),
     };
     final res = await _client.get<Map<String, dynamic>>(
       '/chamados',

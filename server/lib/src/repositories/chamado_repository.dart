@@ -19,6 +19,7 @@ class ChamadoRepository {
     c.descricao,
     c.usuario_solicitante_id,
     us.nome AS solicitante_nome,
+    st.nome AS solicitante_setor_nome,
     c.usuario_responsavel_id,
     ur.nome AS responsavel_nome,
     c.equipamento_id,
@@ -33,6 +34,7 @@ class ChamadoRepository {
   static const _joins = '''
     FROM chamados c
     JOIN usuarios us ON us.id = c.usuario_solicitante_id
+    LEFT JOIN setores st ON st.id = us.setor_id
     LEFT JOIN usuarios ur ON ur.id = c.usuario_responsavel_id
     LEFT JOIN equipamentos e ON e.id = c.equipamento_id
     LEFT JOIN servicos s ON s.id = c.servico_id
@@ -44,6 +46,8 @@ class ChamadoRepository {
     String? situacao,
     int? solicitanteId,
     int? responsavelId,
+    DateTime? dataAberturaInicio,
+    DateTime? dataAberturaFim,
   }) async {
     final offset = (page - 1) * pageSize;
     final conditions = <String>[];
@@ -60,6 +64,14 @@ class ChamadoRepository {
     if (responsavelId != null) {
       conditions.add("c.usuario_responsavel_id = @responsavelId");
       params['responsavelId'] = responsavelId;
+    }
+    if (dataAberturaInicio != null) {
+      conditions.add("c.data_abertura >= @dataAberturaInicio");
+      params['dataAberturaInicio'] = dataAberturaInicio;
+    }
+    if (dataAberturaFim != null) {
+      conditions.add("c.data_abertura < @dataAberturaFim");
+      params['dataAberturaFim'] = dataAberturaFim;
     }
 
     final where = conditions.isEmpty ? '' : 'WHERE ${conditions.join(' AND ')}';
@@ -86,15 +98,16 @@ class ChamadoRepository {
         descricao: row[1] as String,
         solicitanteId: row[2] as int,
         solicitanteNome: row[3] as String,
-        responsavelId: row[4] as int?,
-        responsavelNome: row[5] as String?,
-        equipamentoId: row[6] as int?,
-        equipamentoDescricao: row[7] as String?,
-        servicoId: row[8] as int?,
-        servicoNome: row[9] as String?,
-        situacao: _pgEnum(row[10]),
-        dataAbertura: row[11] as DateTime,
-        dataFechamento: row[12] as DateTime?,
+        solicitanteSetorNome: row[4] as String?,
+        responsavelId: row[5] as int?,
+        responsavelNome: row[6] as String?,
+        equipamentoId: row[7] as int?,
+        equipamentoDescricao: row[8] as String?,
+        servicoId: row[9] as int?,
+        servicoNome: row[10] as String?,
+        situacao: _pgEnum(row[11]),
+        dataAbertura: row[12] as DateTime,
+        dataFechamento: row[13] as DateTime?,
       );
 
   Future<Chamado?> findById(int id) async {

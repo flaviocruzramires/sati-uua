@@ -25,12 +25,20 @@ Router chamadosRouter(AppContainer container) {
         : (int.tryParse(params['solicitanteId'] ?? ''));
     final responsavelId = int.tryParse(params['responsavelId'] ?? '');
 
+    final dataAberturaInicio = _parseDate(params['dataAberturaInicio']);
+    final dataAberturaFim = params['dataAberturaFim'] != null
+        ? (_parseDate(params['dataAberturaFim'])
+            ?.add(const Duration(days: 1)))
+        : null;
+
     final result = await repo.list(
       page: page,
       pageSize: pageSize,
       situacao: situacao,
       solicitanteId: solicitanteId,
       responsavelId: responsavelId,
+      dataAberturaInicio: dataAberturaInicio,
+      dataAberturaFim: dataAberturaFim,
     );
     return _ok({
       'data': result.data.map((c) => c.toJson()).toList(),
@@ -128,6 +136,11 @@ Router chamadosRouter(AppContainer container) {
   });
 
   return router;
+}
+
+DateTime? _parseDate(String? s) {
+  if (s == null || s.isEmpty) return null;
+  return DateTime.tryParse(s);
 }
 
 Response _ok(Object body) => Response.ok(

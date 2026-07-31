@@ -6,6 +6,7 @@ class ChamadoDto {
     required this.descricao,
     required this.solicitanteId,
     required this.solicitanteNome,
+    this.solicitanteSetorNome,
     this.responsavelId,
     this.responsavelNome,
     this.equipamentoId,
@@ -21,6 +22,7 @@ class ChamadoDto {
   final String descricao;
   final int solicitanteId;
   final String solicitanteNome;
+  final String? solicitanteSetorNome;
   final int? responsavelId;
   final String? responsavelNome;
   final int? equipamentoId;
@@ -36,6 +38,7 @@ class ChamadoDto {
     descricao: json['descricao'] as String,
     solicitanteId: json['solicitanteId'] as int,
     solicitanteNome: json['solicitanteNome'] as String,
+    solicitanteSetorNome: json['solicitanteSetorNome'] as String?,
     responsavelId: json['responsavelId'] as int?,
     responsavelNome: json['responsavelNome'] as String?,
     equipamentoId: json['equipamentoId'] as int?,

@@ -5,6 +5,12 @@ import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 
 void main() {
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    debugPrint(details.exceptionAsString());
+    debugPrintStack(stackTrace: details.stack);
+  };
+
   runApp(const ProviderScope(child: ChamadosApp()));
 }
 
@@ -20,5 +26,6 @@ class ChamadosApp extends ConsumerWidget {
       theme: AppTheme.light,
       routerConfig: router,
     );
+    
   }
 }

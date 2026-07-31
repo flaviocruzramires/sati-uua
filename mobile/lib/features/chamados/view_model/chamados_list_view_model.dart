@@ -9,7 +9,8 @@ class ChamadosListState {
     this.listState = const AsyncValue.loading(),
     this.filtroSituacao,
     this.filtroResponsavelId,
-    this.busca,
+    this.dataAberturaInicio,
+    this.dataAberturaFim,
     this.page = 1,
     this.pageSize = 20,
   });
@@ -17,7 +18,8 @@ class ChamadosListState {
   final AsyncValue<PaginatedResult<ChamadoDto>> listState;
   final SituacaoChamado? filtroSituacao;
   final int? filtroResponsavelId;
-  final String? busca;
+  final DateTime? dataAberturaInicio;
+  final DateTime? dataAberturaFim;
   final int page;
   final int pageSize;
 
@@ -27,8 +29,10 @@ class ChamadosListState {
     bool clearFiltroSituacao = false,
     int? filtroResponsavelId,
     bool clearFiltroResponsavel = false,
-    String? busca,
-    bool clearBusca = false,
+    DateTime? dataAberturaInicio,
+    bool clearDataInicio = false,
+    DateTime? dataAberturaFim,
+    bool clearDataFim = false,
     int? page,
   }) => ChamadosListState(
     listState: listState ?? this.listState,
@@ -38,7 +42,12 @@ class ChamadosListState {
     filtroResponsavelId: clearFiltroResponsavel
         ? null
         : (filtroResponsavelId ?? this.filtroResponsavelId),
-    busca: clearBusca ? null : (busca ?? this.busca),
+    dataAberturaInicio: clearDataInicio
+        ? null
+        : (dataAberturaInicio ?? this.dataAberturaInicio),
+    dataAberturaFim: clearDataFim
+        ? null
+        : (dataAberturaFim ?? this.dataAberturaFim),
     page: page ?? this.page,
     pageSize: pageSize,
   );
@@ -61,6 +70,8 @@ class ChamadosListViewModel extends Notifier<ChamadosListState> {
         pageSize: state.pageSize,
         situacao: state.filtroSituacao,
         responsavelId: state.filtroResponsavelId,
+        dataAberturaInicio: state.dataAberturaInicio,
+        dataAberturaFim: state.dataAberturaFim,
       );
       state = state.copyWith(listState: AsyncValue.data(result));
     } catch (e, st) {
@@ -81,6 +92,35 @@ class ChamadosListViewModel extends Notifier<ChamadosListState> {
     state = state.copyWith(
       filtroResponsavelId: id,
       clearFiltroResponsavel: id == null,
+      page: 1,
+    );
+    load();
+  }
+
+  void setDataAberturaInicio(DateTime? d) {
+    state = state.copyWith(
+      dataAberturaInicio: d,
+      clearDataInicio: d == null,
+      page: 1,
+    );
+    load();
+  }
+
+  void setDataAberturaFim(DateTime? d) {
+    state = state.copyWith(
+      dataAberturaFim: d,
+      clearDataFim: d == null,
+      page: 1,
+    );
+    load();
+  }
+
+  void limparFiltros() {
+    state = state.copyWith(
+      clearFiltroSituacao: true,
+      clearFiltroResponsavel: true,
+      clearDataInicio: true,
+      clearDataFim: true,
       page: 1,
     );
     load();
