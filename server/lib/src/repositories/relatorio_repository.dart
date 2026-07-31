@@ -1,4 +1,12 @@
+import 'dart:convert';
+
 import 'package:postgres/postgres.dart';
+
+String _pgEnum(Object? value) {
+  if (value is String) return value;
+  if (value is UndecodedBytes) return utf8.decode(value.bytes);
+  return value.toString();
+}
 
 class RelatorioResumo {
   const RelatorioResumo({
@@ -202,7 +210,7 @@ class RelatorioRepository {
 
   RelatorioItem _fromRow(ResultRow row) => RelatorioItem(
         id: row[0] as int,
-        situacao: row[1] as String,
+        situacao: _pgEnum(row[1]),
         dataAbertura: row[2] as DateTime,
         dataFechamento: row[3] as DateTime?,
         solicitanteNome: row[4] as String,

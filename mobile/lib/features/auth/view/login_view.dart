@@ -127,12 +127,14 @@ class _BrandPanel extends StatelessWidget {
           // Logo placeholder + título
           Row(
             children: [
-              Container(
-                width: 52,
-                height: 52,
-                color: Colors.white,
-                padding: const EdgeInsets.all(5),
-                child: const FlutterLogo(),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  'assets/images/logo_sati_uua.jpg',
+                  width: 52,
+                  height: 52,
+                  fit: BoxFit.cover,
+                ),
               ),
               const SizedBox(width: AppSpacing.s3),
               Column(
@@ -216,12 +218,14 @@ class _MobileLayout extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: 56,
-                height: 56,
-                color: Colors.white,
-                padding: const EdgeInsets.all(5),
-                child: const FlutterLogo(),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  'assets/images/logo_sati_uua.jpg',
+                  width: 56,
+                  height: 56,
+                  fit: BoxFit.cover,
+                ),
               ),
               const SizedBox(height: AppSpacing.s3),
               Text(

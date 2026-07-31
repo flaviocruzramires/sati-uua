@@ -1,6 +1,14 @@
+import 'dart:convert';
+
 import 'package:postgres/postgres.dart';
 
 import '../models/chamado.dart';
+
+String _pgEnum(Object? value) {
+  if (value is String) return value;
+  if (value is UndecodedBytes) return utf8.decode(value.bytes);
+  return value.toString();
+}
 
 class ChamadoRepository {
   const ChamadoRepository(this._db);
@@ -84,7 +92,7 @@ class ChamadoRepository {
         equipamentoDescricao: row[7] as String?,
         servicoId: row[8] as int?,
         servicoNome: row[9] as String?,
-        situacao: row[10] as String,
+        situacao: _pgEnum(row[10]),
         dataAbertura: row[11] as DateTime,
         dataFechamento: row[12] as DateTime?,
       );

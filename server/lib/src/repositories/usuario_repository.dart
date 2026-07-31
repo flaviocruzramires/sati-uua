@@ -1,6 +1,16 @@
+import 'dart:convert';
+
 import 'package:postgres/postgres.dart';
 
 import '../models/usuario.dart';
+
+// O pacote postgres v3 retorna enums customizados do PostgreSQL como
+// UndecodedBytes. Esta função decodifica para String corretamente.
+String _pgEnum(Object? value) {
+  if (value is String) return value;
+  if (value is UndecodedBytes) return utf8.decode(value.bytes);
+  return value.toString();
+}
 
 // DTO sem senha_hash para respostas de API
 class UsuarioDto {
@@ -225,7 +235,7 @@ class UsuarioRepository implements UsuarioRepositoryBase {
         login: row[3] as String,
         senhaHash: row[4] as String,
         setorId: row[5] as int,
-        papel: papelFromString(row[6] as String),
+        papel: papelFromString(_pgEnum(row[6])),
         ativo: row[7] as bool,
       );
 
@@ -236,7 +246,7 @@ class UsuarioRepository implements UsuarioRepositoryBase {
         login: row[3] as String,
         setorId: row[4] as int,
         setorNome: row[5] as String?,
-        papel: papelFromString(row[6] as String),
+        papel: papelFromString(_pgEnum(row[6])),
         ativo: row[7] as bool,
       );
 }
