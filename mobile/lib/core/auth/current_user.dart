@@ -23,7 +23,7 @@ class CurrentUser {
           jsonDecode(utf8.decode(base64Url.decode(payload)))
               as Map<String, dynamic>;
       return CurrentUser(
-        id: int.parse(json['sub'] as String),
+        id: int.parse(json['sub'].toString()),
         nome: json['nome'] as String,
         papel: _parsePapel(json['papel'] as String),
       );
