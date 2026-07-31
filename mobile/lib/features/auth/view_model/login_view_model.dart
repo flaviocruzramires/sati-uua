@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/auth/current_user_provider.dart';
 import '../auth_service.dart';
 
 class LoginState {
@@ -30,6 +31,7 @@ class LoginViewModel extends Notifier<LoginState> {
     state = state.copyWith(loading: true, clearError: true);
     try {
       await _service.login(login.trim(), senha);
+      ref.invalidate(currentUserProvider);
       state = state.copyWith(loading: false);
       return true;
     } catch (e) {
@@ -45,6 +47,7 @@ class LoginViewModel extends Notifier<LoginState> {
 
   Future<void> logout() async {
     await _service.logout();
+    ref.invalidate(currentUserProvider);
   }
 }
 
