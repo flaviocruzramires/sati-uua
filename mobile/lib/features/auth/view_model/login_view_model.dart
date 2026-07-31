@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/auth/current_user.dart';
 import '../../../core/auth/current_user_provider.dart';
+import '../../../core/network/auth_storage.dart';
 import '../auth_service.dart';
 
 class LoginState {
@@ -31,7 +33,9 @@ class LoginViewModel extends Notifier<LoginState> {
     state = state.copyWith(loading: true, clearError: true);
     try {
       await _service.login(login.trim(), senha);
-      ref.invalidate(currentUserProvider);
+      // Lê o token que foi salvo e atualiza o usuário de forma síncrona
+      final token = await ref.read(authStorageProvider).readToken();
+      ref.read(currentUserProvider.notifier).setUser(CurrentUser.fromToken(token));
       state = state.copyWith(loading: false);
       return true;
     } catch (e) {
@@ -47,7 +51,7 @@ class LoginViewModel extends Notifier<LoginState> {
 
   Future<void> logout() async {
     await _service.logout();
-    ref.invalidate(currentUserProvider);
+    ref.read(currentUserProvider.notifier).setUser(null);
   }
 }
 
