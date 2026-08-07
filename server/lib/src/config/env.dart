@@ -64,15 +64,71 @@ class Env {
 
   String _optional(String key, String fallback) => _values[key] ?? fallback;
 
+  /// Conexão parseada de `DATABASE_URL`, quando presente. Neon e Render expõem
+  /// os dados do banco como uma única URL no formato
+  /// `postgres://user:senha@host:porta/dbname?sslmode=require`. Quando essa
+  /// variável existe, ela tem prioridade sobre os campos `DB_*` individuais.
+  Uri? get _databaseUri {
+    final url = _values['DATABASE_URL'];
+    if (url == null || url.isEmpty) return null;
+    return Uri.parse(url);
+  }
+
   String get appEnv => _optional('APP_ENV', 'development');
   String get httpHost => _optional('HTTP_HOST', '0.0.0.0');
-  int get httpPort => int.parse(_optional('HTTP_PORT', '8080'));
 
-  String get dbHost => _optional('DB_HOST', 'localhost');
-  int get dbPort => int.parse(_optional('DB_PORT', '5432'));
-  String get dbName => _require('DB_NAME');
-  String get dbUser => _require('DB_USER');
-  String get dbPassword => _require('DB_PASSWORD');
+  /// Porta HTTP. O Render injeta `PORT` automaticamente; damos prioridade a ela
+  /// e caímos para `HTTP_PORT` (uso local) e por fim 8080.
+  int get httpPort =>
+      int.parse(_values['PORT'] ?? _optional('HTTP_PORT', '8080'));
+
+  String get dbHost => _databaseUri?.host ?? _optional('DB_HOST', 'localhost');
+  int get dbPort {
+    final uriPort = _databaseUri?.port;
+    if (uriPort != null && uriPort != 0) return uriPort;
+    return int.parse(_optional('DB_PORT', '5432'));
+  }
+
+  String get dbName {
+    final path = _databaseUri?.pathSegments;
+    if (path != null && path.isNotEmpty && path.first.isNotEmpty) {
+      return path.first;
+    }
+    return _require('DB_NAME');
+  }
+
+  String get dbUser {
+    final userInfo = _databaseUri?.userInfo;
+    if (userInfo != null && userInfo.isNotEmpty) {
+      return Uri.decodeComponent(userInfo.split(':').first);
+    }
+    return _require('DB_USER');
+  }
+
+  String get dbPassword {
+    final userInfo = _databaseUri?.userInfo;
+    if (userInfo != null && userInfo.contains(':')) {
+      return Uri.decodeComponent(userInfo.split(':').sublist(1).join(':'));
+    }
+    return _require('DB_PASSWORD');
+  }
+
+  /// Modo SSL da conexão com o Postgres. Neon exige SSL; localmente (Docker)
+  /// deixamos desligado. Aceita `require` (ou `verify-full`) e `disable`.
+  /// Também é inferido de `?sslmode=` na `DATABASE_URL`.
+  bool get dbUseSsl {
+    final explicit = _values['DB_SSL_MODE'];
+    if (explicit != null && explicit.isNotEmpty) {
+      return explicit.toLowerCase() != 'disable';
+    }
+    final uriSslMode = _databaseUri?.queryParameters['sslmode'];
+    if (uriSslMode != null && uriSslMode.isNotEmpty) {
+      return uriSslMode.toLowerCase() != 'disable';
+    }
+    // Sem configuração explícita: SSL ligado sempre que houver DATABASE_URL
+    // (cenário de nuvem), desligado no fluxo local com DB_* separados.
+    return _databaseUri != null;
+  }
 
   String get jwtSecret => _require('JWT_SECRET');
   int get jwtExpirationHours =>

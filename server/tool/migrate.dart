@@ -26,7 +26,9 @@ Future<void> main(List<String> arguments) async {
       username: env.dbUser,
       password: env.dbPassword,
     ),
-    settings: const ConnectionSettings(sslMode: SslMode.disable),
+    settings: ConnectionSettings(
+      sslMode: env.dbUseSsl ? SslMode.require : SslMode.disable,
+    ),
   );
 
   await db.execute('''
@@ -98,7 +100,12 @@ Future<void> _applySqlFiles(
         '-f', file.absolute.path,
         '--no-password',
       ],
-      environment: {...Platform.environment, 'PGPASSWORD': env.dbPassword},
+      environment: {
+        ...Platform.environment,
+        'PGPASSWORD': env.dbPassword,
+        // Neon/Render exigem SSL; local (Docker) desliga.
+        'PGSSLMODE': env.dbUseSsl ? 'require' : 'disable',
+      },
     );
 
     if (result.exitCode != 0) {

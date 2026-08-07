@@ -1,0 +1,10 @@
+.dart_tool/
+.git/
+.env
+.env.local
+*.env.local
+uploads/
+test/
+*.log
+srv_now.log
+build/

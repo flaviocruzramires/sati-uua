@@ -20,7 +20,9 @@ Future<void> main() async {
       username: env.dbUser,
       password: env.dbPassword,
     ),
-    settings: const ConnectionSettings(sslMode: SslMode.disable),
+    settings: ConnectionSettings(
+      sslMode: env.dbUseSsl ? SslMode.require : SslMode.disable,
+    ),
   );
 
   final result = await db.execute(

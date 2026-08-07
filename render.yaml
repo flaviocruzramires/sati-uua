@@ -1,0 +1,32 @@
+# Blueprint do Render para o servidor SATI-UUA.
+# Banco de dados fica no Neon.tech (fora do Render) — informe a connection
+# string do Neon na variável DATABASE_URL no painel do serviço.
+#
+# Deploy: Render > New > Blueprint > aponte para este repositório.
+services:
+  - type: web
+    name: sati-uua-server
+    runtime: docker
+    rootDir: server
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      # JWT_SECRET forte gerado automaticamente pelo Render.
+      - key: JWT_SECRET
+        generateValue: true
+      # Cole aqui (ou no painel) a connection string do Neon, com ?sslmode=require.
+      # Ex.: postgresql://user:senha@ep-xxx.us-east-2.aws.neon.tech/dbname?sslmode=require
+      - key: DATABASE_URL
+        sync: false
+      # Defina no PRIMEIRO deploy para criar o admin; remova depois se quiser.
+      - key: ADMIN_LOGIN
+        sync: false
+      - key: ADMIN_SENHA
+        sync: false
