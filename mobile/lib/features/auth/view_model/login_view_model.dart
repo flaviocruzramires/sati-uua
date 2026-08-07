@@ -39,11 +39,22 @@ class LoginViewModel extends Notifier<LoginState> {
       state = state.copyWith(loading: false);
       return true;
     } catch (e) {
-      final msg = (e is DioException &&
-              (e.type == DioExceptionType.connectionError ||
-                  e.type == DioExceptionType.connectionTimeout))
-          ? 'Não foi possível conectar ao servidor. Verifique sua conexão.'
-          : 'Login ou senha inválidos';
+      // Só um 401 real significa credenciais inválidas. Timeout, erro de rede,
+      // ou o "cold start" do Render (que responde devagar / com página de
+      // espera) NÃO são senha errada — mostramos uma mensagem adequada.
+      String msg;
+      if (e is DioException && e.response?.statusCode == 401) {
+        msg = 'Login ou senha inválidos';
+      } else if (e is DioException &&
+          (e.type == DioExceptionType.connectionTimeout ||
+              e.type == DioExceptionType.receiveTimeout ||
+              e.type == DioExceptionType.sendTimeout)) {
+        msg = 'O servidor demorou a responder (pode estar iniciando). '
+            'Aguarde alguns segundos e tente novamente.';
+      } else {
+        msg = 'Não foi possível conectar ao servidor. '
+            'Verifique sua conexão e tente novamente.';
+      }
       state = state.copyWith(loading: false, errorMessage: msg);
       return false;
     }
