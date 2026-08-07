@@ -24,35 +24,41 @@ class AppSegmentedControl<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final row = Row(
-      mainAxisSize: fullWidth ? MainAxisSize.max : MainAxisSize.min,
-      children: options.map((opt) {
-        final selected = opt.value == value;
-        return Flexible(
-          flex: fullWidth ? 1 : 0,
-          child: GestureDetector(
-            onTap: () => onChanged(opt.value),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              decoration: BoxDecoration(
-                color: selected ? AppColors.navy : AppColors.surface,
-                border: Border.all(color: AppColors.neutral300),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                opt.label,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: selected ? AppColors.bg : AppColors.text,
-                  fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-                ),
-              ),
+    Widget segment(SegmentedOption<T> opt) {
+      final selected = opt.value == value;
+      return GestureDetector(
+        onTap: () => onChanged(opt.value),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: selected ? AppColors.navy : AppColors.surface,
+            border: Border.all(color: AppColors.neutral300),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            opt.label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: selected ? AppColors.bg : AppColors.text,
+              fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
             ),
           ),
-        );
-      }).toList(),
-    );
+        ),
+      );
+    }
 
-    if (fullWidth) return row;
-    return IntrinsicWidth(child: row);
+    // fullWidth: segmentos dividem a largura igualmente numa única linha.
+    if (fullWidth) {
+      return Row(
+        children: options.map((o) => Expanded(child: segment(o))).toList(),
+      );
+    }
+
+    // Padrão: quebra para a próxima linha quando não cabe — evita o overflow
+    // horizontal (segmentos saindo da tela) em telas estreitas.
+    return Wrap(
+      spacing: 0,
+      runSpacing: 0,
+      children: options.map(segment).toList(),
+    );
   }
 }

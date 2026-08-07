@@ -42,12 +42,16 @@ class _AnexosWidgetState extends ConsumerState<AnexosWidget> {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf'],
-      withData: false,
+      withData: true, // carrega os bytes (obrigatório na web; ok no mobile)
     );
     if (result == null || result.files.isEmpty) return;
 
     final file = result.files.first;
-    if (file.path == null) return;
+    final bytes = file.bytes;
+    if (bytes == null) {
+      setState(() => _uploadError = 'Não foi possível ler o arquivo.');
+      return;
+    }
 
     final mimeType = _guessMime(file.name);
     if (mimeType == null) {
@@ -65,7 +69,7 @@ class _AnexosWidgetState extends ConsumerState<AnexosWidget> {
       final anexo = await repo.upload(
         chamadoId: widget.chamadoId,
         historicoId: widget.historicoId,
-        filePath: file.path!,
+        bytes: bytes,
         fileName: file.name,
         mimeType: mimeType,
       );

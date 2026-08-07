@@ -12,7 +12,7 @@ abstract class AnexoRepositoryBase {
   Future<AnexoDto> upload({
     required int chamadoId,
     int? historicoId,
-    required String filePath,
+    required List<int> bytes,
     required String fileName,
     required String mimeType,
   });
@@ -38,13 +38,14 @@ class AnexoRepository implements AnexoRepositoryBase {
   Future<AnexoDto> upload({
     required int chamadoId,
     int? historicoId,
-    required String filePath,
+    required List<int> bytes,
     required String fileName,
     required String mimeType,
   }) async {
+    // Usa bytes (não caminho de arquivo) — funciona igual na web e no mobile.
     final formData = FormData.fromMap({
-      'arquivo': await MultipartFile.fromFile(
-        filePath,
+      'arquivo': MultipartFile.fromBytes(
+        bytes,
         filename: fileName,
         contentType: DioMediaType.parse(mimeType),
       ),

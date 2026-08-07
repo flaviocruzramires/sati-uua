@@ -5,7 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'api_exception.dart';
 import 'auth_storage.dart';
 
-const _kBaseUrl = 'http://192.168.101.6:8090';
+// Configurável em build/run via --dart-define=API_BASE_URL=<url>.
+// Padrão = API de produção no Render. Para desenvolvimento local, passe
+// --dart-define=API_BASE_URL=http://SEU_IP:8090 (ou use a config "Local" do launch.json).
+const _kBaseUrl = String.fromEnvironment(
+  'API_BASE_URL',
+  defaultValue: 'https://sati-uua-server.onrender.com',
+);
 
 class ApiClient {
   static const baseUrl = _kBaseUrl;
