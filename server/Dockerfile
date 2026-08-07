@@ -25,8 +25,10 @@ RUN apt-get update \
 
 WORKDIR /app
 
-# Runtime mínimo do Dart exigido pelos executáveis AOT.
-COPY --from=build /runtime/ /
+# Os binários de `dart compile exe` são autossuficientes (embutem o runtime
+# Dart) — precisam só da libc, presente no debian-slim. Não copiamos `/runtime/`
+# (isso seria para aot-snapshot + dartaotruntime, e ainda conflita com o
+# symlink /lib do merged-/usr do bookworm).
 COPY --from=build /app/bin/ /app/bin/
 # migrate.dart procura os .sql via Platform.script -> parent/parent/migrations,
 # ou seja, /app/migrations quando o binário está em /app/bin.
