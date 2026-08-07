@@ -24,6 +24,7 @@ class ChamadosApp extends ConsumerWidget {
       title: 'SATI UUA — Chamados',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
+      themeMode: ThemeMode.light,
       routerConfig: router,
     );
     

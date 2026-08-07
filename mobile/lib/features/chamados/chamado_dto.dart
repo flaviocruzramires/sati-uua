@@ -16,6 +16,10 @@ class ChamadoDto {
     required this.situacao,
     required this.dataAbertura,
     this.dataFechamento,
+    required this.envolveTerceiro,
+    this.nomeTerceiro,
+    this.dataPrevistaRetorno,
+    this.ultimoRetorno,
   });
 
   final int id;
@@ -32,6 +36,10 @@ class ChamadoDto {
   final SituacaoChamado situacao;
   final DateTime dataAbertura;
   final DateTime? dataFechamento;
+  final bool envolveTerceiro;
+  final String? nomeTerceiro;
+  final DateTime? dataPrevistaRetorno;
+  final DateTime? ultimoRetorno;
 
   factory ChamadoDto.fromJson(Map<String, dynamic> json) => ChamadoDto(
     id: json['id'] as int,
@@ -49,6 +57,14 @@ class ChamadoDto {
     dataAbertura: DateTime.parse(json['dataAbertura'] as String),
     dataFechamento: json['dataFechamento'] != null
         ? DateTime.parse(json['dataFechamento'] as String)
+        : null,
+    envolveTerceiro: json['envolveTerceiro'] as bool? ?? false,
+    nomeTerceiro: json['nomeTerceiro'] as String?,
+    dataPrevistaRetorno: json['dataPrevistaRetorno'] != null
+        ? DateTime.tryParse(json['dataPrevistaRetorno'] as String)
+        : null,
+    ultimoRetorno: json['ultimoRetorno'] != null
+        ? DateTime.tryParse(json['ultimoRetorno'] as String)
         : null,
   );
 

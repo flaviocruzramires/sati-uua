@@ -23,6 +23,7 @@ final kChamado = ChamadoDto(
   solicitanteNome: 'Ana',
   situacao: SituacaoChamado.aberto,
   dataAbertura: DateTime.utc(2026, 7, 30),
+  envolveTerceiro: false,
 );
 
 void main() {

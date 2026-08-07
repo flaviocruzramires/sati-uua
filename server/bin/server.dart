@@ -16,8 +16,12 @@ import 'package:sati_uua_server/src/routes/auth_route.dart';
 import 'package:sati_uua_server/src/routes/chamados_route.dart';
 import 'package:sati_uua_server/src/routes/dashboard_route.dart';
 import 'package:sati_uua_server/src/routes/configuracoes_route.dart';
+import 'package:sati_uua_server/src/routes/notificacoes_route.dart';
 import 'package:sati_uua_server/src/routes/relatorios_route.dart';
+import 'package:sati_uua_server/src/routes/rotinas_route.dart';
+import 'package:sati_uua_server/src/routes/permissoes_route.dart';
 import 'package:sati_uua_server/src/routes/equipamentos_route.dart';
+import 'package:sati_uua_server/src/routes/anexos_route.dart';
 import 'package:sati_uua_server/src/routes/health_route.dart';
 import 'package:sati_uua_server/src/routes/servicos_route.dart';
 import 'package:sati_uua_server/src/routes/setores_route.dart';
@@ -38,7 +42,12 @@ void main(List<String> arguments) async {
   _log.info(
       'Conectado ao Postgres em ${env.dbHost}:${env.dbPort}/${env.dbName}');
 
+  // Diretório para uploads de anexos (relativo ao diretório do pacote)
+  final uploadsDir = '$packageDir/uploads';
+  await Directory(uploadsDir).create(recursive: true);
+
   final router = Router()
+    ..get('/', _rootHandler)
     ..mount('/', healthRouter(container).call)
     ..mount('/', authRouter(container).call)
     ..mount('/', setoresRouter(container).call)
@@ -49,7 +58,11 @@ void main(List<String> arguments) async {
     ..mount('/', chamadosRouter(container).call)
     ..mount('/', dashboardRouter(container).call)
     ..mount('/', relatoriosRouter(container).call)
-    ..mount('/', configuracoesRouter(container).call);
+    ..mount('/', configuracoesRouter(container).call)
+    ..mount('/', rotinasRouter(container).call)
+    ..mount('/', permissoesRouter(container).call)
+    ..mount('/', notificacoesRouter(container).call)
+    ..mount('/', anexosRouter(container, uploadsDir).call);
 
   final handler = const Pipeline()
       .addMiddleware(requestIdMiddleware())
@@ -68,6 +81,35 @@ void main(List<String> arguments) async {
     await server.close(force: true);
     exit(0);
   });
+}
+
+Response _rootHandler(Request request) {
+  return Response.ok(
+    '''<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SATI-UUA API</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f4f5f7; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+    .card { background: #fff; padding: 2rem 3rem; border-left: 4px solid #1c3f6e; max-width: 480px; width: 100%; }
+    h1 { margin: 0 0 .25rem; color: #1c3f6e; font-size: 1.5rem; }
+    p { margin: .25rem 0 1.5rem; color: #6b7385; font-size: .9rem; }
+    a { display: inline-block; padding: .6rem 1.2rem; background: #1c3f6e; color: #fff; text-decoration: none; font-size: .9rem; }
+    a:hover { background: #2c5085; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>SATI-UUA</h1>
+    <p>API do Sistema de Atendimento de TI — UEMS Aquidauana</p>
+    <a href="/health">Ver status da API</a>
+  </div>
+</body>
+</html>''',
+    headers: {'content-type': 'text/html; charset=utf-8'},
+  );
 }
 
 void _configureLogging(String levelName) {

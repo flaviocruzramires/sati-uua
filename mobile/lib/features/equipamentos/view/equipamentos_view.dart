@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../core/auth/current_user_provider.dart';
+import '../../../core/auth/permissoes_provider.dart';
 import '../../../core/domain/enums.dart';
 import '../../../core/domain/paginated_result.dart';
 import '../../../core/theme/app_colors.dart';
@@ -33,9 +34,10 @@ class EquipamentosView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider).valueOrNull;
-    final canWrite =
-        user?.papel == PapelUsuario.admin ||
-        user?.papel == PapelUsuario.atendente;
+    final perm = ref.watch(permissoesHelperProvider);
+    final podeIncluir = perm.podeIncluir('cadastros.equip');
+    final podeAlterar = perm.podeAlterar('cadastros.equip');
+    final podeExcluir = perm.podeExcluir('cadastros.equip');
 
     final vmState = ref.watch(equipamentosViewModelProvider);
     final vm = ref.read(equipamentosViewModelProvider.notifier);
@@ -131,14 +133,22 @@ class EquipamentosView extends ConsumerWidget {
       subtitle: 'Inventário de equipamentos',
       onNavigate: (r) => context.go(r),
       onLogout: () {},
-      actions: canWrite
-          ? [
-              AppButton(
-                label: '+ Novo Equipamento',
-                onPressed: () => showForm(),
-              ),
-            ]
-          : null,
+      actions: [
+        if (Breakpoints.isMobile(context)) ...[
+          IconButton(
+            icon: const Icon(Icons.refresh, color: AppColors.neutral700),
+            tooltip: 'Atualizar',
+            onPressed: vm.load,
+          ),
+          if (podeIncluir)
+            IconButton(
+              icon: const Icon(Icons.add, color: AppColors.navy),
+              tooltip: 'Novo Equipamento',
+              onPressed: () => showForm(),
+            ),
+        ] else if (podeIncluir)
+          AppButton(label: '+ Novo Equipamento', onPressed: () => showForm()),
+      ],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -172,7 +182,8 @@ class EquipamentosView extends ConsumerWidget {
               builder: (result) => Breakpoints.isMobile(context)
                   ? _MobileList(
                       result: result,
-                      canWrite: canWrite,
+                      podeAlterar: podeAlterar,
+                      podeExcluir: podeExcluir,
                       onEdit: showForm,
                       onDelete: confirmDelete,
                       onPageChange: vm.setPage,
@@ -181,7 +192,8 @@ class EquipamentosView extends ConsumerWidget {
                     )
                   : _DesktopTable(
                       result: result,
-                      canWrite: canWrite,
+                      podeAlterar: podeAlterar,
+                      podeExcluir: podeExcluir,
                       onEdit: showForm,
                       onDelete: confirmDelete,
                       onPageChange: vm.setPage,
@@ -201,7 +213,8 @@ class EquipamentosView extends ConsumerWidget {
 class _DesktopTable extends StatelessWidget {
   const _DesktopTable({
     required this.result,
-    required this.canWrite,
+    required this.podeAlterar,
+    required this.podeExcluir,
     required this.onEdit,
     required this.onDelete,
     required this.onPageChange,
@@ -210,7 +223,8 @@ class _DesktopTable extends StatelessWidget {
   });
 
   final PaginatedResult<EquipamentoDto> result;
-  final bool canWrite;
+  final bool podeAlterar;
+  final bool podeExcluir;
   final ValueChanged<EquipamentoDto> onEdit;
   final ValueChanged<EquipamentoDto> onDelete;
   final ValueChanged<int> onPageChange;
@@ -236,19 +250,22 @@ class _DesktopTable extends StatelessWidget {
                   status: eq.ativo ? StatusAtivo.ativo : StatusAtivo.inativo,
                 ),
               ],
-              actionsBuilder: canWrite
+              actionsBuilder: (podeAlterar || podeExcluir)
                   ? (eq) => [
-                      IconActionButton(
-                        icon: LucideIcons.pencil,
-                        tooltip: 'Editar',
-                        onPressed: () => onEdit(eq),
-                      ),
-                      const SizedBox(width: AppSpacing.s1),
-                      IconActionButton(
-                        icon: LucideIcons.trash2,
-                        tooltip: 'Excluir',
-                        onPressed: () => onDelete(eq),
-                      ),
+                      if (podeAlterar)
+                        IconActionButton(
+                          icon: LucideIcons.pencil,
+                          tooltip: 'Editar',
+                          onPressed: () => onEdit(eq),
+                        ),
+                      if (podeAlterar && podeExcluir)
+                        const SizedBox(width: AppSpacing.s1),
+                      if (podeExcluir)
+                        IconActionButton(
+                          icon: LucideIcons.trash2,
+                          tooltip: 'Excluir',
+                          onPressed: () => onDelete(eq),
+                        ),
                     ]
                   : null,
             ),
@@ -270,7 +287,8 @@ class _DesktopTable extends StatelessWidget {
 class _MobileList extends StatelessWidget {
   const _MobileList({
     required this.result,
-    required this.canWrite,
+    required this.podeAlterar,
+    required this.podeExcluir,
     required this.onEdit,
     required this.onDelete,
     required this.onPageChange,
@@ -279,7 +297,8 @@ class _MobileList extends StatelessWidget {
   });
 
   final PaginatedResult<EquipamentoDto> result;
-  final bool canWrite;
+  final bool podeAlterar;
+  final bool podeExcluir;
   final ValueChanged<EquipamentoDto> onEdit;
   final ValueChanged<EquipamentoDto> onDelete;
   final ValueChanged<int> onPageChange;
@@ -311,13 +330,15 @@ class _MobileList extends StatelessWidget {
                           ? StatusAtivo.ativo
                           : StatusAtivo.inativo,
                     ),
-                    if (canWrite) ...[
+                    if (podeAlterar) ...[
                       const SizedBox(width: AppSpacing.s1),
                       IconActionButton(
                         icon: LucideIcons.pencil,
                         tooltip: 'Editar',
                         onPressed: () => onEdit(eq),
                       ),
+                    ],
+                    if (podeExcluir) ...[
                       const SizedBox(width: AppSpacing.s1),
                       IconActionButton(
                         icon: LucideIcons.trash2,

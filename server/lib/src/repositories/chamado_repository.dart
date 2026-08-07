@@ -28,7 +28,20 @@ class ChamadoRepository {
     s.descricao AS servico_nome,
     c.situacao,
     c.data_abertura,
-    c.data_fechamento
+    c.data_fechamento,
+    c.envolve_terceiro,
+    c.nome_terceiro,
+    (SELECT h.data_prevista_retorno
+       FROM chamado_historico h
+       WHERE h.chamado_id = c.id
+         AND h.data_prevista_retorno IS NOT NULL
+       ORDER BY h.data_retorno DESC
+       LIMIT 1) AS data_prevista_retorno,
+    (SELECT h2.data_retorno
+       FROM chamado_historico h2
+       WHERE h2.chamado_id = c.id
+       ORDER BY h2.data_retorno DESC
+       LIMIT 1) AS ultimo_retorno
   ''';
 
   static const _joins = '''
@@ -108,7 +121,30 @@ class ChamadoRepository {
         situacao: _pgEnum(row[11]),
         dataAbertura: row[12] as DateTime,
         dataFechamento: row[13] as DateTime?,
+        envolveTerceiro: (row[14] as bool?) ?? false,
+        nomeTerceiro: row[15] as String?,
+        dataPrevistaRetorno: row[16] as DateTime?,
+        ultimoRetorno: row[17] as DateTime?,
       );
+
+  Future<Chamado?> atualizarTerceiro({
+    required int id,
+    required bool envolveTerceiro,
+    String? nomeTerceiro,
+  }) async {
+    await _db.execute(
+      Sql.named(
+        'UPDATE chamados SET envolve_terceiro = @envolveTerceiro, '
+        '  nome_terceiro = @nomeTerceiro WHERE id = @id',
+      ),
+      parameters: {
+        'id': id,
+        'envolveTerceiro': envolveTerceiro,
+        'nomeTerceiro': envolveTerceiro ? nomeTerceiro : null,
+      },
+    );
+    return findById(id);
+  }
 
   Future<Chamado?> findById(int id) async {
     final rows = await _db.execute(

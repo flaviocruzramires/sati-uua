@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../core/auth/current_user_provider.dart';
+import '../../../core/auth/permissoes_provider.dart';
 import '../../../core/domain/enums.dart';
 import '../../../core/domain/paginated_result.dart';
 import '../../../core/theme/app_colors.dart';
@@ -32,6 +33,9 @@ class UsuariosView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider).valueOrNull;
+    final perm = ref.watch(permissoesHelperProvider);
+    final podeIncluir = perm.podeIncluir('cadastros.usuarios');
+    final podeAlterar = perm.podeAlterar('cadastros.usuarios');
     final vmState = ref.watch(usuariosViewModelProvider);
     final vm = ref.read(usuariosViewModelProvider.notifier);
 
@@ -44,6 +48,7 @@ class UsuariosView extends ConsumerWidget {
       const ComboItem<PapelUsuario?>(null, 'Todos os papéis'),
       const ComboItem<PapelUsuario?>(PapelUsuario.admin, 'Admin'),
       const ComboItem<PapelUsuario?>(PapelUsuario.atendente, 'Atendente'),
+      const ComboItem<PapelUsuario?>(PapelUsuario.gerencia, 'Gerência'),
       const ComboItem<PapelUsuario?>(PapelUsuario.solicitante, 'Solicitante'),
     ];
 
@@ -138,7 +143,22 @@ class UsuariosView extends ConsumerWidget {
       subtitle: 'Gestão de usuários do sistema',
       onNavigate: (r) => context.go(r),
       onLogout: () {},
-      actions: [AppButton(label: '+ Novo Usuário', onPressed: openNew)],
+      actions: [
+        if (Breakpoints.isMobile(context)) ...[
+          IconButton(
+            icon: const Icon(Icons.refresh, color: AppColors.neutral700),
+            tooltip: 'Atualizar',
+            onPressed: vm.load,
+          ),
+          if (podeIncluir)
+            IconButton(
+              icon: const Icon(Icons.add, color: AppColors.navy),
+              tooltip: 'Novo Usuário',
+              onPressed: openNew,
+            ),
+        ] else if (podeIncluir)
+          AppButton(label: '+ Novo Usuário', onPressed: openNew),
+      ],
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -176,6 +196,7 @@ class UsuariosView extends ConsumerWidget {
                     builder: (result) => Breakpoints.isMobile(context)
                         ? _MobileList(
                             result: result,
+                            podeAlterar: podeAlterar,
                             onEdit: openEdit,
                             onPageChange: vm.setPage,
                             currentPage: vmState.page,
@@ -183,6 +204,7 @@ class UsuariosView extends ConsumerWidget {
                           )
                         : _DesktopTable(
                             result: result,
+                            podeAlterar: podeAlterar,
                             selectedId: vmState.selectedId,
                             onSelect: (u) => vm.selectUser(u.id),
                             onEdit: openEdit,
@@ -264,6 +286,7 @@ class UsuariosView extends ConsumerWidget {
 class _DesktopTable extends StatelessWidget {
   const _DesktopTable({
     required this.result,
+    required this.podeAlterar,
     required this.selectedId,
     required this.onSelect,
     required this.onEdit,
@@ -273,6 +296,7 @@ class _DesktopTable extends StatelessWidget {
   });
 
   final PaginatedResult<UsuarioDto> result;
+  final bool podeAlterar;
   final int? selectedId;
   final ValueChanged<UsuarioDto> onSelect;
   final ValueChanged<UsuarioDto> onEdit;
@@ -306,13 +330,15 @@ class _DesktopTable extends StatelessWidget {
                   status: u.ativo ? StatusAtivo.ativo : StatusAtivo.inativo,
                 ),
               ],
-              actionsBuilder: (u) => [
-                IconActionButton(
-                  icon: LucideIcons.pencil,
-                  tooltip: 'Editar',
-                  onPressed: () => onEdit(u),
-                ),
-              ],
+              actionsBuilder: podeAlterar
+                  ? (u) => [
+                      IconActionButton(
+                        icon: LucideIcons.pencil,
+                        tooltip: 'Editar',
+                        onPressed: () => onEdit(u),
+                      ),
+                    ]
+                  : null,
             ),
           ),
         ),
@@ -332,6 +358,7 @@ class _DesktopTable extends StatelessWidget {
 class _MobileList extends StatelessWidget {
   const _MobileList({
     required this.result,
+    required this.podeAlterar,
     required this.onEdit,
     required this.onPageChange,
     required this.currentPage,
@@ -339,6 +366,7 @@ class _MobileList extends StatelessWidget {
   });
 
   final PaginatedResult<UsuarioDto> result;
+  final bool podeAlterar;
   final ValueChanged<UsuarioDto> onEdit;
   final ValueChanged<int> onPageChange;
   final int currentPage;
@@ -361,13 +389,19 @@ class _MobileList extends StatelessWidget {
                 tagSlot: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    PapelUsuarioTag(papel: u.papel),
-                    const SizedBox(width: AppSpacing.s1),
-                    IconActionButton(
-                      icon: LucideIcons.pencil,
-                      tooltip: 'Editar',
-                      onPressed: () => onEdit(u),
+                    AtivoTag(
+                      status: u.ativo ? StatusAtivo.ativo : StatusAtivo.inativo,
                     ),
+                    const SizedBox(width: AppSpacing.s1),
+                    PapelUsuarioTag(papel: u.papel),
+                    if (podeAlterar) ...[
+                      const SizedBox(width: AppSpacing.s1),
+                      IconActionButton(
+                        icon: LucideIcons.pencil,
+                        tooltip: 'Editar',
+                        onPressed: () => onEdit(u),
+                      ),
+                    ],
                   ],
                 ),
               );
@@ -559,6 +593,7 @@ class _UsuarioFormState extends State<_UsuarioForm> {
           value: _papel,
           options: const [
             SegmentedOption(PapelUsuario.solicitante, 'Solicitante'),
+            SegmentedOption(PapelUsuario.gerencia, 'Gerência'),
             SegmentedOption(PapelUsuario.atendente, 'Atendente'),
             SegmentedOption(PapelUsuario.admin, 'Admin'),
           ],

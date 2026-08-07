@@ -14,9 +14,10 @@ class AuthException implements Exception {
 }
 
 class TokenPayload {
-  const TokenPayload({required this.userId, required this.papel});
+  const TokenPayload({required this.userId, required this.papel, this.nome});
   final int userId;
   final Papel papel;
+  final String? nome;
 }
 
 class AuthService {
@@ -61,6 +62,7 @@ class AuthService {
       return TokenPayload(
         userId: payload['sub'] as int,
         papel: papelFromString(payload['papel'] as String),
+        nome: payload['nome'] as String?,
       );
     } on JWTExpiredException {
       throw const AuthException('Token expirado');

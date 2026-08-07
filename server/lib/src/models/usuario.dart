@@ -1,7 +1,8 @@
-enum Papel { solicitante, atendente, admin }
+enum Papel { solicitante, gerencia, atendente, admin }
 
 Papel papelFromString(String s) => switch (s.toUpperCase()) {
       'SOLICITANTE' => Papel.solicitante,
+      'GERENCIA' => Papel.gerencia,
       'ATENDENTE' => Papel.atendente,
       'ADMIN' => Papel.admin,
       _ => throw ArgumentError('Papel desconhecido: $s'),
@@ -9,6 +10,7 @@ Papel papelFromString(String s) => switch (s.toUpperCase()) {
 
 String papelToString(Papel p) => switch (p) {
       Papel.solicitante => 'SOLICITANTE',
+      Papel.gerencia => 'GERENCIA',
       Papel.atendente => 'ATENDENTE',
       Papel.admin => 'ADMIN',
     };

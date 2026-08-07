@@ -5,9 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'api_exception.dart';
 import 'auth_storage.dart';
 
-const _kBaseUrl = 'http://localhost:8090';
+const _kBaseUrl = 'http://192.168.101.6:8090';
 
 class ApiClient {
+  static const baseUrl = _kBaseUrl;
   ApiClient({required AuthStorage authStorage}) : _authStorage = authStorage {
     _dio = _build();
   }
@@ -71,6 +72,14 @@ class ApiClient {
   Future<Response<T>> put<T>(String path, {Object? data}) async {
     try {
       return await _dio.put<T>(path, data: data);
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    }
+  }
+
+  Future<Response<T>> patch<T>(String path, {Object? data}) async {
+    try {
+      return await _dio.patch<T>(path, data: data);
     } on DioException catch (e) {
       throw ApiException.fromDioException(e);
     }

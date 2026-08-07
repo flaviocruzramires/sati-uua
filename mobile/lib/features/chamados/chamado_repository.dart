@@ -39,6 +39,7 @@ abstract class ChamadoRepositoryBase {
     required String descricao,
     required DateTime dataRetorno,
     required bool marcaEncerramento,
+    DateTime? dataPrevistaRetorno,
   });
 
   Future<ChamadoDto> create({
@@ -50,6 +51,18 @@ abstract class ChamadoRepositoryBase {
   Future<ChamadoDto> atribuirResponsavel({
     required int id,
     required int responsavelId,
+  });
+
+  Future<ChamadoDto> atualizarTerceiro({
+    required int id,
+    required bool envolveTerceiro,
+    String? nomeTerceiro,
+  });
+
+  Future<ChamadoDetalheDto> enviarRetornoSolicitante({
+    required int chamadoId,
+    required String descricao,
+    required DateTime dataRetorno,
   });
 }
 
@@ -112,6 +125,7 @@ class ChamadoRepository implements ChamadoRepositoryBase {
     required String descricao,
     required DateTime dataRetorno,
     required bool marcaEncerramento,
+    DateTime? dataPrevistaRetorno,
   }) async {
     final res = await _client.post<Map<String, dynamic>>(
       '/chamados/$chamadoId/historico',
@@ -119,6 +133,9 @@ class ChamadoRepository implements ChamadoRepositoryBase {
         'descricao': descricao,
         'dataRetorno': dataRetorno.toUtc().toIso8601String(),
         'marcaEncerramento': marcaEncerramento,
+        if (dataPrevistaRetorno != null)
+          'dataPrevistaRetorno':
+              '${dataPrevistaRetorno.year}-${dataPrevistaRetorno.month.toString().padLeft(2, '0')}-${dataPrevistaRetorno.day.toString().padLeft(2, '0')}',
       },
     );
     return ChamadoDetalheDto.fromJson(res.data as Map<String, dynamic>);
@@ -151,6 +168,38 @@ class ChamadoRepository implements ChamadoRepositoryBase {
       data: {'responsavelId': responsavelId},
     );
     return ChamadoDto.fromJson(res.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<ChamadoDto> atualizarTerceiro({
+    required int id,
+    required bool envolveTerceiro,
+    String? nomeTerceiro,
+  }) async {
+    final res = await _client.patch<Map<String, dynamic>>(
+      '/chamados/$id/terceiro',
+      data: {
+        'envolveTerceiro': envolveTerceiro,
+        if (nomeTerceiro != null) 'nomeTerceiro': nomeTerceiro,
+      },
+    );
+    return ChamadoDto.fromJson(res.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<ChamadoDetalheDto> enviarRetornoSolicitante({
+    required int chamadoId,
+    required String descricao,
+    required DateTime dataRetorno,
+  }) async {
+    final res = await _client.post<Map<String, dynamic>>(
+      '/chamados/$chamadoId/retorno-solicitante',
+      data: {
+        'descricao': descricao,
+        'dataRetorno': dataRetorno.toUtc().toIso8601String(),
+      },
+    );
+    return ChamadoDetalheDto.fromJson(res.data as Map<String, dynamic>);
   }
 }
 

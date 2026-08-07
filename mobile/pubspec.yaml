@@ -33,6 +33,12 @@ dependencies:
   # Internacionalização / formatação de datas
   intl: ^0.19.0
 
+  # Seleção de arquivos (imagens e PDFs)
+  file_picker: ^8.1.7
+
+  # Abrir URLs e arquivos no navegador/SO
+  url_launcher: ^6.3.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -41,8 +47,34 @@ dev_dependencies:
   build_runner: ^2.4.13
   mocktail: ^1.0.4
 
+  # Geração de splash screen e ícones do app (marca SATI-UUA)
+  flutter_native_splash: ^2.4.0
+  flutter_launcher_icons: ^0.14.1
+
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/
+
+# ── Splash screen nativa (Android + iOS) ──────────────────────────────────────
+# Gerar com: dart run flutter_native_splash:create
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/sati_splash.png
+  android_12:
+    image: assets/images/sati_icon_android12.png
+    color: "#ffffff"
+  web: false
+
+# ── Ícone do app (Android + iOS) ──────────────────────────────────────────────
+# Gerar com: dart run flutter_launcher_icons
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: assets/images/sati_icon.png
+  web:
+    generated: false
+  windows:
+    generated: false

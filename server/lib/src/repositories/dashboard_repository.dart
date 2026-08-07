@@ -22,6 +22,7 @@ class KpiResumo {
     required this.aguardandoSolicitante,
     required this.encerrados,
     required this.semAtendente,
+    required this.semCategoria,
     required this.tempoMedioMinutos,
   });
 
@@ -30,6 +31,7 @@ class KpiResumo {
   final int aguardandoSolicitante;
   final int encerrados;
   final int semAtendente;
+  final int semCategoria;
   final double tempoMedioMinutos;
 
   Map<String, dynamic> toJson() => {
@@ -38,6 +40,7 @@ class KpiResumo {
         'aguardandoSolicitante': aguardandoSolicitante,
         'encerrados': encerrados,
         'semAtendente': semAtendente,
+        'semCategoria': semCategoria,
         'tempoMedioMinutos': tempoMedioMinutos,
       };
 }
@@ -149,6 +152,7 @@ class DashboardRepository {
         "  COUNT(*) FILTER (WHERE situacao = 'AGUARDANDO_SOLICITANTE') AS aguardando, "
         "  COUNT(*) FILTER (WHERE situacao = 'ENCERRADO') AS encerrados, "
         "  COUNT(*) FILTER (WHERE usuario_responsavel_id IS NULL AND situacao != 'ENCERRADO') AS sem_atendente, "
+        "  COUNT(*) FILTER (WHERE servico_id IS NULL AND equipamento_id IS NULL) AS sem_categoria, "
         "  COALESCE(AVG(EXTRACT(EPOCH FROM (data_fechamento - data_abertura)) / 60) "
         "    FILTER (WHERE situacao = 'ENCERRADO'), 0) AS tempo_medio "
         "FROM chamados "
@@ -163,7 +167,8 @@ class DashboardRepository {
       aguardandoSolicitante: _toInt(r[2]),
       encerrados: _toInt(r[3]),
       semAtendente: _toInt(r[4]),
-      tempoMedioMinutos: _toDouble(r[5]),
+      semCategoria: _toInt(r[5]),
+      tempoMedioMinutos: _toDouble(r[6]),
     );
   }
 

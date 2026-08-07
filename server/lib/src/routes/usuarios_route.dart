@@ -6,15 +6,18 @@ import 'package:shelf_router/shelf_router.dart';
 
 import '../di/app_container.dart';
 import '../middlewares/auth_middleware.dart';
+import '../models/permissao.dart';
 import '../models/usuario.dart';
+
+const _chave = 'cadastros.usuarios';
 
 Router usuariosRouter(AppContainer container) {
   final router = Router();
   final repo = container.usuarioRepository;
+  final permRepo = container.permissaoRepository;
 
   router.get('/usuarios', (Request req) async {
-    final payload = requireAuth(req);
-    requirePapel(payload, Papel.admin);
+    await requirePermissao(req, permRepo, _chave, Acao.ver);
 
     final page = int.tryParse(req.url.queryParameters['page'] ?? '1') ?? 1;
     final pageSize =
@@ -40,8 +43,7 @@ Router usuariosRouter(AppContainer container) {
   });
 
   router.post('/usuarios', (Request req) async {
-    final payload = requireAuth(req);
-    requirePapel(payload, Papel.admin);
+    await requirePermissao(req, permRepo, _chave, Acao.incluir);
 
     final body = jsonDecode(await req.readAsString()) as Map<String, dynamic>;
     final nome = (body['nome'] as String?)?.trim() ?? '';
@@ -87,8 +89,7 @@ Router usuariosRouter(AppContainer container) {
   });
 
   router.put('/usuarios/<id>', (Request req, String id) async {
-    final payload = requireAuth(req);
-    requirePapel(payload, Papel.admin);
+    await requirePermissao(req, permRepo, _chave, Acao.alterar);
 
     final uid = int.tryParse(id);
     if (uid == null) return _badRequest('id inválido');

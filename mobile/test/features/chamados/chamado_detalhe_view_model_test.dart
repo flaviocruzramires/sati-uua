@@ -16,6 +16,7 @@ final _kChamado = ChamadoDto(
   solicitanteNome: 'Maria',
   situacao: SituacaoChamado.aberto,
   dataAbertura: DateTime.utc(2026, 7, 30),
+  envolveTerceiro: false,
 );
 
 final _kDetalhe = ChamadoDetalheDto(chamado: _kChamado, historico: const []);
@@ -31,6 +32,7 @@ final _kDetalheEncerrado = ChamadoDetalheDto(
     situacao: SituacaoChamado.encerrado,
     dataAbertura: DateTime.utc(2026, 7, 30),
     dataFechamento: DateTime.utc(2026, 7, 30, 14),
+    envolveTerceiro: false,
   ),
   historico: const [],
 );

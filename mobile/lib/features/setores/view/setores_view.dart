@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../core/auth/current_user_provider.dart';
-import '../../../core/domain/enums.dart';
+import '../../../core/auth/permissoes_provider.dart';
 import '../../../core/domain/paginated_result.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
@@ -28,9 +28,11 @@ class SetoresView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userAsync = ref.watch(currentUserProvider);
-    final user = userAsync.valueOrNull;
-    final isAdmin = user?.papel == PapelUsuario.admin;
+    final user = ref.watch(currentUserProvider).valueOrNull;
+    final perm = ref.watch(permissoesHelperProvider);
+    final podeIncluir = perm.podeIncluir('cadastros.setores');
+    final podeAlterar = perm.podeAlterar('cadastros.setores');
+    final podeExcluir = perm.podeExcluir('cadastros.setores');
 
     final vmState = ref.watch(setoresViewModelProvider);
     final vm = ref.read(setoresViewModelProvider.notifier);
@@ -98,9 +100,22 @@ class SetoresView extends ConsumerWidget {
       subtitle: 'Gestão de setores',
       onNavigate: (route) => context.go(route),
       onLogout: () {},
-      actions: isAdmin
-          ? [AppButton(label: '+ Novo Setor', onPressed: () => showForm())]
-          : null,
+      actions: [
+        if (Breakpoints.isMobile(context)) ...[
+          IconButton(
+            icon: const Icon(Icons.refresh, color: AppColors.neutral700),
+            tooltip: 'Atualizar',
+            onPressed: vm.load,
+          ),
+          if (podeIncluir)
+            IconButton(
+              icon: const Icon(Icons.add, color: AppColors.navy),
+              tooltip: 'Novo Setor',
+              onPressed: () => showForm(),
+            ),
+        ] else if (podeIncluir)
+          AppButton(label: '+ Novo Setor', onPressed: () => showForm()),
+      ],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -128,7 +143,8 @@ class SetoresView extends ConsumerWidget {
                 if (Breakpoints.isMobile(context)) {
                   return _MobileList(
                     result: result,
-                    isAdmin: isAdmin,
+                    podeAlterar: podeAlterar,
+                    podeExcluir: podeExcluir,
                     onEdit: showForm,
                     onDelete: confirmDelete,
                     onPageChange: vm.setPage,
@@ -138,7 +154,8 @@ class SetoresView extends ConsumerWidget {
                 }
                 return _DesktopTable(
                   result: result,
-                  isAdmin: isAdmin,
+                  podeAlterar: podeAlterar,
+                  podeExcluir: podeExcluir,
                   onEdit: showForm,
                   onDelete: confirmDelete,
                   onPageChange: vm.setPage,
@@ -159,7 +176,8 @@ class SetoresView extends ConsumerWidget {
 class _DesktopTable extends StatelessWidget {
   const _DesktopTable({
     required this.result,
-    required this.isAdmin,
+    required this.podeAlterar,
+    required this.podeExcluir,
     required this.onEdit,
     required this.onDelete,
     required this.onPageChange,
@@ -168,7 +186,8 @@ class _DesktopTable extends StatelessWidget {
   });
 
   final PaginatedResult<SetorDto> result;
-  final bool isAdmin;
+  final bool podeAlterar;
+  final bool podeExcluir;
   final ValueChanged<SetorDto> onEdit;
   final ValueChanged<SetorDto> onDelete;
   final ValueChanged<int> onPageChange;
@@ -187,19 +206,22 @@ class _DesktopTable extends StatelessWidget {
               columns: const ['Nome'],
               rows: result.data,
               rowBuilder: (s) => [Text(s.nome)],
-              actionsBuilder: isAdmin
+              actionsBuilder: (podeAlterar || podeExcluir)
                   ? (s) => [
-                      IconActionButton(
-                        icon: LucideIcons.pencil,
-                        tooltip: 'Editar',
-                        onPressed: () => onEdit(s),
-                      ),
-                      const SizedBox(width: AppSpacing.s1),
-                      IconActionButton(
-                        icon: LucideIcons.trash2,
-                        tooltip: 'Excluir',
-                        onPressed: () => onDelete(s),
-                      ),
+                      if (podeAlterar)
+                        IconActionButton(
+                          icon: LucideIcons.pencil,
+                          tooltip: 'Editar',
+                          onPressed: () => onEdit(s),
+                        ),
+                      if (podeAlterar && podeExcluir)
+                        const SizedBox(width: AppSpacing.s1),
+                      if (podeExcluir)
+                        IconActionButton(
+                          icon: LucideIcons.trash2,
+                          tooltip: 'Excluir',
+                          onPressed: () => onDelete(s),
+                        ),
                     ]
                   : null,
             ),
@@ -221,7 +243,8 @@ class _DesktopTable extends StatelessWidget {
 class _MobileList extends StatelessWidget {
   const _MobileList({
     required this.result,
-    required this.isAdmin,
+    required this.podeAlterar,
+    required this.podeExcluir,
     required this.onEdit,
     required this.onDelete,
     required this.onPageChange,
@@ -230,7 +253,8 @@ class _MobileList extends StatelessWidget {
   });
 
   final PaginatedResult<SetorDto> result;
-  final bool isAdmin;
+  final bool podeAlterar;
+  final bool podeExcluir;
   final ValueChanged<SetorDto> onEdit;
   final ValueChanged<SetorDto> onDelete;
   final ValueChanged<int> onPageChange;
@@ -251,21 +275,24 @@ class _MobileList extends StatelessWidget {
               return AppCardListItem(
                 titulo: s.nome,
                 metaLines: const [],
-                tagSlot: isAdmin
+                tagSlot: (podeAlterar || podeExcluir)
                     ? Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconActionButton(
-                            icon: LucideIcons.pencil,
-                            tooltip: 'Editar',
-                            onPressed: () => onEdit(s),
-                          ),
-                          const SizedBox(width: AppSpacing.s1),
-                          IconActionButton(
-                            icon: LucideIcons.trash2,
-                            tooltip: 'Excluir',
-                            onPressed: () => onDelete(s),
-                          ),
+                          if (podeAlterar)
+                            IconActionButton(
+                              icon: LucideIcons.pencil,
+                              tooltip: 'Editar',
+                              onPressed: () => onEdit(s),
+                            ),
+                          if (podeAlterar && podeExcluir)
+                            const SizedBox(width: AppSpacing.s1),
+                          if (podeExcluir)
+                            IconActionButton(
+                              icon: LucideIcons.trash2,
+                              tooltip: 'Excluir',
+                              onPressed: () => onDelete(s),
+                            ),
                         ],
                       )
                     : null,

@@ -14,6 +14,10 @@ class Chamado {
     required this.situacao,
     required this.dataAbertura,
     this.dataFechamento,
+    this.envolveTerceiro = false,
+    this.nomeTerceiro,
+    this.dataPrevistaRetorno,
+    this.ultimoRetorno,
   });
 
   final int id;
@@ -30,6 +34,10 @@ class Chamado {
   final String situacao;
   final DateTime dataAbertura;
   final DateTime? dataFechamento;
+  final bool envolveTerceiro;
+  final String? nomeTerceiro;
+  final DateTime? dataPrevistaRetorno;
+  final DateTime? ultimoRetorno;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -46,5 +54,10 @@ class Chamado {
         'situacao': situacao,
         'dataAbertura': dataAbertura.toIso8601String(),
         'dataFechamento': dataFechamento?.toIso8601String(),
+        'envolveTerceiro': envolveTerceiro,
+        'nomeTerceiro': nomeTerceiro,
+        'dataPrevistaRetorno':
+            dataPrevistaRetorno?.toIso8601String().substring(0, 10),
+        'ultimoRetorno': ultimoRetorno?.toIso8601String(),
       };
 }

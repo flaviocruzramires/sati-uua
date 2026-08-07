@@ -5,6 +5,7 @@ class KpiResumoDto {
     required this.aguardandoSolicitante,
     required this.encerrados,
     required this.semAtendente,
+    required this.semCategoria,
     required this.tempoMedioMinutos,
   });
 
@@ -13,6 +14,7 @@ class KpiResumoDto {
   final int aguardandoSolicitante;
   final int encerrados;
   final int semAtendente;
+  final int semCategoria;
   final double tempoMedioMinutos;
 
   factory KpiResumoDto.fromJson(Map<String, dynamic> j) => KpiResumoDto(
@@ -21,6 +23,7 @@ class KpiResumoDto {
     aguardandoSolicitante: j['aguardandoSolicitante'] as int,
     encerrados: j['encerrados'] as int,
     semAtendente: j['semAtendente'] as int,
+    semCategoria: (j['semCategoria'] as int?) ?? 0,
     tempoMedioMinutos: (j['tempoMedioMinutos'] as num).toDouble(),
   );
 

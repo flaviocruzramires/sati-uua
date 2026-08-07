@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
+import '../../auth/permissoes_provider.dart';
 import '../../domain/enums.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/breakpoints.dart';
-import 'bottom_nav_bar.dart';
+import '../../../features/auth/view_model/login_view_model.dart';
+import '../../../features/notificacoes/notificacoes_view_model.dart';
 import 'nav_item.dart';
 import 'user_footer_tile.dart';
 
@@ -15,7 +19,8 @@ class NavEntry {
     required this.icon,
     required this.label,
     required this.route,
-    this.visibleForPapeis = const [],
+    this.chave,
+    this.adminOnly = false,
     this.group,
     this.bottomNavIndex,
   });
@@ -23,23 +28,33 @@ class NavEntry {
   final IconData icon;
   final String label;
   final String route;
-  final List<PapelUsuario> visibleForPapeis;
-  final String? group; // null = raiz, 'CADASTROS', 'ANÁLISE'
+
+  /// Chave da rotina no permissionamento (rotina 13). A visibilidade do item
+  /// passa a ser `podeVer(chave)`. `null` = sempre visível.
+  final String? chave;
+
+  /// Itens fora da matriz de permissões (ex.: Permissionamento) — só Admin.
+  final bool adminOnly;
+
+  final String? group; // null = raiz, 'CADASTROS', 'ANÁLISE', 'ADMINISTRAÇÃO'
   final int? bottomNavIndex; // qual aba do bottom nav representa
 }
 
-// Todas as entradas de navegação do app
+// Todas as entradas de navegação do app. A visibilidade vem da matriz de
+// permissões (rotina 13) via `chave`; Sair e Notificações ficam fora (fixos).
 const kNavEntries = [
   NavEntry(
     icon: LucideIcons.layoutGrid,
     label: 'Dashboard',
     route: '/',
+    chave: 'dashboard',
     bottomNavIndex: 0,
   ),
   NavEntry(
     icon: LucideIcons.ticket,
     label: 'Chamados',
     route: '/chamados',
+    chave: 'chamados.consulta',
     bottomNavIndex: 1,
   ),
   NavEntry(
@@ -47,7 +62,7 @@ const kNavEntries = [
     label: 'Setores',
     route: '/setores',
     group: 'CADASTROS',
-    visibleForPapeis: [PapelUsuario.admin],
+    chave: 'cadastros.setores',
     bottomNavIndex: 2,
   ),
   NavEntry(
@@ -55,7 +70,7 @@ const kNavEntries = [
     label: 'Tipos de Equipamento',
     route: '/tipos-equipamento',
     group: 'CADASTROS',
-    visibleForPapeis: [PapelUsuario.admin, PapelUsuario.atendente],
+    chave: 'cadastros.tipos',
     bottomNavIndex: 2,
   ),
   NavEntry(
@@ -63,7 +78,7 @@ const kNavEntries = [
     label: 'Equipamentos',
     route: '/equipamentos',
     group: 'CADASTROS',
-    visibleForPapeis: [PapelUsuario.admin, PapelUsuario.atendente],
+    chave: 'cadastros.equip',
     bottomNavIndex: 2,
   ),
   NavEntry(
@@ -71,7 +86,7 @@ const kNavEntries = [
     label: 'Serviços',
     route: '/servicos',
     group: 'CADASTROS',
-    visibleForPapeis: [PapelUsuario.admin, PapelUsuario.atendente],
+    chave: 'cadastros.servicos',
     bottomNavIndex: 2,
   ),
   NavEntry(
@@ -79,7 +94,7 @@ const kNavEntries = [
     label: 'Usuários',
     route: '/usuarios',
     group: 'CADASTROS',
-    visibleForPapeis: [PapelUsuario.admin],
+    chave: 'cadastros.usuarios',
     bottomNavIndex: 2,
   ),
   NavEntry(
@@ -87,6 +102,7 @@ const kNavEntries = [
     label: 'Relatórios',
     route: '/relatorios',
     group: 'ANÁLISE',
+    chave: 'analise.relatorios',
     bottomNavIndex: 3,
   ),
   NavEntry(
@@ -94,12 +110,20 @@ const kNavEntries = [
     label: 'Configurações',
     route: '/configuracoes',
     group: 'ANÁLISE',
-    visibleForPapeis: [PapelUsuario.admin],
+    chave: 'analise.config',
+    bottomNavIndex: 3,
+  ),
+  NavEntry(
+    icon: LucideIcons.shield,
+    label: 'Permissionamento',
+    route: '/permissionamento',
+    group: 'ADMINISTRAÇÃO',
+    adminOnly: true,
     bottomNavIndex: 3,
   ),
 ];
 
-class AppShell extends StatelessWidget {
+class AppShell extends ConsumerWidget {
   const AppShell({
     super.key,
     required this.child,
@@ -123,20 +147,57 @@ class AppShell extends StatelessWidget {
   final String? subtitle;
   final List<Widget>? actions;
 
-  @override
-  Widget build(BuildContext context) {
-    if (Breakpoints.isMobile(context)) {
-      return _MobileShell(shell: this);
-    }
-    return _DesktopShell(shell: this);
+  VoidCallback _buildLogout(BuildContext context, WidgetRef ref) {
+    return () async {
+      await ref.read(loginViewModelProvider.notifier).logout();
+      if (context.mounted) context.go('/login');
+    };
   }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final perm = ref.watch(permissoesHelperProvider);
+    bool visivel(NavEntry e) => e.adminOnly
+        ? perm.isAdmin
+        : (e.chave == null ? true : perm.podeVer(e.chave!));
+
+    final effectiveShell = _ShellData(
+      shell: this,
+      onLogout: _buildLogout(context, ref),
+      visibleEntries: kNavEntries.where(visivel).toList(),
+    );
+    if (Breakpoints.isMobile(context)) {
+      return _MobileShell(shell: effectiveShell);
+    }
+    return _DesktopShell(shell: effectiveShell);
+  }
+}
+
+class _ShellData {
+  const _ShellData({
+    required this.shell,
+    required this.onLogout,
+    required this.visibleEntries,
+  });
+  final AppShell shell;
+  final VoidCallback onLogout;
+  final List<NavEntry> visibleEntries;
+
+  Widget get child => shell.child;
+  String get currentRoute => shell.currentRoute;
+  String get nomeUsuario => shell.nomeUsuario;
+  PapelUsuario? get papelUsuario => shell.papelUsuario;
+  ValueChanged<String> get onNavigate => shell.onNavigate;
+  String get title => shell.title;
+  String? get subtitle => shell.subtitle;
+  List<Widget>? get actions => shell.actions;
 }
 
 // ── Desktop ──────────────────────────────────────────────────────────────────
 
 class _DesktopShell extends StatelessWidget {
   const _DesktopShell({required this.shell});
-  final AppShell shell;
+  final _ShellData shell;
 
   @override
   Widget build(BuildContext context) {
@@ -160,13 +221,14 @@ class _DesktopShell extends StatelessWidget {
 }
 
 class _Sidebar extends StatelessWidget {
-  const _Sidebar({required this.shell});
-  final AppShell shell;
+  const _Sidebar({required this.shell, this.onNavigate});
+  final _ShellData shell;
+  final VoidCallback? onNavigate;
 
   @override
   Widget build(BuildContext context) {
     final grouped = <String?, List<NavEntry>>{};
-    for (final e in kNavEntries) {
+    for (final e in shell.visibleEntries) {
       (grouped[e.group] ??= []).add(e);
     }
 
@@ -181,15 +243,13 @@ class _Sidebar extends StatelessWidget {
         children: [
           // Marca
           Container(
+            height: 64,
             decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(color: AppColors.divider, width: 2),
               ),
             ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.s3,
-              vertical: AppSpacing.s3,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s3),
             child: Row(
               children: [
                 ClipRRect(
@@ -237,9 +297,10 @@ class _Sidebar extends StatelessWidget {
                       icon: e.icon,
                       label: e.label,
                       active: shell.currentRoute == e.route,
-                      onTap: () => shell.onNavigate(e.route),
-                      visibleForPapeis: e.visibleForPapeis,
-                      currentPapel: shell.papelUsuario,
+                      onTap: () {
+                        onNavigate?.call();
+                        shell.onNavigate(e.route);
+                      },
                     ),
                   ),
                   // Grupos
@@ -254,9 +315,10 @@ class _Sidebar extends StatelessWidget {
                                   icon: e.icon,
                                   label: e.label,
                                   active: shell.currentRoute == e.route,
-                                  onTap: () => shell.onNavigate(e.route),
-                                  visibleForPapeis: e.visibleForPapeis,
-                                  currentPapel: shell.papelUsuario,
+                                  onTap: () {
+                                    onNavigate?.call();
+                                    shell.onNavigate(e.route);
+                                  },
                                 ),
                               )
                               .toList(),
@@ -280,7 +342,7 @@ class _Sidebar extends StatelessWidget {
 
 class _Topbar extends StatelessWidget {
   const _Topbar({required this.shell});
-  final AppShell shell;
+  final _ShellData shell;
 
   @override
   Widget build(BuildContext context) {
@@ -315,9 +377,56 @@ class _Topbar extends StatelessWidget {
           if (shell.actions != null)
             Row(mainAxisSize: MainAxisSize.min, children: shell.actions!),
           const SizedBox(width: AppSpacing.s3),
-          Icon(LucideIcons.bell, size: 20, color: AppColors.neutral600),
+          const _BellButton(),
         ],
       ),
+    );
+  }
+}
+
+// ── Bell button with badge ────────────────────────────────────────────────────
+
+class _BellButton extends ConsumerWidget {
+  const _BellButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final countAsync = ref.watch(notificacoesBadgeProvider);
+    final count = countAsync.valueOrNull ?? 0;
+
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        IconButton(
+          icon: Icon(LucideIcons.bell, size: 20, color: AppColors.neutral600),
+          onPressed: () => context.go('/notificacoes'),
+          tooltip: 'Notificações',
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(),
+        ),
+        if (count > 0)
+          Positioned(
+            top: -2,
+            right: -2,
+            child: Container(
+              padding: const EdgeInsets.all(3),
+              decoration: const BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.circle,
+              ),
+              constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+              child: Text(
+                count > 99 ? '99+' : count.toString(),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
@@ -326,37 +435,37 @@ class _Topbar extends StatelessWidget {
 
 class _MobileShell extends StatelessWidget {
   const _MobileShell({required this.shell});
-  final AppShell shell;
-
-  int get _currentBottomIndex {
-    for (final e in kNavEntries) {
-      if (e.route == shell.currentRoute) return e.bottomNavIndex ?? 0;
-    }
-    return 0;
-  }
-
-  void _onBottomTap(int index, BuildContext context) {
-    // Navega para a primeira rota visível do índice selecionado
-    final entry = kNavEntries.firstWhere(
-      (e) =>
-          e.bottomNavIndex == index &&
-          (e.visibleForPapeis.isEmpty ||
-              e.visibleForPapeis.contains(shell.papelUsuario)),
-      orElse: () => kNavEntries.first,
-    );
-    shell.onNavigate(entry.route);
-  }
+  final _ShellData shell;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bg,
+      drawer: Builder(
+        builder: (ctx) => Drawer(
+          backgroundColor: AppColors.surface,
+          width: 280,
+          child: SafeArea(
+            child: _Sidebar(
+              shell: shell,
+              onNavigate: () => Navigator.of(ctx).pop(),
+            ),
+          ),
+        ),
+      ),
       appBar: AppBar(
         backgroundColor: AppColors.bg,
         elevation: 0,
         scrolledUnderElevation: 0,
         shape: const Border(
           bottom: BorderSide(color: AppColors.divider, width: 2),
+        ),
+        leading: Builder(
+          builder: (ctx) => IconButton(
+            icon: const Icon(Icons.menu, color: AppColors.neutral700),
+            onPressed: () => Scaffold.of(ctx).openDrawer(),
+            tooltip: 'Menu',
+          ),
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -376,15 +485,11 @@ class _MobileShell extends StatelessWidget {
         ),
         actions: [
           if (shell.actions != null) ...shell.actions!,
-          Icon(LucideIcons.bell, size: 20, color: AppColors.neutral600),
+          const _BellButton(),
           const SizedBox(width: AppSpacing.s3),
         ],
       ),
       body: shell.child,
-      bottomNavigationBar: AppBottomNavBar(
-        currentIndex: _currentBottomIndex,
-        onTap: (i) => _onBottomTap(i, context),
-      ),
     );
   }
 }

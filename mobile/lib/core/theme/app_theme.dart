@@ -42,32 +42,69 @@ abstract final class AppTheme {
         fontSize: 20,
         fontWeight: FontWeight.w800,
         letterSpacing: -0.015 * 20,
+        color: AppColors.neutral700,
       ),
       headlineSmall: GoogleFonts.archivo(
         fontSize: 16,
         fontWeight: FontWeight.w800,
         letterSpacing: -0.015 * 16,
+        color: AppColors.neutral700,
       ),
       titleSmall: GoogleFonts.archivo(
         fontSize: 13,
         fontWeight: FontWeight.w800,
         letterSpacing: 0.08 * 13,
-        color: AppColors.label,
+        color: AppColors.neutral700,
       ),
       bodyMedium: GoogleFonts.archivo(
         fontSize: 15,
         fontWeight: FontWeight.w400,
         height: 1.55,
+        color: AppColors.neutral700,
+      ),
+      bodySmall: GoogleFonts.archivo(
+        fontSize: 13,
+        fontWeight: FontWeight.w400,
+        height: 1.4,
+        color: AppColors.neutral700,
       ),
       labelSmall: GoogleFonts.archivo(
         fontSize: 12,
         fontWeight: FontWeight.w400,
-        color: AppColors.label,
+        color: AppColors.neutral600,
       ),
     );
 
     return base.copyWith(
       textTheme: textTheme,
+      appBarTheme: AppBarTheme(
+        backgroundColor: AppColors.bg,
+        foregroundColor: AppColors.neutral700,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        iconTheme: const IconThemeData(color: AppColors.neutral700),
+        titleTextStyle: GoogleFonts.archivo(
+          fontSize: 20,
+          fontWeight: FontWeight.w800,
+          letterSpacing: -0.015 * 20,
+          color: AppColors.neutral700,
+        ),
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: AppColors.bg,
+        surfaceTintColor: Colors.transparent,
+        titleTextStyle: GoogleFonts.archivo(
+          fontSize: 18,
+          fontWeight: FontWeight.w700,
+          color: AppColors.neutral700,
+        ),
+        contentTextStyle: GoogleFonts.archivo(
+          fontSize: 15,
+          color: AppColors.neutral700,
+          height: 1.5,
+        ),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      ),
       cardTheme: CardThemeData(
         color: AppColors.surface,
         elevation: 0,

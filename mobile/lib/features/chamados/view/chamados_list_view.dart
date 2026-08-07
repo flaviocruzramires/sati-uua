@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/auth/current_user_provider.dart';
+import '../../../core/auth/permissoes_provider.dart';
 import '../../../core/domain/enums.dart';
 import '../../../core/domain/paginated_result.dart';
 import '../../../core/theme/app_colors.dart';
@@ -37,6 +38,8 @@ class ChamadosListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider).valueOrNull;
+    final podeAbrir =
+        ref.watch(permissoesHelperProvider).podeIncluir('chamados.abertura');
     final vmState = ref.watch(chamadosListViewModelProvider);
     final vm = ref.read(chamadosListViewModelProvider.notifier);
     final atendentes = ref.watch(_atendentesProvider).valueOrNull ?? [];
@@ -71,10 +74,23 @@ class ChamadosListView extends ConsumerWidget {
       onNavigate: (r) => context.go(r),
       onLogout: () {},
       actions: [
-        AppButton(
-          label: '+ Abrir Chamado',
-          onPressed: () => context.go('/chamados/abrir'),
-        ),
+        if (isMobile) ...[
+          IconButton(
+            icon: const Icon(Icons.refresh, color: AppColors.neutral700),
+            tooltip: 'Atualizar',
+            onPressed: vm.load,
+          ),
+          if (podeAbrir)
+            IconButton(
+              icon: const Icon(Icons.add, color: AppColors.navy),
+              tooltip: 'Abrir Chamado',
+              onPressed: () => context.go('/chamados/abrir'),
+            ),
+        ] else if (podeAbrir)
+          AppButton(
+            label: '+ Abrir Chamado',
+            onPressed: () => context.go('/chamados/abrir'),
+          ),
       ],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -206,22 +222,34 @@ class _MobileFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final temFiltro = vmState.filtroSituacao != null;
     return SizedBox(
       height: 44,
       child: ListView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s3),
-        children: situacaoItems.map((item) {
-          final selected = vmState.filtroSituacao == item.id;
-          return Padding(
-            padding: const EdgeInsets.only(right: AppSpacing.s2),
-            child: FilterChip(
-              label: Text(item.label),
-              selected: selected,
-              onSelected: (_) => vm.setFiltroSituacao(item.id),
+        children: [
+          ...situacaoItems.map((item) {
+            final selected = vmState.filtroSituacao == item.id;
+            return Padding(
+              padding: const EdgeInsets.only(right: AppSpacing.s2),
+              child: FilterChip(
+                label: Text(item.label),
+                selected: selected,
+                onSelected: (_) => vm.setFiltroSituacao(item.id),
+              ),
+            );
+          }),
+          if (temFiltro)
+            Padding(
+              padding: const EdgeInsets.only(right: AppSpacing.s2),
+              child: ActionChip(
+                label: const Text('Limpar filtro'),
+                avatar: const Icon(Icons.close, size: 14),
+                onPressed: () => vm.setFiltroSituacao(null),
+              ),
             ),
-          );
-        }).toList(),
+        ],
       ),
     );
   }
@@ -314,6 +342,8 @@ class _DesktopTable extends StatelessWidget {
                 'Situação',
                 'Atendente',
                 'Aberto em',
+                'Último atendimento',
+                'Retorno previsto',
               ],
               rows: result.data,
               onRowTap: onTap,
@@ -339,6 +369,22 @@ class _DesktopTable extends StatelessWidget {
                       : null,
                 ),
                 Text(_formatDate(c.dataAbertura)),
+                Text(
+                  c.ultimoRetorno != null
+                      ? _dateFmt.format(c.ultimoRetorno!.toLocal())
+                      : '—',
+                  style: c.ultimoRetorno == null
+                      ? const TextStyle(color: AppColors.muted)
+                      : null,
+                ),
+                Text(
+                  c.dataPrevistaRetorno != null
+                      ? _dateFmt.format(c.dataPrevistaRetorno!.toLocal())
+                      : '—',
+                  style: c.dataPrevistaRetorno == null
+                      ? const TextStyle(color: AppColors.muted)
+                      : null,
+                ),
               ],
             ),
           ),
@@ -387,10 +433,21 @@ class _MobileList extends StatelessWidget {
                 if (c.solicitanteSetorNome != null) c.solicitanteSetorNome!,
                 if (c.responsavelNome != null) c.responsavelNome!,
               ].join(' · ');
+              final ultimoAtendimento = c.ultimoRetorno != null
+                  ? 'Atendimento: ${_dateFmt.format(c.ultimoRetorno!.toLocal())}'
+                  : null;
+              final retornoPrevisto = c.dataPrevistaRetorno != null
+                  ? 'Retorno previsto: ${_dateFmt.format(c.dataPrevistaRetorno!.toLocal())}'
+                  : null;
               return AppCardListItem(
                 titulo:
                     '#${c.id} · ${c.descricao.length > 50 ? '${c.descricao.substring(0, 50)}…' : c.descricao}',
-                metaLines: [subtitle, _formatDate(c.dataAbertura)],
+                metaLines: [
+                  subtitle,
+                  _formatDate(c.dataAbertura),
+                  if (ultimoAtendimento != null) ultimoAtendimento,
+                  if (retornoPrevisto != null) retornoPrevisto,
+                ],
                 tagSlot: StatusChamadoTag(situacao: c.situacao),
                 onTap: () => onTap(c),
               );

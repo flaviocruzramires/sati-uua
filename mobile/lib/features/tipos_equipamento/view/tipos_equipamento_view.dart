@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../core/auth/current_user_provider.dart';
-import '../../../core/domain/enums.dart';
+import '../../../core/auth/permissoes_provider.dart';
 import '../../../core/domain/paginated_result.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
@@ -29,9 +29,10 @@ class TiposEquipamentoView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider).valueOrNull;
-    final canWrite =
-        user?.papel == PapelUsuario.admin ||
-        user?.papel == PapelUsuario.atendente;
+    final perm = ref.watch(permissoesHelperProvider);
+    final podeIncluir = perm.podeIncluir('cadastros.tipos');
+    final podeAlterar = perm.podeAlterar('cadastros.tipos');
+    final podeExcluir = perm.podeExcluir('cadastros.tipos');
 
     final vmState = ref.watch(tiposEquipamentoViewModelProvider);
     final vm = ref.read(tiposEquipamentoViewModelProvider.notifier);
@@ -99,9 +100,22 @@ class TiposEquipamentoView extends ConsumerWidget {
       subtitle: 'Classificação de equipamentos',
       onNavigate: (r) => context.go(r),
       onLogout: () {},
-      actions: canWrite
-          ? [AppButton(label: '+ Novo Tipo', onPressed: () => showForm())]
-          : null,
+      actions: [
+        if (Breakpoints.isMobile(context)) ...[
+          IconButton(
+            icon: const Icon(Icons.refresh, color: AppColors.neutral700),
+            tooltip: 'Atualizar',
+            onPressed: vm.load,
+          ),
+          if (podeIncluir)
+            IconButton(
+              icon: const Icon(Icons.add, color: AppColors.navy),
+              tooltip: 'Novo Tipo',
+              onPressed: () => showForm(),
+            ),
+        ] else if (podeIncluir)
+          AppButton(label: '+ Novo Tipo', onPressed: () => showForm()),
+      ],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -125,7 +139,8 @@ class TiposEquipamentoView extends ConsumerWidget {
               builder: (result) => Breakpoints.isMobile(context)
                   ? _MobileList(
                       result: result,
-                      canWrite: canWrite,
+                      podeAlterar: podeAlterar,
+                      podeExcluir: podeExcluir,
                       onEdit: showForm,
                       onDelete: confirmDelete,
                       onPageChange: vm.setPage,
@@ -134,7 +149,8 @@ class TiposEquipamentoView extends ConsumerWidget {
                     )
                   : _DesktopTable(
                       result: result,
-                      canWrite: canWrite,
+                      podeAlterar: podeAlterar,
+                      podeExcluir: podeExcluir,
                       onEdit: showForm,
                       onDelete: confirmDelete,
                       onPageChange: vm.setPage,
@@ -152,7 +168,8 @@ class TiposEquipamentoView extends ConsumerWidget {
 class _DesktopTable extends StatelessWidget {
   const _DesktopTable({
     required this.result,
-    required this.canWrite,
+    required this.podeAlterar,
+    required this.podeExcluir,
     required this.onEdit,
     required this.onDelete,
     required this.onPageChange,
@@ -161,7 +178,8 @@ class _DesktopTable extends StatelessWidget {
   });
 
   final PaginatedResult<TipoEquipamentoDto> result;
-  final bool canWrite;
+  final bool podeAlterar;
+  final bool podeExcluir;
   final ValueChanged<TipoEquipamentoDto> onEdit;
   final ValueChanged<TipoEquipamentoDto> onDelete;
   final ValueChanged<int> onPageChange;
@@ -180,19 +198,22 @@ class _DesktopTable extends StatelessWidget {
               columns: const ['Nome'],
               rows: result.data,
               rowBuilder: (t) => [Text(t.nome)],
-              actionsBuilder: canWrite
+              actionsBuilder: (podeAlterar || podeExcluir)
                   ? (t) => [
-                      IconActionButton(
-                        icon: LucideIcons.pencil,
-                        tooltip: 'Editar',
-                        onPressed: () => onEdit(t),
-                      ),
-                      const SizedBox(width: AppSpacing.s1),
-                      IconActionButton(
-                        icon: LucideIcons.trash2,
-                        tooltip: 'Excluir',
-                        onPressed: () => onDelete(t),
-                      ),
+                      if (podeAlterar)
+                        IconActionButton(
+                          icon: LucideIcons.pencil,
+                          tooltip: 'Editar',
+                          onPressed: () => onEdit(t),
+                        ),
+                      if (podeAlterar && podeExcluir)
+                        const SizedBox(width: AppSpacing.s1),
+                      if (podeExcluir)
+                        IconActionButton(
+                          icon: LucideIcons.trash2,
+                          tooltip: 'Excluir',
+                          onPressed: () => onDelete(t),
+                        ),
                     ]
                   : null,
             ),
@@ -212,7 +233,8 @@ class _DesktopTable extends StatelessWidget {
 class _MobileList extends StatelessWidget {
   const _MobileList({
     required this.result,
-    required this.canWrite,
+    required this.podeAlterar,
+    required this.podeExcluir,
     required this.onEdit,
     required this.onDelete,
     required this.onPageChange,
@@ -221,7 +243,8 @@ class _MobileList extends StatelessWidget {
   });
 
   final PaginatedResult<TipoEquipamentoDto> result;
-  final bool canWrite;
+  final bool podeAlterar;
+  final bool podeExcluir;
   final ValueChanged<TipoEquipamentoDto> onEdit;
   final ValueChanged<TipoEquipamentoDto> onDelete;
   final ValueChanged<int> onPageChange;
@@ -241,21 +264,24 @@ class _MobileList extends StatelessWidget {
               final t = result.data[i];
               return AppCardListItem(
                 titulo: t.nome,
-                tagSlot: canWrite
+                tagSlot: (podeAlterar || podeExcluir)
                     ? Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconActionButton(
-                            icon: LucideIcons.pencil,
-                            tooltip: 'Editar',
-                            onPressed: () => onEdit(t),
-                          ),
-                          const SizedBox(width: AppSpacing.s1),
-                          IconActionButton(
-                            icon: LucideIcons.trash2,
-                            tooltip: 'Excluir',
-                            onPressed: () => onDelete(t),
-                          ),
+                          if (podeAlterar)
+                            IconActionButton(
+                              icon: LucideIcons.pencil,
+                              tooltip: 'Editar',
+                              onPressed: () => onEdit(t),
+                            ),
+                          if (podeAlterar && podeExcluir)
+                            const SizedBox(width: AppSpacing.s1),
+                          if (podeExcluir)
+                            IconActionButton(
+                              icon: LucideIcons.trash2,
+                              tooltip: 'Excluir',
+                              onPressed: () => onDelete(t),
+                            ),
                         ],
                       )
                     : null,

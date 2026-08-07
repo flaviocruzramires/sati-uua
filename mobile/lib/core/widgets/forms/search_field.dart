@@ -24,6 +24,16 @@ class SearchField extends StatefulWidget {
 class _SearchFieldState extends State<SearchField> {
   final _controller = TextEditingController();
   Timer? _debounce;
+  bool _hasText = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      final has = _controller.text.isNotEmpty;
+      if (has != _hasText) setState(() => _hasText = has);
+    });
+  }
 
   @override
   void dispose() {
@@ -35,6 +45,12 @@ class _SearchFieldState extends State<SearchField> {
   void _onChanged(String value) {
     _debounce?.cancel();
     _debounce = Timer(widget.debounceDuration, () => widget.onChanged(value));
+  }
+
+  void _clear() {
+    _controller.clear();
+    _debounce?.cancel();
+    widget.onChanged('');
   }
 
   @override
@@ -51,6 +67,14 @@ class _SearchFieldState extends State<SearchField> {
             size: 16,
             color: AppColors.neutral500,
           ),
+          suffixIcon: _hasText
+              ? IconButton(
+                  icon: const Icon(Icons.close, size: 16, color: AppColors.neutral500),
+                  onPressed: _clear,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                )
+              : null,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 12,
             vertical: 0,

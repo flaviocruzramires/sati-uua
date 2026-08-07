@@ -10,6 +10,7 @@ export 'usuario_dto.dart';
 String _papelToStr(PapelUsuario p) => switch (p) {
   PapelUsuario.admin => 'ADMIN',
   PapelUsuario.atendente => 'ATENDENTE',
+  PapelUsuario.gerencia => 'GERENCIA',
   PapelUsuario.solicitante => 'SOLICITANTE',
 };
 

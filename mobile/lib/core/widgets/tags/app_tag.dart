@@ -88,6 +88,7 @@ class PapelUsuarioTag extends StatelessWidget {
     final (label, variant) = switch (papel) {
       PapelUsuario.admin => ('Admin', AppTagVariant.accent),
       PapelUsuario.atendente => ('Atendente', AppTagVariant.accent2),
+      PapelUsuario.gerencia => ('Gerência', AppTagVariant.accent2),
       PapelUsuario.solicitante => ('Solicitante', AppTagVariant.neutral),
     };
     return AppTag(label: label, variant: variant);

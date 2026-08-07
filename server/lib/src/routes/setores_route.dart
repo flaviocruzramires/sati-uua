@@ -5,11 +5,14 @@ import 'package:shelf_router/shelf_router.dart';
 
 import '../di/app_container.dart';
 import '../middlewares/auth_middleware.dart';
-import '../models/usuario.dart';
+import '../models/permissao.dart';
+
+const _chave = 'cadastros.setores';
 
 Router setoresRouter(AppContainer container) {
   final router = Router();
   final repo = container.setorRepository;
+  final permRepo = container.permissaoRepository;
 
   router.get('/setores', (Request req) async {
     requireAuth(req); // autenticado, qualquer papel
@@ -35,8 +38,7 @@ Router setoresRouter(AppContainer container) {
   });
 
   router.post('/setores', (Request req) async {
-    final payload = requireAuth(req);
-    requirePapel(payload, Papel.admin);
+    await requirePermissao(req, permRepo, _chave, Acao.incluir);
 
     final body = jsonDecode(await req.readAsString()) as Map<String, dynamic>;
     final nome = (body['nome'] as String?)?.trim() ?? '';
@@ -53,8 +55,7 @@ Router setoresRouter(AppContainer container) {
   });
 
   router.put('/setores/<id>', (Request req, String id) async {
-    final payload = requireAuth(req);
-    requirePapel(payload, Papel.admin);
+    await requirePermissao(req, permRepo, _chave, Acao.alterar);
 
     final sid = int.tryParse(id);
     if (sid == null) return _badRequest('id inválido');
@@ -73,8 +74,7 @@ Router setoresRouter(AppContainer container) {
   });
 
   router.delete('/setores/<id>', (Request req, String id) async {
-    final payload = requireAuth(req);
-    requirePapel(payload, Papel.admin);
+    await requirePermissao(req, permRepo, _chave, Acao.excluir);
 
     final sid = int.tryParse(id);
     if (sid == null) return _badRequest('id inválido');

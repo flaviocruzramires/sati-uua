@@ -5,11 +5,14 @@ import 'package:shelf_router/shelf_router.dart';
 
 import '../di/app_container.dart';
 import '../middlewares/auth_middleware.dart';
-import '../models/usuario.dart';
+import '../models/permissao.dart';
+
+const _chave = 'cadastros.tipos';
 
 Router tiposEquipamentoRouter(AppContainer container) {
   final router = Router();
   final repo = container.tipoEquipamentoRepository;
+  final permRepo = container.permissaoRepository;
 
   router.get('/tipos-equipamento', (Request req) async {
     requireAuth(req);
@@ -35,8 +38,7 @@ Router tiposEquipamentoRouter(AppContainer container) {
   });
 
   router.post('/tipos-equipamento', (Request req) async {
-    final payload = requireAuth(req);
-    requirePapel(payload, Papel.atendente);
+    await requirePermissao(req, permRepo, _chave, Acao.incluir);
 
     final body = jsonDecode(await req.readAsString()) as Map<String, dynamic>;
     final nome = (body['nome'] as String?)?.trim() ?? '';
@@ -53,8 +55,7 @@ Router tiposEquipamentoRouter(AppContainer container) {
   });
 
   router.put('/tipos-equipamento/<id>', (Request req, String id) async {
-    final payload = requireAuth(req);
-    requirePapel(payload, Papel.atendente);
+    await requirePermissao(req, permRepo, _chave, Acao.alterar);
 
     final sid = int.tryParse(id);
     if (sid == null) return _badRequest('id inválido');
@@ -73,8 +74,7 @@ Router tiposEquipamentoRouter(AppContainer container) {
   });
 
   router.delete('/tipos-equipamento/<id>', (Request req, String id) async {
-    final payload = requireAuth(req);
-    requirePapel(payload, Papel.atendente);
+    await requirePermissao(req, permRepo, _chave, Acao.excluir);
 
     final sid = int.tryParse(id);
     if (sid == null) return _badRequest('id inválido');

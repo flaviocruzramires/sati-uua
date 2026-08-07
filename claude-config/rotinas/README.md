@@ -28,7 +28,19 @@ Onda 3 (ponto de convergência)
 Onda 4 (paralelo entre si)
   08-relatorios.md               → precisa de 07
   09-configuracoes.md            → precisa de 01 (e 03 para papel ADMIN)
+
+Onda 5 (bloco de permissionamento — cadeia, ver dependências internas)
+  10-papel-gerencia.md           → precisa de 01 | paraleliza com 11
+  11-cadastro-rotinas.md         → precisa de 00 | paraleliza com 10
+  12-permissionamento-admin.md   → precisa de 10 e 11
+  13-aplicacao-permissoes.md     → precisa de 10, 11 e 12 (fecha o bloco)
 ```
+
+O bloco de permissionamento (10-13) troca a autorização estática de hoje
+(`visibleForPapeis` no menu + `requirePapel`/`isAdmin` nas telas) por uma matriz
+papel×rotina configurável pelo Admin. Dois eixos permanecem **independentes**: o
+permissionamento decide *se a tela/menu aparece*; o filtro "meus × todos" de
+chamados (rotina 10) decide *quais registros a tela lista*.
 
 Dentro de cada rotina, o trabalho de servidor e de mobile também pode ser
 paralelizado entre dois agents (`dart-server-dev` e `flutter-mobile-dev`),

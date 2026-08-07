@@ -22,6 +22,9 @@ build/
 .DS_Store
 Thumbs.db
 
+# Logs
+*.log
+
 # Artefatos de transferência / temporários (Cowork)
 sati-uua-repo.tar.gz
 .thumbnail

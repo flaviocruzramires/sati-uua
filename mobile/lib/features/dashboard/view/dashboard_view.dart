@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/auth/current_user_provider.dart';
-import '../../../core/domain/enums.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/breakpoints.dart';
@@ -220,6 +219,11 @@ class _KpiRow extends StatelessWidget {
         ),
         const SizedBox(width: AppSpacing.s3),
         _KpiCard(
+          kicker: 'SEM CATEGORIA',
+          valor: '${kpi.semCategoria}',
+          meta: 'sem serviço e equipamento',
+        ),
+        _KpiCard(
           kicker: 'TEMPO MÉDIO',
           valor: kpi.tempoMedioFormatado,
           meta: 'meta: 8h',
@@ -238,18 +242,25 @@ class _KpiGrid extends StatelessWidget {
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 2,
-      childAspectRatio: 2.2,
+      crossAxisCount: 3,
+      childAspectRatio: 1.2,
       mainAxisSpacing: AppSpacing.s2,
       crossAxisSpacing: AppSpacing.s2,
       children: [
-        _KpiCard(kicker: 'ABERTOS', valor: '${kpi.abertos}', meta: ''),
-        _KpiCard(kicker: 'EM ANDAMENTO', valor: '${kpi.emAndamento}', meta: ''),
-        _KpiCard(kicker: 'ENCERRADOS', valor: '${kpi.encerrados}', meta: ''),
+        _KpiCard(kicker: 'ABERTOS', valor: '${kpi.abertos}', meta: '', compact: true),
+        _KpiCard(kicker: 'EM ANDAMENTO', valor: '${kpi.emAndamento}', meta: '', compact: true),
+        _KpiCard(kicker: 'ENCERRADOS', valor: '${kpi.encerrados}', meta: '', compact: true),
+        _KpiCard(
+          kicker: 'SEM CATEGORIA',
+          valor: '${kpi.semCategoria}',
+          meta: '',
+          compact: true,
+        ),
         _KpiCard(
           kicker: 'TEMPO MÉDIO',
           valor: kpi.tempoMedioFormatado,
           meta: 'meta: 8h',
+          compact: true,
         ),
       ],
     );
@@ -261,22 +272,26 @@ class _KpiCard extends StatelessWidget {
     required this.kicker,
     required this.valor,
     required this.meta,
+    this.compact = false,
   });
   final String kicker;
   final String valor;
   final String meta;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.s3),
+        padding: EdgeInsets.all(compact ? AppSpacing.s2 : AppSpacing.s3),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               kicker,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w600,
@@ -284,14 +299,23 @@ class _KpiCard extends StatelessWidget {
                 color: AppColors.neutral600,
               ),
             ),
-            const SizedBox(height: AppSpacing.s1),
-            Text(
-              valor,
-              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
+            const SizedBox(height: 2),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                valor,
+                style: TextStyle(
+                  fontSize: compact ? 24 : 28,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
             ),
             if (meta.isNotEmpty)
               Text(
                 meta,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 11,
                   color: AppColors.neutral600,

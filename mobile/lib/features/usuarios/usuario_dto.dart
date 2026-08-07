@@ -35,6 +35,7 @@ class UsuarioDto {
   static PapelUsuario _parsePapel(String s) => switch (s.toUpperCase()) {
     'ADMIN' => PapelUsuario.admin,
     'ATENDENTE' => PapelUsuario.atendente,
+    'GERENCIA' => PapelUsuario.gerencia,
     _ => PapelUsuario.solicitante,
   };
 }

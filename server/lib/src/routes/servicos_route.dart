@@ -5,11 +5,14 @@ import 'package:shelf_router/shelf_router.dart';
 
 import '../di/app_container.dart';
 import '../middlewares/auth_middleware.dart';
-import '../models/usuario.dart';
+import '../models/permissao.dart';
+
+const _chave = 'cadastros.servicos';
 
 Router servicosRouter(AppContainer container) {
   final router = Router();
   final repo = container.servicoRepository;
+  final permRepo = container.permissaoRepository;
 
   router.get('/servicos', (Request req) async {
     requireAuth(req);
@@ -35,8 +38,7 @@ Router servicosRouter(AppContainer container) {
   });
 
   router.post('/servicos', (Request req) async {
-    final payload = requireAuth(req);
-    requirePapel(payload, Papel.atendente);
+    await requirePermissao(req, permRepo, _chave, Acao.incluir);
 
     final body = jsonDecode(await req.readAsString()) as Map<String, dynamic>;
     final descricao = (body['descricao'] as String?)?.trim() ?? '';
@@ -49,8 +51,7 @@ Router servicosRouter(AppContainer container) {
   });
 
   router.put('/servicos/<id>', (Request req, String id) async {
-    final payload = requireAuth(req);
-    requirePapel(payload, Papel.atendente);
+    await requirePermissao(req, permRepo, _chave, Acao.alterar);
 
     final sid = int.tryParse(id);
     if (sid == null) return _badRequest('id inválido');
@@ -65,8 +66,7 @@ Router servicosRouter(AppContainer container) {
   });
 
   router.delete('/servicos/<id>', (Request req, String id) async {
-    final payload = requireAuth(req);
-    requirePapel(payload, Papel.atendente);
+    await requirePermissao(req, permRepo, _chave, Acao.excluir);
 
     final sid = int.tryParse(id);
     if (sid == null) return _badRequest('id inválido');
