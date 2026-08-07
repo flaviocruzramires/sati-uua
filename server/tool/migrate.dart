@@ -126,15 +126,27 @@ Future<void> _applySqlFiles(
 }
 
 String _findPsql() {
-  // Tenta psql no PATH primeiro.
-  final whichResult = Process.runSync('where', ['psql']);
-  if (whichResult.exitCode == 0) {
-    return (whichResult.stdout as String).trim().split('\n').first.trim();
+  // Localiza psql no PATH — `which` no Linux/macOS, `where` no Windows.
+  final locator = Platform.isWindows ? 'where' : 'which';
+  try {
+    final result = Process.runSync(locator, ['psql']);
+    if (result.exitCode == 0) {
+      final out = (result.stdout as String).trim();
+      if (out.isNotEmpty) return out.split('\n').first.trim();
+    }
+  } catch (_) {
+    // Locator indisponível — segue para os fallbacks por caminho.
   }
-  // Locais comuns no Windows.
-  for (final version in ['17', '16', '15', '14']) {
-    final path = 'C:\\Program Files\\PostgreSQL\\$version\\bin\\psql.exe';
-    if (File(path).existsSync()) return path;
+  // Locais comuns por plataforma (fallback).
+  if (Platform.isWindows) {
+    for (final version in ['17', '16', '15', '14']) {
+      final path = 'C:\\Program Files\\PostgreSQL\\$version\\bin\\psql.exe';
+      if (File(path).existsSync()) return path;
+    }
+  } else {
+    for (final path in ['/usr/bin/psql', '/usr/local/bin/psql', '/bin/psql']) {
+      if (File(path).existsSync()) return path;
+    }
   }
   throw StateError(
     'psql não encontrado. Adicione o diretório bin do PostgreSQL ao PATH.',
