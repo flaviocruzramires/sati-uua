@@ -1,4 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Necessária para o app acessar a API (builds release não herdam a
+         permissão que o Flutter adiciona só nos manifests de debug/profile). -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="SATI-UUA"
         android:name="${applicationName}"
