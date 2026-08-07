@@ -29,8 +29,10 @@ class ApiClient {
     final dio = Dio(
       BaseOptions(
         baseUrl: _kBaseUrl,
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 30),
+        // Timeouts folgados para tolerar o cold start do plano free do Render
+        // (o serviço hiberna e a 1ª requisição pode levar ~50s para acordar).
+        connectTimeout: const Duration(seconds: 60),
+        receiveTimeout: const Duration(seconds: 60),
         headers: {'Content-Type': 'application/json'},
       ),
     );
