@@ -39,8 +39,6 @@ services:
   - type: web
     name: sati-uua-web
     runtime: static
-    plan: free
-    region: oregon
     autoDeploy: true
     buildCommand: |
       git clone https://github.com/flutter/flutter.git --depth 1 -b stable "$HOME/flutter"
