@@ -41,7 +41,7 @@ services:
     runtime: static
     autoDeploy: true
     buildCommand: |
-      git clone https://github.com/flutter/flutter.git --depth 1 -b stable "$HOME/flutter"
+      git clone https://github.com/flutter/flutter.git --depth 1 -b 3.32.8 "$HOME/flutter"
       export PATH="$HOME/flutter/bin:$PATH"
       flutter --version
       cd mobile
